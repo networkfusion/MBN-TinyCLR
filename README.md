@@ -55,6 +55,6 @@ var virtualSocket = new Hardware.Socket
 Then you pass that socket to the driver :
 
 ```csharp
-var _lcd = new DevantechLcd03(virtualSocket, 0xC8 >> 1)
+var _lcd = new DevantechLcd03(virtualSocket, 0xC8 >> 1);
 var _lcdOnOff = GpioController.GetDefault().OpenPin(virtualSocket.Rst);
 ```
