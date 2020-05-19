@@ -10,62 +10,62 @@ This list is up-to-date as of Preview5 of TinyCLR 2.0
 
 ## *Complete list*
 
-|Click Board|Code completed|Status|Comments
-|:-|:-:|:-:|:-|
+|Click Board|Code completed|Status|Comments|Download
+|:-|:-:|:-:|:-|:-:
 |10DOFClick|:x:|||
-|4-20ma-R Click|:heavy_check_mark:|:heavy_check_mark:||
-|4-20ma-T Click|:heavy_check_mark:|:heavy_check_mark:||
-|AccelClick|:heavy_check_mark:|:heavy_check_mark:||
-|ADC3Click|:heavy_check_mark:|:heavy_check_mark:||
-|ADCClick|:heavy_check_mark:|:heavy_check_mark:||
+|4-20ma-R Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/4-20mA%20Click)
+|4-20ma-T Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/4-20mA%20Click)
+|AccelClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Accel%20Click)
+|ADC3Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Adc3%20Click)
+|ADCClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Adc%20Click)
 |AlphaNumRClick|:x:|||
 |Altitude2Click|:heavy_check_mark:|:clock130:||
 |Altitude3Click|:heavy_check_mark:|:clock130:||
 |AltitudeClick|:heavy_check_mark:|:clock130:||
 |Ambient2Click|:heavy_check_mark:|:clock130:||
 |AmbientClick|:heavy_check_mark:|:clock130:||
-|BarGraph|:heavy_check_mark:|:heavy_check_mark:||
-|BarGraph2|:heavy_check_mark:|:heavy_check_mark:||
+|BarGraph|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph%20Click)
+|BarGraph2|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |BarometerClick|:heavy_check_mark:|:clock130:||
-|BiHallClick|:heavy_check_mark:|:heavy_check_mark:||
+|BiHallClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |BLE2Click|:x:|||
 |Bluetooth2Click|:x:|||
 |BluetoothClick|:x:|||
-|BME280|:heavy_check_mark:|:heavy_check_mark:||
+|BME280|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |BMP180|:heavy_check_mark:|:clock130:||
 |ButtonRClick|:heavy_check_mark:|:clock130:||
-|BuzzerClick|:heavy_check_mark:|:heavy_check_mark:|Working but throws Thread.Abort exceptions. Needs rework.|
+|BuzzerClick|:heavy_check_mark:|:heavy_check_mark:|Working but throws Thread.Abort exceptions. Needs rework.|[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |CameraClick|:x:||MikroE Obsoleted the Camera Click. Won't code.|
-|CANSPIClick|:heavy_check_mark:|:heavy_check_mark:||
+|CANSPIClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |CapSenseClick|:heavy_check_mark:|:x:|TinyCLR 2.0 Preview5 has issues with slave address 0x00.|
 |CC3000Click|:x:|||
 |CC3100Click|:x:|||
 |ccRFClick|:x:|||
-|ColorClick|:heavy_check_mark:|:heavy_check_mark:||
+|ColorClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |Compass|:x:|||
 |CurrentClick|:heavy_check_mark:|:clock130:||
-|DACClick|:heavy_check_mark:|:heavy_check_mark:||
-|DCMotor4Click|:heavy_check_mark:|:heavy_check_mark:||
-|DCMotorClick|:heavy_check_mark:|:heavy_check_mark:||
-|DevantechLCD03|:heavy_check_mark:|:heavy_check_mark:||
-|DigipotClick|:heavy_check_mark:|:heavy_check_mark:||
+|DACClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|DCMotor4Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|DCMotorClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|DevantechLCD03|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|DigipotClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |DS18B20Click|:heavy_check_mark:|:clock130:||
-|EEpromClick|:heavy_check_mark:|:heavy_check_mark:||
+|EEpromClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |eInkClick|:x:|||
 |EnvironmentClick|:heavy_check_mark:|:clock130:||
 |ETHClick|:x:|||
 |ETHWizClick|:x:|||
-|EVEClick|:heavy_check_mark:|:heavy_check_mark:||
+|EVEClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |FeverClick|:heavy_check_mark:|:clock130:||
 |FingerPrintClick|:x:|||
 |FlameClick|:heavy_check_mark:|:clock130:||
-|Flash3Click|:heavy_check_mark:|:heavy_check_mark:||
-|FlashClick|:heavy_check_mark:|:heavy_check_mark:||
+|Flash3Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|FlashClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |FMClick|:heavy_check_mark:|:x:|No stations found|
-|FRAMClick|:heavy_check_mark:|:heavy_check_mark:||
-|FTDIClick|:heavy_check_mark:|:heavy_check_mark:||
-|GNSSClick|:heavy_check_mark:|:heavy_check_mark:||
-|GPS2Click|:heavy_check_mark:|:heavy_check_mark:||
+|FRAMClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|FTDIClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|GNSSClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|GPS2Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |GPS3Click|:heavy_check_mark:|:clock130:||
 |GPS3ClickFull|:heavy_check_mark:|:clock130:||
 |GPS3ClickMinimal|:heavy_check_mark:|:clock130:||
@@ -75,20 +75,20 @@ This list is up-to-date as of Preview5 of TinyCLR 2.0
 |GSMClick|:x:|||
 |GyroClick|:x:|||
 |HDC1000Click|:heavy_check_mark:|:clock130:||
-|HT16K33|:heavy_check_mark:|:heavy_check_mark:||
+|HT16K33|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |HTU21D|:heavy_check_mark:|:clock130:||
-|I2CMuxClick|:heavy_check_mark:|:heavy_check_mark:||
+|I2CMuxClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |IlluminanceClick|:heavy_check_mark:|:clock130:||
 |IRClick|:heavy_check_mark:|:clock130:||
 |IrDA2Click|:x:|||
 |IRGestureClick|:x:|:construction:||
 |IRThermo2Click|:x:|||
-|IRThermoClick|:heavy_check_mark:|:heavy_check_mark:||
-|JoystickClick|:heavy_check_mark:|:heavy_check_mark:||
-|Keypad4x3|:heavy_check_mark:|:heavy_check_mark:||
-|Led8x8Click|:heavy_check_mark:|:heavy_check_mark:||
-|LedRing|:heavy_check_mark:|:heavy_check_mark:||
-|LightClick|:heavy_check_mark:|:heavy_check_mark:||
+|IRThermoClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|JoystickClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|Keypad4x3|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|Led8x8Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|LedRing|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|LightClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |LightHZClick|:x:|||
 |LinHallClick|:heavy_check_mark:|:clock130:||
 |L-MeterClick|:x:|||
@@ -96,10 +96,10 @@ This list is up-to-date as of Preview5 of TinyCLR 2.0
 |MicroSDClick|:x:|||
 |MotionClick|:heavy_check_mark:|:clock130:||
 |MP3Click|:heavy_check_mark:|:x:|No sound.|
-|NRFcClick|:heavy_check_mark:|:heavy_check_mark:||
+|NRFcClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |nRFsClick|:x:|||
 |OLEDBW|:heavy_check_mark:|:clock130:||
-|OLED-CClick|:heavy_check_mark:|:heavy_check_mark:||
+|OLED-CClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |OnboardFlash|:heavy_check_mark:||Onboard Flash not available on GHI dev boards in Preview5|
 |OptoClick|:x:|||
 |Pressure11Click|:heavy_check_mark:|:clock130:||
@@ -107,18 +107,18 @@ This list is up-to-date as of Preview5 of TinyCLR 2.0
 |Pressure5Click|:x:|||
 |Pressure8Click|:x:|||
 |Pressure9Click|:heavy_check_mark:|:clock130:||
-|PressureClick|:heavy_check_mark:|:heavy_check_mark:||
-|Proximity3Click|:heavy_check_mark:|:heavy_check_mark:||
-|ProximityClick|:heavy_check_mark:|:heavy_check_mark:||
+|PressureClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|Proximity3Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
+|ProximityClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |PWMClick|:x:|||
 |PWMDriverClick|:x:|||
 |RadioStationClick|:x:|||
 |ReedClick|:heavy_check_mark:|:clock130:||
 |Relay2Click|:heavy_check_mark:|:clock130:||
-|RelayClick|:heavy_check_mark:|:heavy_check_mark:||
+|RelayClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |RFIDClick|:heavy_check_mark:|:x:|Hangs at WaitForData() also Interupt for DataReady never fires.|
 |RHT03|:x:|||
-|RotaryClick|:heavy_check_mark:|:heavy_check_mark:||
+|RotaryClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |RS232Click|:x:|||
 |RS485Click|:x:|||
 |RTC2Click|:heavy_check_mark:|:clock130:||
@@ -126,12 +126,12 @@ This list is up-to-date as of Preview5 of TinyCLR 2.0
 |RTC5Click|:x:|||
 |RTCClick|:heavy_check_mark:|:clock130:||
 |SerialLCD|:heavy_check_mark:|:clock130:||
-|SevenSegClick|:heavy_check_mark:|:heavy_check_mark:||
+|SevenSegClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |SHT11Click|:x:|||
 |SHTClick|:heavy_check_mark:|:clock130:||
-|SpeakUpClick|:heavy_check_mark:|:x:|Does not seem to recognize orders|
+|SpeakUpClick|:heavy_check_mark:|:x:|Does not seem to recognize orders|[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |SRAMClick|:x:|||
-|StepperClick|:heavy_check_mark:|:heavy_check_mark:||
+|StepperClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |TempHum10Click|:heavy_check_mark:|:clock130:||
 |TempHum11Click|:heavy_check_mark:|:clock130:||
 |TempHum12Click|:heavy_check_mark:|:clock130:||
@@ -146,22 +146,22 @@ This list is up-to-date as of Preview5 of TinyCLR 2.0
 |Thermo13Click|:heavy_check_mark:|:clock130:||
 |Thermo2Click|:x:|||
 |Thermo3Click|:heavy_check_mark:|:clock130:||
-|Thermo4Click|:heavy_check_mark:|:heavy_check_mark:||
+|Thermo4Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |Thermo6Click|:heavy_check_mark:|:clock130:||
 |Thermo8click|:heavy_check_mark:|:clock130:||
 |ThermoClick|:heavy_check_mark:|:clock130:||
 |Thermostat2Click|:x:|||
 |ThremostatClick|:x:|||
 |ThumbstickClick|:heavy_check_mark:|:clock130:||
-|ThunderClick|:heavy_check_mark:|:heavy_check_mark:||
+|ThunderClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |TiltClick|:heavy_check_mark:|:clock130:||
-|TinyFileSystem|:heavy_check_mark:|:heavy_check_mark:||
+|TinyFileSystem|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |TouchKeyClick|:heavy_check_mark:|:clock130:||
 |tRFClick|:x:|||
-|UniHallClick|:heavy_check_mark:|:heavy_check_mark:||
+|UniHallClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |Unique ID Click|:x:|||
 |USBSPIClick|:x:|||
-|USBUARTClick|:heavy_check_mark:|:heavy_check_mark:||
+|USBUARTClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers/Bargraph2%20Click)
 |UVClick|:heavy_check_mark:|:clock130:||
 |WeatherClick|:heavy_check_mark:|:clock130:|I2C Version only.|
 |Wifi|:x:|||
