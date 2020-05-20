@@ -1,6 +1,6 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
 
-![MBN logo](https://github.com/MikroBusNet/MikroBusNet-for-TinyCLR-2.0/blob/WIP/logonarrow.jpg)
+![MBN logo](logonarrow.jpg)
 
 # **Available drivers**
 
