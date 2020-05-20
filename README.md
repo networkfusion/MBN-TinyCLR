@@ -8,7 +8,7 @@ The list of all drivers and their status is [here](https://github.com/MikroBusNe
 
 # **Please note**
 
-More drivers will be added as soon as they are verified by TinyCLR 2.0. Those are the drivers tagged with this symbol : :clock130: in the above list.
+More drivers will be added as soon as they are verified by TinyCLR 2.0. Those are the drivers tagged with the clock :clock130: in the above list.
 
 ## **How to use our drivers**
 
