@@ -11,7 +11,7 @@ The list of all drivers and their status is [here](https://github.com/MikroBusNe
 It's as simple as that :
 
 * Create a TinyCLR application project in Visual Studio
-* Add **_MBNCore.cs_** to your project
+* Add [**_MBNCore.cs_**](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/MBNCore) to your project
 * Add the needed driver source as well, from the [Drivers folder](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Drivers)
 * Use the example in the [Examples folder](https://github.com/MikroBusNet/MBN-TinyCLR/tree/master/Examples) as a start for your program
 * That's all !
