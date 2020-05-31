@@ -30,6 +30,7 @@ So far, the current boards are supported :
 * MBN Ram (6 sockets)
 * GHI SC20100 dev board (2 sockets)
 * GHI SC20260 dev board (2 sockets)
+* GHI FEZ Stick (2 sockets)
   
 Each socket has a number and is accessible in code using the following syntax :
 
