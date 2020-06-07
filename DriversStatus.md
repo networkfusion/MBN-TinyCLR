@@ -1,6 +1,6 @@
 # **Drivers status**
 
-This list is up-to-date as of Preview5 of TinyCLR 2.0
+This list is up-to-date as of Preview6 of TinyCLR 2.0
 
 * **Status**
   * :heavy_check_mark: : driver is working as expected.
@@ -64,6 +64,8 @@ This list is up-to-date as of Preview5 of TinyCLR 2.0
 |FRAMClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/FRAMClick)
 |FTDIClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/FTDIClick)
 |GNSSClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/GNSSClick)
+|GNSS4Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Gnss4Click)
+|GnssZoeClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/GnssZoeClick)
 |GPS2Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/GPS2Click)
 |GPS3Click|:heavy_check_mark:|:clock130:||
 |GPS3ClickFull|:heavy_check_mark:|:clock130:||
