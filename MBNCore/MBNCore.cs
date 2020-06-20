@@ -760,7 +760,7 @@ namespace MBN
             Miso = SC20100.GpioPin.PB4,
             Mosi = SC20100.GpioPin.PB5,
             SpiBus = SC20100.SpiBus.Spi3,
-            I2cBus = SC20100.I2cBus.I2c2,
+            I2cBus = SC20100.I2cBus.I2c1,
             PwmController = SC20100.PwmChannel.Controller13.Id,
             PwmChannel = SC20100.PwmChannel.Controller13.PA6,
             PwmPin = SC20100.GpioPin.PA6,

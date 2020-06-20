@@ -126,7 +126,7 @@
 |RS232Click|:x:|||
 |RS485Click|:x:|||
 |RTC2Click|:heavy_check_mark:|:clock130:||
-|RTC3Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/RTC3)
+|RTC3Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/RTC3Click)
 |RTC4Click|:x:|:construction:||
 |RTC5Click|:x:|||
 |RTCClick|:heavy_check_mark:|:clock130:||
