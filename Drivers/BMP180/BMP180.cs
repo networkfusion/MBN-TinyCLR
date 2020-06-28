@@ -75,6 +75,7 @@ namespace MBN.Modules
         /// <param name="socket">The socket that the BMP180 Module is connected into.</param>
         public BMP180(Hardware.Socket socket)
         {
+            _socket = socket;
             // Create the driver's I²C configuration
             _bmp180 = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(0x77, 100000));
 
@@ -93,22 +94,22 @@ namespace MBN.Modules
 
         #region Calibration Data Fields
 
-        private static Int32 _ac1;
-        private static Int32 _ac2;
-        private static Int32 _ac3;
-        private static Int32 _ac4;
-        private static Int32 _ac5;
-        private static Int32 _ac6;
-        private static Int32 _b1;
-        private static Int32 _b2;
-        private static Int32 _mb;
-        private static Int32 _mc;
-        private static Int32 _md;
+        private Int32 _ac1;
+        private Int32 _ac2;
+        private Int32 _ac3;
+        private Int32 _ac4;
+        private Int32 _ac5;
+        private Int32 _ac6;
+        private Int32 _b1;
+        private Int32 _b2;
+        private Int32 _mb;
+        private Int32 _mc;
+        private Int32 _md;
 
         #endregion
-
-        private static I2cDevice _bmp180; // I²C configuration
-        private static Oss _overSamplingSetting = Oss.Standard; // 0 = low precision & power to 3 = higher both
+        private readonly Hardware.Socket _socket;
+        private I2cDevice _bmp180; // I²C configuration
+        private Oss _overSamplingSetting = Oss.Standard; // 0 = low precision & power to 3 = higher both
 
         #endregion
 
@@ -144,7 +145,7 @@ namespace MBN.Modules
 
         #region Private Methods
 
-        private static Single CalculatePressureAsl(Single pressure)
+        private Single CalculatePressureAsl(Single pressure)
         {
             Single seaLevelCompensation = (Single)(101325 * Math.Pow((288 - 0.0065 * 143) / 288, 5.256));
             return 101325 + pressure - seaLevelCompensation;
@@ -178,7 +179,7 @@ namespace MBN.Modules
             return temperatureData;
         }
 
-        private static Boolean GetCalibrationData()
+        private Boolean GetCalibrationData()
         {
             Byte[] rawData = ReadRegister(0xAA, 22);
 
@@ -198,11 +199,11 @@ namespace MBN.Modules
             return (_ac1 != 0 || _ac1 != 0xFFFF) && (_ac2 != 0 || _ac2 != 0xFFFF) && (_ac3 != 0) | (_ac3 != 0xFFFF) && (_ac4 != 0) | (_ac4 != 0xFFFF) && (_ac5 != 0 || _ac5 != 0xFFFF) && (_ac6 != 0 || _ac6 != 0xFFFF) && (_b1 != 0) | (_b1 != 0xFFFF) && (_b2 != 0 || _b2 != 0xFFFF) && (_mb != 0 || _mb != 0xFFFF) && (_mc != 0) | (_mc != 0xFFFF) && (_md != 0 || _md != 0xFFFF);
         }
 
-        private static Byte[] ReadRegister(Byte register, Byte bytesToRead)
+        private Byte[] ReadRegister(Byte register, Byte bytesToRead)
         {
             Byte[] result = new Byte[bytesToRead];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _bmp180.WriteRead(new[] { register }, result);
             }
@@ -210,9 +211,9 @@ namespace MBN.Modules
             return result;
         }
 
-        private static void WriteByte(Byte register, Byte data)
+        private void WriteByte(Byte register, Byte data)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _bmp180.Write(new[] { register, data });
             }

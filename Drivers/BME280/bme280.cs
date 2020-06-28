@@ -88,6 +88,7 @@ namespace MBN.Modules
         /// <param name="slaveAddress">The address of the module.</param>
         public BME280(Hardware.Socket socket, I2CAddresses slaveAddress)
         {
+            _socket = socket;
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((Int32) slaveAddress, 100000));
 
             Reset(ResetModes.Soft);
@@ -315,7 +316,7 @@ namespace MBN.Modules
         #region Fields
 
         private readonly I2cDevice _sensor;
-
+        private readonly Hardware.Socket _socket;
         private OversamplingRates _humiditySamplingRate = OversamplingRates.Osr1;
         private OversamplingRates _temperatureSamplingRate = OversamplingRates.Osr1;
         private OversamplingRates _pressureSamplingRate = OversamplingRates.Osr1;
@@ -838,14 +839,19 @@ namespace MBN.Modules
         {
             Byte[] writeBuffer = {registerAddress};
             Byte[] readBuffer = new Byte[bytesToRead];
-
-            _sensor?.WriteRead(writeBuffer, readBuffer);
+            lock (_socket.LockI2c)
+            {
+                _sensor?.WriteRead(writeBuffer, readBuffer);
+            }
             return readBuffer;
         }
 
         private void WriteByte(Byte registerAddress, Byte data)
         {
-            _sensor.Write(new[]{ registerAddress, data});
+            lock (_socket.LockI2c)
+            {
+                _sensor.Write(new[] { registerAddress, data });
+            }
         }
 
         private void ReadCalibrationData()

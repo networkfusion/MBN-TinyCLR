@@ -23,6 +23,7 @@ namespace MBN.Modules
         private readonly Byte[] _configRegister = new Byte[1];
         private readonly Byte[] _data = new Byte[2];
         private Int32 _value;
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Available channels on the module
@@ -71,6 +72,7 @@ namespace MBN.Modules
         /// <param name="address">The I2C address of the module</param>
         public Adc3Click(Hardware.Socket socket, Int32 address = 0x68)
         {
+            _socket = socket;
             _adc = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
 
             // Default power on configuration :
@@ -106,7 +108,7 @@ namespace MBN.Modules
 
         private void ReadData()
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _adc.Read(_data);
             }
@@ -114,7 +116,7 @@ namespace MBN.Modules
 
         private void WriteControlRegister()
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _adc.Write(_configRegister);
             }

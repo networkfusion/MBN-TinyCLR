@@ -84,7 +84,7 @@ namespace MBN.Modules
         /// <exception cref="DeviceInitialisationException">A DeviceInitialisationException will be thrown if the Altitude3 Click does not complete its initialization properly.</exception>
         public Altitude3Click(Hardware.Socket socket)
         {
-
+            _socket = socket;
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(0x63, 100000));
 
             Reset();
@@ -311,17 +311,17 @@ namespace MBN.Modules
         private const Single _offst_factor = 2048.0F;
 
         // Register Addresses and Commands
-        private static readonly Byte[] ICP10100_CMD_READ_ID = {0xEF, 0xC8};
-        private static readonly Byte[] ICP10100_CMD_SET_ADDRESS = {0xC5, 0x95};
-        private static readonly Byte[] ICP10100_CMD_SET_OTP = {0x00, 0x66};
-        private static readonly Byte[] ICP10100_CMD_READ_OTP = {0xC7, 0xF7};
-        private static readonly Byte[] ICP10100_CMD_RESET = {0x80, 0x5D};
+        private readonly Byte[] ICP10100_CMD_READ_ID = {0xEF, 0xC8};
+        private readonly Byte[] ICP10100_CMD_SET_ADDRESS = {0xC5, 0x95};
+        private readonly Byte[] ICP10100_CMD_SET_OTP = {0x00, 0x66};
+        private readonly Byte[] ICP10100_CMD_READ_OTP = {0xC7, 0xF7};
+        private readonly Byte[] ICP10100_CMD_RESET = {0x80, 0x5D};
 
         // 16 bit register address for initiating a conversion
-        private static readonly Byte[] ICP10100_CMD_MEAS_LP_T_FIRST = {0x60, 0x9C};
-        private static readonly Byte[] ICP10100_CMD_MEAS_N_T_FIRST = {0x68, 0x25};
-        private static readonly Byte[] ICP10100_CMD_MEAS_LN_T_FIRST = {0x70, 0xDF};
-        private static readonly Byte[] ICP10100_CMD_MEAS_ULN_T_FIRST = {0x78, 0x66};
+        private readonly Byte[] ICP10100_CMD_MEAS_LP_T_FIRST = {0x60, 0x9C};
+        private readonly Byte[] ICP10100_CMD_MEAS_N_T_FIRST = {0x68, 0x25};
+        private readonly Byte[] ICP10100_CMD_MEAS_LN_T_FIRST = {0x70, 0xDF};
+        private readonly Byte[] ICP10100_CMD_MEAS_ULN_T_FIRST = {0x78, 0x66};
 
         #endregion
 
@@ -470,7 +470,8 @@ namespace MBN.Modules
         #region Private Fields
 
         private readonly Single[] _calibrationData = new Single[4];
-        private static I2cDevice _sensor;
+        private readonly I2cDevice _sensor;
+        private readonly Hardware.Socket _socket;
 
         #endregion
 
@@ -501,7 +502,7 @@ namespace MBN.Modules
         }
 
         // Tested with 0xBEEF = 0x92 per data sheet.
-        private static Byte CalculateCRC8(Byte[] data)
+        private Byte CalculateCRC8(Byte[] data)
         {
             const Int16 polynomial = 0x131; // P(x) = 2^8 + 2^5 + 2^4 + 1
             Byte crc = 0xFF; // Initialize the CRC to 0xFF
@@ -520,11 +521,11 @@ namespace MBN.Modules
             return crc;
         }
 
-        private static Byte[] ReadRegister(Byte[] command, Byte readDelay, Byte bytesToRead)
+        private Byte[] ReadRegister(Byte[] command, Byte readDelay, Byte bytesToRead)
         {
             Byte[] readBuffer = new Byte[bytesToRead];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(command);
 
@@ -536,15 +537,15 @@ namespace MBN.Modules
             return readBuffer;
         }
 
-        private static void WriteComand(Byte[] command)
+        private void WriteComand(Byte[] command)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(command);
             }
         }
 
-        private static Double CalculatePressureAsl(Double pressure)
+        private Double CalculatePressureAsl(Double pressure)
         {
             Double seaLevelCompensation = 101325 * Math.Pow((288 - 0.0065 * 143) / 288, 5.256);
             return 101325 + pressure - seaLevelCompensation;

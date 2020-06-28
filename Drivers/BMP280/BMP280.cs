@@ -102,6 +102,7 @@ namespace MBN.Modules
         /// <param name="socket">The virtual socket on which the BMP280 module is connected to on the MikroBus.Net board</param>
         public BMP280(Hardware.Socket socket)
         {
+            _socket = socket;
             _interface = Interface.SPI;
 
             _sensorSPI = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings
@@ -378,7 +379,7 @@ namespace MBN.Modules
         private readonly SpiDevice _sensorSPI;
         private readonly I2cDevice _sensorI2C;
         private readonly Interface _interface;
-
+        private readonly Hardware.Socket _socket;
         private StandbyDurations _standbyDuration;
         private FilterCoefficient _filter;
         private Mode _powerMode;
@@ -825,14 +826,14 @@ namespace MBN.Modules
 
             if (_interface== Interface.SPI)
             {
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _sensorSPI.TransferSequential(new[] { registerAddress }, result);
                 }
             }
             else
             {
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _sensorI2C.WriteRead(new[] {registerAddress}, result);
                 }
@@ -844,14 +845,14 @@ namespace MBN.Modules
         {
             if (_interface == Interface.SPI)
             {
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _sensorSPI.Write(new[] { (Byte)(registerAddress & 0x7F), data });
                 }
             }
             else
             {
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _sensorI2C.Write(new[] { registerAddress, data });
                 }

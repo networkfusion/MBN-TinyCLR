@@ -85,6 +85,7 @@ namespace MBN.Modules
         private Byte[] _intResult;
         private Int32 _scanDelay;
         private Boolean _scanOk;
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CapSenseClick"/> class.
@@ -93,6 +94,7 @@ namespace MBN.Modules
         /// <param name="address">Address of the I²C device.</param>
         public CapSenseClick(Hardware.Socket socket, Byte address=0x00)
         {
+            _socket = socket;
             // Create the driver's I²C configuration
             _cap = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
             Init();
@@ -173,7 +175,7 @@ namespace MBN.Modules
             var result = new Byte[1];
             try
             {
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _cap.WriteRead(new[] { register }, result);
                 }
@@ -193,7 +195,7 @@ namespace MBN.Modules
         {
             try
             {
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _cap.WriteRead(new[] { register }, _intResult);
                 }
@@ -211,7 +213,7 @@ namespace MBN.Modules
 
         private void SetRegister(Byte register, Byte value)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _cap.Write(new[] { register, value });
             }

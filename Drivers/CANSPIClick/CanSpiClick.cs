@@ -1,4 +1,4 @@
-/*
+﻿/*
  * CanSpiClick driver for TinyCLR 2.0
  * 
  * Initial version coded for NETMF by Klaus Brüggemann
@@ -91,6 +91,7 @@ namespace MBN.Modules
         private readonly GpioPin _rst;
         private readonly GpioPin _int;
         private readonly Byte[] valueChangedBuffer = new Byte[30];
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CanSpiClick"/> class.
@@ -98,6 +99,7 @@ namespace MBN.Modules
         /// <param name="socket">The socket on which the CANSPIclick module is plugged</param>
         public CanSpiClick(Hardware.Socket socket)
         {
+            _socket = socket;
             // Initialize SPI
             _canSpi = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
@@ -129,7 +131,7 @@ namespace MBN.Modules
         {
             var readCmd = (ReadReg(regCANINTF) & 0x01) == 0x01 ? cmdReadRXB0 : cmdReadRXB1;
 
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _canSpi.TransferFullDuplex(new Byte[] { readCmd, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, valueChangedBuffer);
                 Array.Copy(valueChangedBuffer, 1, valueChangedBuffer, 0, valueChangedBuffer.Length - 1);
@@ -231,7 +233,7 @@ namespace MBN.Modules
                     _rst.Write(GpioPinValue.High);
                     break;
                 case ResetModes.Soft:
-                    lock (Hardware.LockSPI)
+                    lock (_socket.LockSpi)
                     {
                         _canSpi.Write(new Byte[] { cmdRESET });
                     }
@@ -250,7 +252,7 @@ namespace MBN.Modules
         private Byte ReadReg(Byte addr)
         {
             var buf = new Byte[3];
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _canSpi.TransferFullDuplex(new Byte[] { cmdREAD, addr, 0 }, buf);
             }
@@ -259,7 +261,7 @@ namespace MBN.Modules
 
         private void WriteReg(Byte addr, Byte val)
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _canSpi.Write(new Byte[] { cmdWRITE, addr, val });
             }
@@ -267,7 +269,7 @@ namespace MBN.Modules
 
         private void ModifyReg(Byte addr, Byte mask, Byte val)
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _canSpi.Write(new Byte[] { cmdBitModify, addr, mask, val });
             }
@@ -275,7 +277,7 @@ namespace MBN.Modules
 
         public Boolean SetOpMode(Byte opmode)
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _canSpi.Write(new Byte[] { cmdBitModify, regCANCTRL, 0xE0, (Byte)(opmode << 5) });
             }

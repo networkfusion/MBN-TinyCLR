@@ -89,6 +89,7 @@ namespace MBN.Modules
         /// <param name="slaveAddress">The slave address of the module.</param>
         public BarometerClick(Hardware.Socket socket, I2CAddress slaveAddress)
         {
+            _socket = socket;
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((Int32) slaveAddress, 400000));
 
             if (!Reset()) throw new ApplicationException("Unable to reset Barometer to Factory defaults");
@@ -247,6 +248,7 @@ namespace MBN.Modules
 
         private readonly I2cDevice _sensor;
         private Byte _registerData;
+        private readonly Hardware.Socket _socket;
 
         #endregion
 
@@ -664,7 +666,7 @@ namespace MBN.Modules
             writeBuffer[0] = registerAddress;
             writeBuffer[1] = value;
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.WritePartial(writeBuffer);
             }
@@ -674,7 +676,7 @@ namespace MBN.Modules
         {
             Byte[] readBuffer = new Byte[bytesToRead];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.WriteRead(new[] { registerAddres}, readBuffer );
             }

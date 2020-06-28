@@ -26,6 +26,7 @@ namespace MBN.Modules
         private UInt16 _4mACalibration, _20mACalibration;
         private readonly Byte[] _data = new Byte[2];
         private Boolean _calibrationDone;
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T4_20mAClick"/> class.
@@ -40,6 +41,7 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000
             });
+            _socket = socket;
         }
 
         /// <summary>
@@ -78,7 +80,7 @@ namespace MBN.Modules
             _data[0] = (Byte)((value >> 8) & 0x0F);
             _data[0] |= 0x30;
             _data[1] = (Byte)(value & 0xFF);
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _trs.Write(new Byte[] { _data[0], _data[1] });
             }
@@ -93,6 +95,7 @@ namespace MBN.Modules
         private readonly SpiDevice _rec;
         private readonly Byte[] _data = new Byte[2];
         private readonly UInt16 _4mACalibration, _20mACalibration;
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="R4_20mAClick"/> class.
@@ -109,6 +112,7 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000
             });
+            _socket = socket;
             _4mACalibration = calibration4mA;
             _20mACalibration = calibration20mA;
         }
@@ -124,7 +128,7 @@ namespace MBN.Modules
             var value = 0;
             for (var i = 0; i < iterations; i++)
             {
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _rec.Read(_data);
                 }
