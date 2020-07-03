@@ -74,6 +74,7 @@ namespace MBN.Modules
         private PowerModes _powerMode;                             // Is DAC in active mode or not
         private Boolean _isBuffered;                         // Buffered mode
         private Gains _gain;                                // Gain mode
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DacClick"/> class.
@@ -81,6 +82,7 @@ namespace MBN.Modules
         /// <param name="socket">The socket on which the BarGraph Click board is plugged on MikroBus.Net</param>
         public DacClick(Hardware.Socket socket)
         {
+            _socket = socket;
             // Initialize SPI
             _dac = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
@@ -117,7 +119,7 @@ namespace MBN.Modules
                 var high = (Byte)((_outputValue >> 8) & 0x0F);
                 high |= _controlBits;
                 var low = (Byte)_outputValue;
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _dac.Write (new[] { high, low });
                 }
@@ -144,7 +146,7 @@ namespace MBN.Modules
                 _isBuffered = value;
                 Bits.Set(ref _controlBits, _isBuffered ? "x1xx0000" : "x0xx0000");
                 _outputValue = 0;
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _dac.Write(new Byte[] { _controlBits, 0x00 });
                 }
@@ -170,7 +172,7 @@ namespace MBN.Modules
                 _gain = value;
                 Bits.Set(ref _controlBits, _gain == Gains.X1 ? "xx1x0000" : "xx0x0000");
                 _outputValue = 0;
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _dac.Write(new Byte[] { _controlBits, 0x00 });
                 }
@@ -198,7 +200,7 @@ namespace MBN.Modules
                 _powerMode = value;
                 Bits.Set(ref _controlBits, value == PowerModes.Off ? "xxx00000" : "xxx10000");
                 _outputValue = 0;
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _dac.Write(new Byte[] { _controlBits, 0x00 });
                 }

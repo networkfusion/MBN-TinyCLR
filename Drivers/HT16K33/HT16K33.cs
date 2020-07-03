@@ -108,6 +108,7 @@ namespace MBN.Modules
         private PowerModes _powerMode;
         private Byte _brightness;
         private readonly Byte[] _buffer;
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HT16K33"/> class.
@@ -116,6 +117,7 @@ namespace MBN.Modules
         /// <param name="address">The address of the display. Default to 0x70.</param>
         public HT16K33(Hardware.Socket socket, Byte address=0x70)
         {
+            _socket = socket;
             // Create the driver's I²C configuration
             _disp = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 400000));
 
@@ -159,7 +161,7 @@ namespace MBN.Modules
                 if (number < -9) { _buffer[7] = Digits[(-number / 10) % 10]; _buffer[3] = Minus; }
                 if (number < -99) { _buffer[3] = Digits[(-number / 100) % 10]; _buffer[1] = Minus; }
             }
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _disp.Write(_buffer);
             }
@@ -238,7 +240,7 @@ namespace MBN.Modules
             {
                 if (formattedDouble.Length > 4) { return; }
             }
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _disp.Write(_buffer);
             }
@@ -250,7 +252,7 @@ namespace MBN.Modules
         /// <param name="array">The array containing bytes to send.</param>
         public void SendBytes(Byte[] array)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _disp.Write(array);
             }
@@ -266,7 +268,7 @@ namespace MBN.Modules
         /// </example>
         public void ClearDisplay()
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _disp.Write(new Byte[11]);
             }
@@ -283,7 +285,7 @@ namespace MBN.Modules
         /// </example>
         public void Blink(BlinkModes blinkMode)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _disp.Write(new[] { (Byte)blinkMode });
             }
@@ -306,7 +308,7 @@ namespace MBN.Modules
             set
             {
                 _brightness = value > 16 ? (Byte) 16 : value;
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _disp.Write(new[] { (Byte)(0xDF + _brightness) });
                 }
@@ -327,7 +329,7 @@ namespace MBN.Modules
         /// </example>
         public void Display(Boolean on)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _disp.Write(new[] { on ? (Byte)0x81 : (Byte)0x80 });
             }
@@ -352,7 +354,7 @@ namespace MBN.Modules
             set
             {
                 if (value == PowerModes.Low) { throw new NotImplementedException("PowerModes.Low"); }
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _disp.Write(new[] { value == PowerModes.On ? (Byte)0x21 : (Byte)0x20 });
                 }

@@ -41,13 +41,18 @@ namespace MBN.Modules
     public sealed class IRThermoClick : ITemperature
     {
         private readonly I2cDevice _ir;
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IRThermoClick"/> class.
         /// </summary>
         /// <param name="socket">The socket on which the IRThermo Click board is plugged on MikroBus.Net board</param>
         /// <param name="address">The address of the display. Default to 0x5A.</param>
-        public IRThermoClick(Hardware.Socket socket, Byte address = 0x5A) => _ir = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
+        public IRThermoClick(Hardware.Socket socket, Byte address = 0x5A)
+        {
+            _socket = socket;
+            _ir = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
+        }
 
         /// <summary>
         /// Reads the temperature from the sensor.
@@ -69,7 +74,7 @@ namespace MBN.Modules
         {
             var result = new Byte[3];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _ir.WriteRead(new[] { source == TemperatureSources.Ambient ? (Byte)0x06 : (Byte)0x07 }, result);
             }

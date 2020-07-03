@@ -10,6 +10,7 @@ namespace MBN.Modules
 
         public RTC3Click(Hardware.Socket socket)
         {
+            _socket = socket;
             _rtc3 = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(_slaveAddress, 400000));
         }
 
@@ -17,8 +18,9 @@ namespace MBN.Modules
 
         #region Private Fields
 
-        private static I2cDevice _rtc3;
+        private I2cDevice _rtc3;
         private UInt32 _century = 2000;
+        private readonly Hardware.Socket _socket;
 
         #endregion
 
@@ -230,18 +232,18 @@ namespace MBN.Modules
 
         #region Private Methods
 
-        private static Byte[] ReadRegister(Byte registerAddress, Byte numberOfBytesToRead)
+        private Byte[] ReadRegister(Byte registerAddress, Byte numberOfBytesToRead)
         {
             Byte[] registerData = new Byte[numberOfBytesToRead];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _rtc3.WriteRead(new[] { registerAddress }, registerData);
             }
             return registerData;
         }
 
-        private static void WriteRegister(Byte registerAddress, Byte[] registerData)
+        private void WriteRegister(Byte registerAddress, Byte[] registerData)
         {
             Byte[] writeBuffer = new Byte[registerData.Length + sizeof(Byte)];
             writeBuffer[0] = registerAddress;
@@ -251,7 +253,7 @@ namespace MBN.Modules
                 writeBuffer[x + 1] = registerData[x];
             }
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _rtc3.Write(writeBuffer);
 

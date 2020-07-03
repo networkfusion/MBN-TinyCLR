@@ -84,6 +84,7 @@ namespace MBN.Modules
 
         private readonly I2cDevice _eeprom;
         private readonly Int32 _memorysize;
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EEpromClick"/> class.
@@ -93,6 +94,7 @@ namespace MBN.Modules
         /// <param name="memorySize">Optionnal size of the memory chip, in KB. Default to 8KB, as sold by MikroElektronika.</param>
         public EEpromClick(Hardware.Socket socket, Byte address, Int32 memorySize = 8)
         {
+            _socket = socket;
             // Create the driver's I²C configuration
             _eeprom = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
             _memorysize = memorySize * 1024;
@@ -148,7 +150,7 @@ namespace MBN.Modules
             {
                 data3[0] = (Byte)(address >> 8);
                 data3[1] = (Byte)(address >> 0);
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _eeprom.Write(data3);
                 }
@@ -191,7 +193,7 @@ namespace MBN.Modules
             buffer[0] = (Byte)(address >> 8);
             buffer[1] = (Byte)(address & 0xFF);
             Array.Copy(data, index, buffer, 2, count);
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _eeprom.Write(buffer);
             }
@@ -221,13 +223,13 @@ namespace MBN.Modules
         /// </example>
         public override void ReadData(Int32 address, Byte[] data, Int32 index, Int32 count)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _eeprom.Write(new[] { (Byte)(address >> 8), (Byte)(address & 0xFF) });
             }
             Thread.Sleep(5);   // Mandatory after each Write transaction !!!
             var buffer = new Byte[count];
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _eeprom.Read(buffer);
             }

@@ -289,6 +289,16 @@ namespace MBN
             public String I2cBus;
 
             /// <summary>
+            /// SPI bus lock object
+            /// </summary>
+            public Object LockSpi;
+
+            /// <summary>
+            /// I2C Bus lock object
+            /// </summary>
+            public Object LockI2c;
+
+            /// <summary>
             /// UART Transmit pin
             /// </summary>
             public Int32 Tx;
@@ -912,6 +922,7 @@ namespace MBN
             Scl = STM32H7.GpioPin.PB8,
             Sda = STM32H7.GpioPin.PB9,
             I2cBus = RamBoard.I2cBus.I2c1,
+            LockI2c = new Object(),
             Name = "I2cHeader"
         };
 
@@ -925,6 +936,7 @@ namespace MBN
             Miso = STM32H7.GpioPin.PJ11,
             Mosi = STM32H7.GpioPin.PJ10,
             SpiBus = RamBoard.SpiBus.Spi5,
+            LockSpi = new Object(),
             Name = "OnboardFlash"
         };
 
@@ -985,6 +997,36 @@ namespace MBN
         // Constructor
         static Hardware()
         {
+            SocketOne.LockI2c = new Object();
+            SocketTwo.LockI2c = SocketOne.LockI2c;
+            SocketThree.LockI2c = SocketOne.LockI2c;
+            SocketFour.LockI2c = new Object();
+            SocketFive.LockI2c = SocketFour.LockI2c;
+            SocketSix.LockI2c = SocketFour.LockI2c;
+
+            SocketOne.LockSpi = new Object();
+            SocketTwo.LockSpi = SocketOne.LockSpi;
+            SocketThree.LockSpi = SocketOne.LockSpi;
+            SocketFour.LockSpi = new Object();
+            SocketFive.LockSpi = SocketFour.LockSpi;
+            SocketSix.LockSpi = SocketFour.LockSpi;
+            SpiHeader.LockSpi = SocketFour.LockSpi;
+
+            SC20100_1.LockSpi = new Object();
+            SC20100_2.LockSpi = SC20100_1.LockSpi;
+            SC20100_1.LockI2c = new Object();
+            SC20100_2.LockI2c = SC20100_1.LockI2c;
+
+            SC20260_1.LockSpi = new Object();
+            SC20260_2.LockSpi = SC20260_1.LockSpi;
+            SC20260_1.LockI2c = new Object();
+            SC20260_2.LockI2c = SC20260_1.LockI2c;
+
+            FEZStick_1.LockSpi = new Object();
+            FEZStick_2.LockSpi = new Object();
+            FEZStick_1.LockI2c = new Object();
+            FEZStick_2.LockI2c = new Object();
+
             LockI2C = new Object();
             LockSPI = new Object();
             Led1 = GpioController.GetDefault().OpenPin(SC20260.GpioPin.PK4);

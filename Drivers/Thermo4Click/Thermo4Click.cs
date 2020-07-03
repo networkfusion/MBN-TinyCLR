@@ -69,6 +69,7 @@ namespace MBN.Modules
         /// <param name="slaveAddress"></param>
         public Thermo4Click(Hardware.Socket socket, I2cAddress slaveAddress)
         {
+            _socket = socket;
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((Int32) slaveAddress, 100000));
         }
 
@@ -76,8 +77,8 @@ namespace MBN.Modules
 
         #region Private Fields
 
-        private static I2cDevice _sensor;
-
+        private I2cDevice _sensor;
+        private readonly Hardware.Socket _socket;
         #endregion
 
         #region Private Constants
@@ -363,34 +364,34 @@ namespace MBN.Modules
 
         #region Private Methods
 
-        private static void WriteByte(Byte registerAddress, Byte value)
+        private void WriteByte(Byte registerAddress, Byte value)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(new [] {registerAddress, value });
             }
         }
 
-        private static void WriteRegister(Byte registerAddress, Byte[] data)
+        private void WriteRegister(Byte registerAddress, Byte[] data)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(new [] {registerAddress, data[0], data[1] });
             }
         }
 
-        private static Byte[] ReadRegister(Byte registerAddress, Byte numberOfBytesToRead)
+        private Byte[] ReadRegister(Byte registerAddress, Byte numberOfBytesToRead)
         {
             Byte[] registerData = new Byte[numberOfBytesToRead];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.WriteRead(new[] {registerAddress}, registerData);
             }
             return registerData;
         }
 
-        private static Single ConvertTwosComplementByteArrayToTemperature(Byte[] data, Byte bitLength)
+        private Single ConvertTwosComplementByteArrayToTemperature(Byte[] data, Byte bitLength)
         {
             Int32 integralPortion = data[0].TwoComplement();
             Single fractionalPortion =
@@ -398,7 +399,7 @@ namespace MBN.Modules
             return integralPortion + fractionalPortion;
         }
 
-        private static Byte[] ConvertTemperatureToTwosComplimentByteArray(Double temperature, Byte bitLength)
+        private Byte[] ConvertTemperatureToTwosComplimentByteArray(Double temperature, Byte bitLength)
         {
             Int32 integralPortion = (Int32) temperature;
 

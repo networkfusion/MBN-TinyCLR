@@ -83,6 +83,7 @@ namespace MBN.Modules
         /// <param name="slaveAddress"></param>
         public TempHum4Click(Hardware.Socket socket, I2CAddress slaveAddress)
         {
+            _socket = socket;
             _addressPin0 = GpioController.GetDefault().OpenPin(socket.Rst);
             _addressPin0.SetDriveMode(GpioPinDriveMode.Output);
             _addressPin0.Write(GpioPinValue.Low);
@@ -151,7 +152,7 @@ namespace MBN.Modules
         #region Private Fields
 
         private readonly I2cDevice _sensor;
-
+        private readonly Hardware.Socket _socket;
         private readonly GpioPin _addressPin0;
         private readonly GpioPin _addressPin1;
         private readonly GpioPin _dataReadyPin;
@@ -364,7 +365,7 @@ namespace MBN.Modules
             value |= (Byte)temperatureResolution << 2;
             value |= (Byte) humidityResolution;
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(new Byte []{ ConfigRegister, (Byte)value, 0x00});
             }
@@ -500,7 +501,7 @@ namespace MBN.Modules
         {
             Byte[] readBuffer = new Byte[numberOfBytesToRead];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.WriteRead(new[] { registerAddress}, readBuffer);
             }
@@ -512,7 +513,7 @@ namespace MBN.Modules
         {
             Byte[] readBuffer = new Byte[numberOfBytesToRead];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Read(readBuffer);
             }
@@ -524,7 +525,7 @@ namespace MBN.Modules
         {
             Byte[] writeBuffer = {registerAddress, value[0], value[1]};
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(writeBuffer);
             }
@@ -532,7 +533,7 @@ namespace MBN.Modules
 
         private void WriteByte(Byte value)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(new[] { value});
             }

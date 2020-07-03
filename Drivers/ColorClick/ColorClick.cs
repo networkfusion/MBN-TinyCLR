@@ -70,6 +70,7 @@ namespace MBN.Modules
     public sealed partial class ColorClick
     {
         private readonly I2cDevice _color;                      // I²C configuration
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Occurs when data is ready on the INT line.
@@ -126,6 +127,7 @@ namespace MBN.Modules
         /// <param name="address">The address of the display. Default to 0x29.</param>
         public ColorClick(Hardware.Socket socket, Byte address = 0x29)
         {
+            _socket = socket;
             _color = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
 
             Init();
@@ -169,7 +171,7 @@ namespace MBN.Modules
 
         private void Write(Byte register, Byte data)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _color.Write(new[] { register, data });
             }
@@ -179,7 +181,7 @@ namespace MBN.Modules
         {
             var result = new Byte[1];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _color.WriteRead(new[] { register }, result);
             }
@@ -191,7 +193,7 @@ namespace MBN.Modules
         {
             var result = new Byte[2];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _color.WriteRead(new[] { register }, result);
             }

@@ -24,6 +24,7 @@ namespace MBN.Modules
         private readonly PwmChannel _pwm;
         private UInt32 _mask = 0b0000_0000000000_1111111111;
         private readonly Byte[] _data = new byte[3];
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Bargraph2Click"/> class.
@@ -32,6 +33,7 @@ namespace MBN.Modules
         /// <param name="initialBrightness">Initial brightness in the range 0.0 (no display) to 1.0 (full brightness)</param>
         public Bargraph2Click(Hardware.Socket socket, Double initialBrightness = 1.0)
         {
+            _socket = socket;
             // Initialize SPI
             _bargraph = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
@@ -144,7 +146,7 @@ namespace MBN.Modules
             _data[0] = (Byte)(data >> 16);
             _data[1] = (Byte)(data >> 8);
             _data[2] = (Byte)data;
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _bargraph.Write(_data);
             }

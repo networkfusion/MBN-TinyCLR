@@ -67,6 +67,7 @@ namespace MBN.Modules
         private Cursors _cursor;
         private Boolean _backLight;
         private readonly Boolean _isUart;
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DevantechLcd03"/> class using serial communication (UART)
@@ -92,6 +93,7 @@ namespace MBN.Modules
         /// <param name="address">I²C address (7 bits) of the LCD. </param>
         public DevantechLcd03(Hardware.Socket socket, Int32 address)
         {
+            _socket = socket;
             try
             {
                 _lcdI2C = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
@@ -126,7 +128,7 @@ namespace MBN.Modules
                 if (_isUart) _lcdSerial.Write(new[] { (Byte)(4 + value) });
                 else
                 {
-                    lock (Hardware.LockI2C)
+                    lock (_socket.LockI2c)
                     {
                         _lcdI2C.Write(new[] { (Byte)0, (Byte)(4 + value) });
                     }
@@ -154,7 +156,7 @@ namespace MBN.Modules
                 if (_isUart) _lcdSerial.Write(new[] { value ? (Byte)19 : (Byte)20 });
                 else
                 {
-                    lock (Hardware.LockI2C)
+                    lock (_socket.LockI2c)
                     {
                         _lcdI2C.Write(new[] { (Byte)0, value ? (Byte)19 : (Byte)20 });
                     }
@@ -180,7 +182,7 @@ namespace MBN.Modules
             if (_isUart) _lcdSerial.Write(new Byte[] { 3, y, x });
             else
             {
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _lcdI2C.Write(new Byte[] { 0, 3, y, x });
                 }
@@ -202,7 +204,7 @@ namespace MBN.Modules
             if (_isUart) _lcdSerial.Write(System.Text.Encoding.UTF8.GetBytes(text));
             else
             {
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _lcdI2C.Write(System.Text.Encoding.UTF8.GetBytes((Byte)0 + text));
                 }
@@ -241,7 +243,7 @@ namespace MBN.Modules
             if (_isUart) _lcdSerial.Write(new Byte[] { 12 });
             else
             {
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _lcdI2C.Write(new Byte[] { 0, 12 });
                 }

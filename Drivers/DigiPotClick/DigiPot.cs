@@ -52,6 +52,7 @@ namespace MBN.Modules
     {
         private readonly SpiDevice _pot;
         private UInt16 _currentResistance;
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Main class for the MikroE Digipot Click board driver
@@ -60,6 +61,7 @@ namespace MBN.Modules
         /// <param name="initialResistance">The initial resistance the Digipot should be initialized with.</param>
         public DigiPotClick(Hardware.Socket socket, UInt16 initialResistance=0)
         {
+            _socket = socket;
             // Initialize SPI
             _pot = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
@@ -96,7 +98,7 @@ namespace MBN.Modules
                 valtmp = (valtmp > 255) ? (Byte)255 : valtmp;
                 _currentResistance = value == 0 ? (UInt16)111 : (UInt16)(valtmp*40 + 72);
                 
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _pot.Write(new[] { (Byte)0x00, valtmp, (Byte)0x20, valtmp });
                 }

@@ -192,6 +192,7 @@ namespace MBN.Modules
         private UInt32 _lastTagID;
         private PowerModes _powerMode;
         private GpioPin _blinkPin;
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RFIDClick"/> class.
@@ -200,6 +201,7 @@ namespace MBN.Modules
         /// <exception cref="DeviceInitialisationException">RFID module not detected</exception>
         public RFIDClick(Hardware.Socket socket)
         {
+            _socket = socket;
             _rBuffer = new Byte[261];
             _tmpBuffer = new byte[260];
 
@@ -253,7 +255,7 @@ namespace MBN.Modules
 
         private void DataReady_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e)
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 //Debug.WriteLine($"Dataready : {e.Timestamp}, {e.Edge}");
                 _rfid.TransferFullDuplex(new[] { Control.Read }, _rBuffer);
@@ -478,7 +480,7 @@ namespace MBN.Modules
 
         private void SendCommand(Byte command)
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _rfid.Write(command == Commands.Echo ? new[] { Control.Command, command } : new[] { Control.Command, command, (Byte)0x00 });
             }
@@ -493,7 +495,7 @@ namespace MBN.Modules
             tabTmp[1] = command;
             tabTmp[2] = (Byte) parameters.Length;
             for (var i = 0; i < parameters.Length; i++) { tabTmp[i + 3] = parameters[i]; }
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _rfid.Write(tabTmp);
             }

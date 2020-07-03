@@ -60,6 +60,7 @@ namespace MBN.Modules
         private Boolean _powered = true;
         private Byte _odr = 0x64;
         private Int16 _tempRawData;
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PressureClick"/> class.
@@ -69,6 +70,7 @@ namespace MBN.Modules
         /// <exception cref="DeviceInitialisationException">Thrown if device failed to initialize.</exception>
         public PressureClick(Hardware.Socket socket, Byte address = 0xBA >> 1)
         {
+            _socket = socket;
             // Create the driver's I²C configuration
             _pres = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
             if (!Init())
@@ -82,7 +84,7 @@ namespace MBN.Modules
         {
             var result = new Byte[1];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _pres.WriteRead(new[] { register }, result);
             }
@@ -100,7 +102,7 @@ namespace MBN.Modules
 
         private void SetRegister(Byte register, Byte value)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _pres.Write(new[] { register, value });
             }
@@ -109,7 +111,7 @@ namespace MBN.Modules
 
         private void SetRegisterBit(Byte register, Byte bitIndex, Boolean state)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _pres.Write(new[] { register, Bits.Set(ReadByte(register), bitIndex, state) });
             }

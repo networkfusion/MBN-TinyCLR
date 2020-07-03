@@ -201,6 +201,7 @@ namespace MBN.Modules
         private Int32[] _shadowRegisters = new Int32[16];
         private readonly I2cDevice _fm;
         private readonly GpioPin _resetPin;
+        private readonly Hardware.Socket _socket;
 
         #endregion
 
@@ -269,6 +270,7 @@ namespace MBN.Modules
         /// <param name="socket">The socket that this module is plugged in to.</param>
         public FMClick(Hardware.Socket socket, Spacing spacing = Spacing.UsaAustralia, Band band=Band.UsaEurope)
         {
+            _socket = socket;
             // Create the driver's I²C configuration
             _fm = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(0x10, 400000));
 
@@ -357,7 +359,7 @@ namespace MBN.Modules
         {
             var buffer = new Byte[responseLength];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _fm.Read(buffer);
             }
@@ -367,7 +369,7 @@ namespace MBN.Modules
 
         private void Write(Byte[] bytesToWrite)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _fm.Read(bytesToWrite);
             }

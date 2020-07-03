@@ -208,6 +208,7 @@ namespace MBN.Modules
         private const Byte PRESET_DEFAULT = 0x3C;
         private const Byte CALIB_RCO = 0x3D;
         private readonly GpioPin IRQ;
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ThunderClick"/> class.
@@ -215,6 +216,7 @@ namespace MBN.Modules
         /// <param name="socket">The socket on which the Thunder Click board is plugged on MikroBus.Net board</param>
         public ThunderClick(Hardware.Socket socket)
         {
+            _socket = socket;
             IRQ = GpioController.GetDefault().OpenPin(socket.Int);
             IRQ.SetDriveMode(GpioPinDriveMode.Input);
             IRQ.ValueChanged += IRQ_ValueChanged;
@@ -229,7 +231,7 @@ namespace MBN.Modules
             });
 
             // Direct commands
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _thunder.Write(new Byte[] { PRESET_DEFAULT, 0x96 });                 // Set all registers in default mode
                 _thunder.Write(new Byte[] { CALIB_RCO, 0x96 });                      // Calibrate internal oscillators
@@ -495,7 +497,7 @@ namespace MBN.Modules
 #region Private methods to get/set registers
         private Byte GetRegister(Byte register)
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _thunder.TransferFullDuplex(new Byte[] { (Byte)(register | 0x40), 0x00 }, _result);
             }
@@ -512,7 +514,7 @@ namespace MBN.Modules
 
         private void SetRegister(Byte register, String mask)
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _thunder.TransferFullDuplex(new[] { (Byte)(register & 0x3F), Bits.Set(GetRegister(register), mask) }, _result);
             }
@@ -520,7 +522,7 @@ namespace MBN.Modules
 
         private void SetRegister(Byte register, String mask, Byte value)
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _thunder.TransferFullDuplex(new[] { (Byte)(register & 0x3F), Bits.Set(GetRegister(register), mask, value) }, _result);
             }
@@ -549,7 +551,7 @@ namespace MBN.Modules
                 if (value == PowerModes.On)
                 {
                     SetRegister(0x00, "xxxxxxx0");
-                    lock (Hardware.LockSPI)
+                    lock (_socket.LockSpi)
                     {
                         _thunder.Write(new Byte[] { CALIB_RCO, 0x96 });
                     }

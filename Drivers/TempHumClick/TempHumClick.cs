@@ -24,6 +24,7 @@ namespace MBN.Modules
         /// <param name="socket"></param>
         public TempHumClick(Hardware.Socket socket)
         {
+            _socket = socket;
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(I2cAddress, 100000));
 
                 Reset();
@@ -244,22 +245,22 @@ namespace MBN.Modules
 
         #region Private Fields
 
-        private static I2cDevice _sensor;
-
-        private static Int32 registerData;
-        private static Int16 sensorData;
-        private static Single temperature;
-        private static Single humidity;
+        private I2cDevice _sensor;
+        private readonly Hardware.Socket _socket;
+        private Int32 registerData;
+        private Int16 sensorData;
+        private Single temperature;
+        private Single humidity;
 
         // Fields used for calibration values.
-        private static Int16 T0_OUT;
-        private static Int16 T1_OUT;
-        private static Int16 H0_T0_OUT;
-        private static Int16 H1_T0_OUT;
-        private static UInt16 T0_degC;
-        private static UInt16 T1_degC;
-        private static Byte H0_rH;
-        private static Byte H1_rH;
+        private Int16 T0_OUT;
+        private Int16 T1_OUT;
+        private Int16 H0_T0_OUT;
+        private Int16 H1_T0_OUT;
+        private UInt16 T0_degC;
+        private UInt16 T1_degC;
+        private Byte H0_rH;
+        private Byte H1_rH;
 
         #endregion
 
@@ -553,7 +554,7 @@ namespace MBN.Modules
 
         #region Private Methods
 
-        private static void ReadCalibrationData()
+        private void ReadCalibrationData()
         {
             T0_OUT = ReadRegister(HTS221_T0_OUT_L);
             T0_OUT |= (Int16)(ReadRegister(HTS221_T0_OUT_H) << 8);
@@ -577,7 +578,7 @@ namespace MBN.Modules
             H1_rH = ReadRegister(HTS221_H1_rH_x2);
         }
 
-        private static void WaitForSensorData(Byte register, Byte bit)
+        private void WaitForSensorData(Byte register, Byte bit)
         {
             while ((ReadRegister(register) & bit) != bit)
             {
@@ -585,12 +586,12 @@ namespace MBN.Modules
             }
         }
 
-        private static Byte ReadRegister(Byte registerAddress)
+        private Byte ReadRegister(Byte registerAddress)
         {
             Byte[] writeBuffer = {registerAddress};
             Byte[] readBuffer = new Byte[1];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.WriteRead(writeBuffer, readBuffer);
             }
@@ -598,9 +599,9 @@ namespace MBN.Modules
             return readBuffer[0];
         }
 
-        private static void WriteRegister(Byte registerAddress, Byte data)
+        private void WriteRegister(Byte registerAddress, Byte data)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(new[] {registerAddress, data});
             }

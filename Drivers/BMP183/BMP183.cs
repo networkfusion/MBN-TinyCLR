@@ -69,6 +69,7 @@ namespace MBN.Modules
         /// <param name="socket">The socket that the BMP183 Module is connected to.</param>
         public BMP183(Hardware.Socket socket)
         {
+            _socket = socket;
             // Initialize SPI
             _sensor = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
@@ -87,6 +88,7 @@ namespace MBN.Modules
         #region Fields
 
         private readonly SpiDevice _sensor;
+        private readonly Hardware.Socket _socket;
 
         #region Calibration Data Fields
 
@@ -196,7 +198,7 @@ namespace MBN.Modules
         {
             Byte[] result = new Byte[bytesToRead];
 
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _sensor.TransferSequential(new[] { register }, result);
             }
@@ -206,7 +208,7 @@ namespace MBN.Modules
 
         private void WriteByte(Byte register, Byte data)
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _sensor.Write(new[] { (Byte) (register ^ 0x80), data });
             }

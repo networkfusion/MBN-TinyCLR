@@ -22,9 +22,11 @@ namespace MBN.Modules
 	{
         private readonly SpiDevice _ledRing;
         private readonly Byte[] buffer = new Byte[4];
+        private readonly Hardware.Socket _socket;
 
         public LedRingClick(Hardware.Socket socket)
         {
+            _socket = socket;
             gpio.GpioPin _rst = gpio.GpioController.GetDefault().OpenPin(socket.Rst);
             _rst.SetDriveMode(gpio.GpioPinDriveMode.Output);
             _rst.Write(gpio.GpioPinValue.High);
@@ -48,7 +50,7 @@ namespace MBN.Modules
             buffer[1] = (Byte)(data >> 8);
             buffer[2] = (Byte)(data >> 16);
             buffer[3] = (Byte)(data >> 24);
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _ledRing.Write(buffer);
             }

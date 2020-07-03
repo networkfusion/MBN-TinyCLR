@@ -82,6 +82,7 @@ namespace MBN.Modules
         private readonly SpiDevice _adc;
         private readonly Byte[] _adcResult = new Byte[3];   // Array containing measure from the ADC
         private Int32 _result;                              // Result sent back to caller
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdcClick"/> class.
@@ -89,6 +90,7 @@ namespace MBN.Modules
         /// <param name="socket">The socket on which the ADC Click board is plugged on MikroBus.Net</param>
         public AdcClick(Hardware.Socket socket)
         {
+            _socket = socket;
             // Initialize SPI
             _adc = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
@@ -178,7 +180,7 @@ namespace MBN.Modules
         /// </example>
         public Int32 GetChannel(Byte channel, Boolean scaled = true)
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _adc.TransferFullDuplex(new Byte[] { 0x06, (Byte)(channel << 6), 0x00 }, _adcResult);
             }

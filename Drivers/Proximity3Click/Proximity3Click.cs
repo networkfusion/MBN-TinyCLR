@@ -43,6 +43,7 @@ namespace MBN.Modules
         #region Private variables
         private readonly I2cDevice _prox;
         private readonly Byte[] _result = new Byte[2];
+        private readonly Hardware.Socket _socket;
         private Byte[] _conv = new Byte[2];
         private Byte _alsConf = 0b01000000;
         private Byte _psConf1 = 0b00101010;
@@ -54,6 +55,7 @@ namespace MBN.Modules
         /// <param name="address">The I2C address of the module</param>
         public Proximity3Click(Hardware.Socket socket, Byte address = 0x51)
         {
+            _socket = socket;
             _prox = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
 
             if (ChipRevision.Major == 0x10 & ChipRevision.Minor == 0x58)
@@ -161,7 +163,7 @@ namespace MBN.Modules
             {
                 _alsConf &= 0b00111111;
                 _alsConf |= (Byte)((Byte)value << 6);
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _prox.Write(new Byte[] { ALS_CONF_REG, _alsConf, 0b00000000 });
                 }
@@ -186,7 +188,7 @@ namespace MBN.Modules
                     _alsConf &= 0b11111110;
                 else
                     _alsConf |= 0b00000001;
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _prox.Write(new Byte[] { ALS_CONF_REG, _alsConf, 0b00000000 });
                 }
@@ -211,7 +213,7 @@ namespace MBN.Modules
                     _psConf1 &= 0b11111110;
                 else
                     _psConf1 |= 0b00000001;
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _prox.Write(new Byte[] { PS_CONF1_CONF2_REG, _psConf1, _psConf2 });
                 }
@@ -236,7 +238,7 @@ namespace MBN.Modules
                     _psConf2 &= 0b11110111;
                 else
                     _psConf2 |= 0b00001000;
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _prox.Write(new Byte[] { PS_CONF1_CONF2_REG, _psConf1, _psConf2 });
                 }

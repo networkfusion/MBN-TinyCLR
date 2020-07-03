@@ -60,9 +60,11 @@ namespace MBN.Modules
     {
         private readonly GpioPin _rst;
         private readonly I2cDevice _mux;
+        private readonly Hardware.Socket _socket;
 
         public I2CMuxClick(Hardware.Socket socket, Byte address, UInt32 busSpeed)
         {
+            _socket = socket;
             _mux = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, busSpeed));
 
             _rst = GpioController.GetDefault().OpenPin(socket.Rst);
@@ -88,7 +90,10 @@ namespace MBN.Modules
             }
             set
             {
-                _mux.Write(new[] { value });
+                lock (_socket.LockI2c)
+                {
+                    _mux.Write(new[] { value });
+                }
             }
         }
     }

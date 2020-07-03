@@ -26,6 +26,7 @@ namespace MBN.Modules
         private static SpiDevice _sevenSeg;
         private static PwmChannel _pwm;
         private Double _pwmLevel;                            // Brightness level
+        private readonly Hardware.Socket _socket;
 
         #region CharTable
         /// <summary>
@@ -94,6 +95,7 @@ namespace MBN.Modules
         /// <param name="initialBrightness">Initial brightness in the range 0.0 (no display) to 1.0 (full brightness)</param>
         public SevenSegClick(Hardware.Socket socket, Double initialBrightness = 1.0)
         {
+            _socket = socket;
             _sevenSeg = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
@@ -292,7 +294,7 @@ namespace MBN.Modules
         /// </example>
         public void Clear()
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _sevenSeg.Write(new Byte[] { 0x00, 0x00 });
             }
@@ -347,7 +349,7 @@ namespace MBN.Modules
         /// </example>
         public void SendBytes(Byte[] tab)
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _sevenSeg.Write(tab);
             }

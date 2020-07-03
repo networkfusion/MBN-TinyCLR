@@ -91,6 +91,7 @@ namespace MBN.Modules
         /// </param>
         public TempHum8Click(Hardware.Socket socket)
         {
+            _socket = socket;
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(0x40, 100000));
 
             Reset();
@@ -102,35 +103,36 @@ namespace MBN.Modules
 
         #region Private Fields
 
-        private static I2cDevice _sensor;
+        private I2cDevice _sensor;
         private SensorResolution _resolution;
+        private readonly Hardware.Socket _socket;
 
         #endregion
 
         #region Private Methods
 
-        private static void WriteByte(Byte value)
+        private void WriteByte(Byte value)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(new[] { value });
             }
         }
 
-        private static void WriteRegister(Byte registerAddress, Byte value)
+        private void WriteRegister(Byte registerAddress, Byte value)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 Byte[] writeBuffer = {registerAddress, value};
                 _sensor.Write(writeBuffer);
             }
         }
 
-        private static Byte[] ReadRegister(Byte registerAddress, Byte numberOfBytesToRead)
+        private Byte[] ReadRegister(Byte registerAddress, Byte numberOfBytesToRead)
         {
             Byte[] readBuffer = new Byte[numberOfBytesToRead];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.WriteRead(new[] { registerAddress }, readBuffer);
             }
@@ -138,11 +140,11 @@ namespace MBN.Modules
             return readBuffer;
         }
 
-        private static Byte[] ReadBytes(Byte numberOfBytesToRead)
+        private Byte[] ReadBytes(Byte numberOfBytesToRead)
         {
             Byte[] readBuffer = new Byte[numberOfBytesToRead];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Read(readBuffer);
             }
@@ -176,7 +178,7 @@ namespace MBN.Modules
             }
         }
 
-        private static void MeasureDelay(SensorResolution resolution)
+        private void MeasureDelay(SensorResolution resolution)
         {
             Int32 delay;
 

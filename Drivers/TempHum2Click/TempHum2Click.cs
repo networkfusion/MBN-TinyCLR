@@ -28,7 +28,7 @@ namespace MBN.Modules
         /// <param name="socket">The socket in which the TempHum 2 click is inserted on the Quail mainboard.</param>
         public TempHum2Click(Hardware.Socket socket)
         {
-
+            _socket = socket;
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings( 0x70, 100000));
 
             Thread.Sleep(50); // Time fromm VDD >= 1.64V until ready for a full conversion.
@@ -45,11 +45,11 @@ namespace MBN.Modules
 
         #region Private Fields
 
-        private static I2cDevice _sensor;
-        private static SpeedModes _speedMode;
-        private static OperatingModes _operatingMode;
+        private I2cDevice _sensor;
+        private SpeedModes _speedMode;
+        private OperatingModes _operatingMode;
         private UInt16 _dataRegister;
-
+        private readonly Hardware.Socket _socket;
         #endregion
 
         #region Private Constants
@@ -161,27 +161,27 @@ namespace MBN.Modules
 
         #region Private Methods
 
-        private static void WriteByte(Byte registerAddress, Byte value)
+        private void WriteByte(Byte registerAddress, Byte value)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 Byte[] writeBuffer = { registerAddress, value };
                 _sensor.Write(writeBuffer);
             }
         }
 
-        private static void WriteByte(Byte registerAddress)
+        private void WriteByte(Byte registerAddress)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 Byte[] writeBuffer = { registerAddress };
                 _sensor.Write(writeBuffer);
             }
         }
 
-        private static Byte ReadByte(Byte registerAddress)
+        private Byte ReadByte(Byte registerAddress)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 Byte[] writeBuffer = { registerAddress };
                 Byte[] registerData = new Byte[1];
@@ -190,9 +190,9 @@ namespace MBN.Modules
             }
         }
 
-        private static Byte ReadRegister(UInt16 registerAddress)
+        private Byte ReadRegister(UInt16 registerAddress)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 Byte[] writeBuffer = { (Byte)(registerAddress >> 8), (Byte)(registerAddress & 0x00FF) };
                 Byte[] registerData = new Byte[1];
@@ -201,12 +201,12 @@ namespace MBN.Modules
             }
         }
 
-        private static Byte[] ReadRegister(UInt16 registerAddress, Byte numberOfBytesToRead)
+        private Byte[] ReadRegister(UInt16 registerAddress, Byte numberOfBytesToRead)
         {
             Byte[] writeBuffer = { (Byte)(registerAddress >> 8), (Byte)(registerAddress & 0x00FF) };
             Byte[] registerData = new Byte[numberOfBytesToRead];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(writeBuffer);
 
@@ -221,7 +221,7 @@ namespace MBN.Modules
             }
         }
 
-        private static Byte CalculateCRC8(Byte[] data)
+        private Byte CalculateCRC8(Byte[] data)
         {
             const Int16 polynomial = 0x131; // P(x) = 2^8 + 2^5 + 2^4 + 1
             Byte crc = 0xFF; // Initialize the CRC to 0xFF

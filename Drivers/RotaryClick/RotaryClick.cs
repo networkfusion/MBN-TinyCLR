@@ -35,6 +35,7 @@ namespace MBN.Modules
         private GpioPinValue _aState, _aLastState;
         private readonly SpiDevice _rot;
         private readonly Byte[] _buffer = new Byte[2];
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Occurs when the knob is pressed.
@@ -51,6 +52,7 @@ namespace MBN.Modules
         /// <param name="socket">The socket on which the module is plugged.</param>
         public RotaryClick(Hardware.Socket socket)
         {
+            _socket = socket;
             _rot = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
@@ -124,7 +126,7 @@ namespace MBN.Modules
         {
             _buffer[1] = (Byte)data;
             _buffer[0] = (Byte)(data >> 8);
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _rot.Write(_buffer);
             }

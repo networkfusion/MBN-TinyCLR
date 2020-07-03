@@ -52,6 +52,7 @@ namespace MBN.Modules
     public sealed partial class ProximityClick
     {
         private readonly I2cDevice _prox;      // I²C configuration
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProximityClick"/> class.
@@ -60,6 +61,7 @@ namespace MBN.Modules
         /// <param name="address">Address of the I²C device.</param>
         public ProximityClick(Hardware.Socket socket, Byte address=0x13)
         {
+            _socket = socket;
             _prox = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
         }
 
@@ -68,12 +70,12 @@ namespace MBN.Modules
         {
             var result = new Byte[2];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _prox.Write(new[] { register });
             }
             Thread.Sleep(5);
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _prox.Read(result);
             }
@@ -85,12 +87,12 @@ namespace MBN.Modules
         {
             var result = new Byte[1];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _prox.Write(new[] { register });
             }
             Thread.Sleep(5);
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _prox.Read(result);
             }
@@ -100,7 +102,7 @@ namespace MBN.Modules
 
         private void WriteByte(Byte register, Byte value=0, Byte mask=0)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _prox.Write(mask != 0 ? new[] { register, (Byte)(value & mask) } : new[] { register, value });
             }

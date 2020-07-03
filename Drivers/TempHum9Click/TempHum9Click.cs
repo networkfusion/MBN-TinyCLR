@@ -75,6 +75,8 @@ namespace MBN.Modules
         /// <param name="socket">The socket on which the Temp_Hum9Click module is plugged on MikroBus.Net board</param>
         public TempHum9Click(Hardware.Socket socket)
         {
+            _socket = socket;
+
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(0x70, 100000));
 
             Thread.Sleep(DURATION_POWER_UP); //Time between VDD reaching VPU and sensor entering the idle state typically 240 µSec
@@ -92,6 +94,7 @@ namespace MBN.Modules
 
         private readonly I2cDevice _sensor;
         private PowerModes _powerMode;
+        private readonly Hardware.Socket _socket;
 
         #endregion
 
@@ -262,7 +265,7 @@ namespace MBN.Modules
             writeBuffer[0] = (Byte)(command >> 8);
             writeBuffer[1] = (Byte)(command & 0xFF);
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(writeBuffer);
             }
@@ -272,7 +275,7 @@ namespace MBN.Modules
         {
             Byte[] readBuffer = new Byte[numberOfBytesToRead];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Read(readBuffer);
             }
@@ -289,7 +292,7 @@ namespace MBN.Modules
             Byte[] readBuffer = new Byte[bytesToRead];
 
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.WriteRead(writeBuffer, readBuffer);
             }

@@ -142,6 +142,7 @@ namespace MBN.Modules
         public event EventHandler OnSingleTap = delegate { };
         public event EventHandler OnDoubleTap = delegate { };
 
+
         /// <summary>
         /// A structure holding the current acceleration values returned from the sensor
         /// </summary>
@@ -245,6 +246,7 @@ namespace MBN.Modules
         private readonly GpioPin intPin;
         private Boolean _scanThread;
         private Boolean _singleTapEnabled, _doubleTapEnabled, _freefallEnabled;
+        private readonly Hardware.Socket _socket;
 
         #endregion
 
@@ -257,6 +259,7 @@ namespace MBN.Modules
         /// <exception cref="SystemException">ADXL345 not detected</exception>
         public AccelClick(Hardware.Socket socket, Byte address=0x1D, Boolean autoStart=false)
         {
+            _socket = socket;
             // Create the driver's I²C configuration
             _accel = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
 
@@ -301,7 +304,7 @@ namespace MBN.Modules
         /// <param name="value">The value to write into the register</param>
         private void WriteRegister(RegisterMap register, Byte value)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _accel.Write(new[] { (Byte)register, value });
             }
@@ -315,7 +318,7 @@ namespace MBN.Modules
         private Byte ReadRegister(RegisterMap register)
         {
             var data = new Byte[1];
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _accel.WriteRead(new[] { (Byte)register }, data);
             }
@@ -735,7 +738,7 @@ namespace MBN.Modules
 
             while (_scanThread)
             {
-                lock (Hardware.LockI2C)
+                lock (_socket.LockI2c)
                 {
                     _accel.WriteRead(new[] { (Byte)RegisterMap.DATAX0 }, accelData);
                 }

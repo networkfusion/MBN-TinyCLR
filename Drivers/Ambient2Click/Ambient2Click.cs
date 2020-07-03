@@ -78,6 +78,7 @@ namespace MBN.Modules
         /// <param name="slaveAddress">The address of the module.</param>
         public Ambient2Click(Hardware.Socket socket, I2CAddresses slaveAddress)
         {
+            _socket = socket;
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((Int32) slaveAddress, 100000));
 
             if (GetDeviceId() != 0x3001) throw new DeviceInitialisationException("Ambient2 Click not found on the I2C Bus.");
@@ -225,11 +226,11 @@ namespace MBN.Modules
 
         #region Fields
 
-        private static I2cDevice _sensor;
-
-        private static OperatingModes _operatingMode = OperatingModes.Shutdown;
-        private static Byte[] _registerData = new Byte[2];
-        private static Byte[] _temperatureData = new Byte[2];
+        private I2cDevice _sensor;
+        private readonly Hardware.Socket _socket;
+        private OperatingModes _operatingMode = OperatingModes.Shutdown;
+        private Byte[] _registerData = new Byte[2];
+        private Byte[] _temperatureData = new Byte[2];
 
         #endregion
 
@@ -608,7 +609,7 @@ namespace MBN.Modules
 
         #region Private Methods
 
-        private static Int32 BytesToLux(Byte[] registerData)
+        private Int32 BytesToLux(Byte[] registerData)
         {
             Int32 dataSum = (registerData[0] << 8) | registerData[1];
             Int32 exponent = dataSum >> 12;
@@ -617,7 +618,7 @@ namespace MBN.Modules
             return (Int32) (0.01 * Math.Pow(2, exponent) * mantissa);
         }
 
-        private static Byte[] LuxToBytes(Double lux)
+        private Byte[] LuxToBytes(Double lux)
         {
             Int32 exponent = 0;
 
@@ -644,11 +645,11 @@ namespace MBN.Modules
         }
 
         // Note data returned is MSB first.
-        private static Byte[] ReadRegister(Byte registerAddress, Byte numberOfBytesToRead)
+        private Byte[] ReadRegister(Byte registerAddress, Byte numberOfBytesToRead)
         {
             Byte[] data = new Byte[numberOfBytesToRead];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.WriteRead(new[] {registerAddress}, data);
             }
@@ -657,14 +658,14 @@ namespace MBN.Modules
         }
 
         // Note: Date is written MSB first.
-        private static void WriteRegister(Byte registerAddress, Byte[] data)
+        private void WriteRegister(Byte registerAddress, Byte[] data)
         {
             Byte[] writeBuffer = new Byte[3];
             writeBuffer[0] = registerAddress;
             writeBuffer[1] = data[0];
             writeBuffer[2] = data[1];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(writeBuffer);
             }
