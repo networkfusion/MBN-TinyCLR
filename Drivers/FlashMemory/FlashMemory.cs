@@ -51,6 +51,7 @@ namespace MBN.Modules
         private Int32 _SectorSize = 0x1000, _BlockSize = 0x10000, _Capacity = 0x800000;
         private Byte _SectorEraseInstruction = 0x20;
         private Byte _BlockEraseInstruction = 0xD8;
+        private readonly Hardware.Socket _socket;
 
         public override Int32 Capacity => _Capacity;
         public override Int32 PageSize => _PageSize;
@@ -65,6 +66,7 @@ namespace MBN.Modules
         /// <param name="socket">The socket on the MBN mainboard.</param>
         public FlashMemory(Hardware.Socket socket, Boolean detectParameters = true, Int32 hold = -1, Int32 wp = -1)
         {
+            _socket = socket;
             _flash = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
@@ -93,7 +95,7 @@ namespace MBN.Modules
         {
             var data2 = new Byte[2];
 
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _flash.Write(new Byte[] { 0x06 });
                 _flash.TransferFullDuplex(new Byte[] { 0x05, 0x00 }, data2);
@@ -106,7 +108,7 @@ namespace MBN.Modules
         {
             var data2 = new Byte[2];
 
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _flash.TransferFullDuplex(new Byte[] { 0x05, 0x00 }, data2);
             }
@@ -147,7 +149,7 @@ namespace MBN.Modules
                 data4[2] = (Byte)(address >> 8);
                 data4[3] = (Byte)(address >> 0);
                 while (!WriteEnabled()) { }
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _flash.Write(data4);
                 }
@@ -179,7 +181,7 @@ namespace MBN.Modules
         {
             if (LedIndicator != null) LedIndicator.Write(GpioPinValue.High);
             while (!WriteEnabled()) { }
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _flash.Write(new Byte[] { 0xC7 });
             }
@@ -220,7 +222,7 @@ namespace MBN.Modules
                 data4[2] = (Byte)(address >> 8);
                 data4[3] = (Byte)(address >> 0);
                 while (!WriteEnabled()) { }
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _flash.Write(data4);
                 }
@@ -253,7 +255,7 @@ namespace MBN.Modules
             data4[3] = (Byte)(address >> 0);
 
             while (!WriteEnabled()) { }
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _flash.TransferFullDuplex(data4, data4);
             }
@@ -304,7 +306,7 @@ namespace MBN.Modules
                 wr_cmd[3] = (Byte)address;
                 Array.Copy(data, index, wr_cmd, 4, len);
                 while (!WriteEnabled()) { }
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _flash.Write(wr_cmd);
                 }
@@ -328,7 +330,7 @@ namespace MBN.Modules
             var sfdp = new Byte[165];
             while (!WriteEnabled()) { }
             sfdp[0] = 0x5A;
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _flash.TransferFullDuplex(sfdp, sfdp);    // Try to read SFDP information
             }

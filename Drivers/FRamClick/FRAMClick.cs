@@ -81,6 +81,7 @@ namespace MBN.Modules
 
         private readonly SpiDevice _fram;
         private Byte[] _dataPage;
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FRAMClick"/> class.
@@ -88,6 +89,7 @@ namespace MBN.Modules
         /// <param name="socket">The socket on which the EEpromClick module is plugged on MikroBus.Net board</param>
         public FRAMClick(Hardware.Socket socket)
         {
+            _socket = socket;
             // Initialize SPI
             _fram = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
@@ -121,7 +123,7 @@ namespace MBN.Modules
         public override void EraseChip()
         {
             if (_dataPage == null) { _dataPage = new Byte[PageSize + 3]; }
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _fram.Write(new Byte[] { 0x01, 0x00 });
             }
@@ -131,7 +133,7 @@ namespace MBN.Modules
                 _dataPage[0] = 0x02;
                 _dataPage[1] = (Byte)(i >> 8);
                 _dataPage[2] = (Byte)(i & 0xFF);
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _fram.Write (_dataPage);
                 }
@@ -204,7 +206,7 @@ namespace MBN.Modules
                     _dataPage[1] = (Byte)(address >> 8);
                     _dataPage[2] = (Byte)(address & 0xFF);
                     Array.Copy(array, index + (i * PageSize), _dataPage, 3, PageSize);
-                    lock (Hardware.LockSPI)
+                    lock (_socket.LockSpi)
                     {
                         _fram.Write (_dataPage);
                     }
@@ -220,7 +222,7 @@ namespace MBN.Modules
                 _dataPage[1] = (Byte)(address >> 8);
                 _dataPage[2] = (Byte)(address & 0xFF);
                 Array.Copy(array, index + (i * PageSize), _dataPage, 3, length);
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _fram.TransferFullDuplex(_dataPage, 0, length + 3, null, 0, 0);
                 }
@@ -256,7 +258,7 @@ namespace MBN.Modules
             cmd[1] = (Byte)(address >> 8);
             cmd[2] = (Byte)(address & 0xFF);
 
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _fram.TransferFullDuplex(cmd, cmd);
             }
@@ -265,7 +267,7 @@ namespace MBN.Modules
 
         private void WriteEnable()
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _fram.Write(new Byte[] { 0x06 });
             }
@@ -275,7 +277,7 @@ namespace MBN.Modules
         {
             var data2 = new Byte[2];
 
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _fram.TransferFullDuplex(new Byte[] { 0x05 }, data2);
             }

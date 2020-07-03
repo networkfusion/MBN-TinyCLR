@@ -35,6 +35,7 @@ namespace MBN.Modules
     public sealed partial class NRFC
     {
         private readonly SpiDevice _nrf;
+        private readonly Hardware.Socket _socket;
 
         public enum Acknowledge
         {
@@ -78,6 +79,7 @@ namespace MBN.Modules
 
         public NRFC(Hardware.Socket socket)
         {
+            _socket = socket;
             // Initialize SPI
             _nrf = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
@@ -424,7 +426,7 @@ namespace MBN.Modules
             Array.Copy(data, 0, writeBuffer, 1, data.Length);
 
             // Do SPI Read/Write
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _nrf.TransferFullDuplex(writeBuffer, readBuffer);
             }
@@ -446,7 +448,7 @@ namespace MBN.Modules
 
             var readBuffer = new Byte[1];
             // Hardware.SPIBus.Config = _spiConfig;
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _nrf.TransferFullDuplex(new[] { Commands.NOP }, readBuffer);
             }

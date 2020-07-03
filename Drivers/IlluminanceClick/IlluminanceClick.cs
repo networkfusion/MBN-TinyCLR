@@ -168,6 +168,7 @@ namespace MBN.Modules
 		/// <param name="slaveAddress">The user selectable I2C Address of the module based on Logic Level of Jumper J1. See <see cref="I2CAddress"/> for more information.</param>
 		public IlluminanceClick(Hardware.Socket socket, I2CAddress slaveAddress)
 		{
+			_socket = socket;
 			_illuminance = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((Int32) slaveAddress, 4000000));
 			if (!Init()) throw new DeviceInitialisationException($"Error initializing device at address 0x{slaveAddress:x2}");
 		}
@@ -180,6 +181,7 @@ namespace MBN.Modules
 		private GainControl _gainControl = GainControl.Low;
 		private UInt16 _channel0;
 		private UInt16 _channel1;
+		private readonly Hardware.Socket _socket;
 
 		//I2C
 		private readonly I2cDevice _illuminance;       // I²C configuration
@@ -369,7 +371,7 @@ namespace MBN.Modules
 			var command = (Byte)((Byte)CommandByte.CommandBit | (Byte)address);
 			Byte[] writeBuffer = { command, value };
 
-			lock (Hardware.LockI2C)
+			lock (_socket.LockI2c)
 			{
 				_illuminance.Write(writeBuffer);
 			}
@@ -381,7 +383,7 @@ namespace MBN.Modules
 			var writeBuffer = new[] { command };
 			var readBuffer = new Byte[1];
 
-			lock (Hardware.LockI2C)
+			lock (_socket.LockI2c)
 			{
 				_illuminance.WriteRead(writeBuffer, readBuffer);
 			}
@@ -395,7 +397,7 @@ namespace MBN.Modules
 			var writeBuffer = new[] { command };
 			var readBuffer = new Byte[2];
 
-			lock (Hardware.LockI2C)
+			lock (_socket.LockI2c)
 			{
 				_illuminance.WriteRead(writeBuffer, readBuffer);
 			}

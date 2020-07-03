@@ -113,7 +113,7 @@ namespace MBN.Modules
 		internal const Int32 _canvasHeight = 96;
 
         private FrameRates _frameRate;
-
+		private readonly Hardware.Socket _socket;
 		private readonly GpioPin _dataCommandPin;
 		private readonly GpioPin _resetPin;
 		private readonly GpioPin _readWritePin;
@@ -252,6 +252,7 @@ namespace MBN.Modules
 		/// </example>
 		public OLEDCClick(Hardware.Socket socket)
 		{
+			_socket = socket;
             SpiConnectionSettings settings = new SpiConnectionSettings
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
@@ -632,7 +633,7 @@ namespace MBN.Modules
 		// Sends a command to the OLED C Display
 		private void SendCommand(Byte reg_index, Byte reg_value)
 		{
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _dataCommandPin.Write(GpioPinValue.Low);
                 _oled.Write(new[] { reg_index });
@@ -646,8 +647,8 @@ namespace MBN.Modules
 		// Send data  as byte[] to OLED C display
         private void SendData(Byte[] data_value)
 		{
-            lock (Hardware.LockSPI)
-            {
+			lock (_socket.LockSpi)
+			{
                 _dataCommandPin.Write(GpioPinValue.High);
                 _oled.Write(data_value);
             }
@@ -658,7 +659,7 @@ namespace MBN.Modules
 		{
             _dataCommandPin.Write(GpioPinValue.High);
 
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 for (Int32 x = 0; x < data.Length; x++)
                 {
@@ -672,7 +673,7 @@ namespace MBN.Modules
         {
             _dataCommandPin.Write(GpioPinValue.Low);
 
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _oled.Write(new[] { SEPS114A_DDRAM_DATA_ACCESS_PORT });
             }

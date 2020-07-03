@@ -102,7 +102,7 @@ namespace MBN.Modules
         private const Single ReferenceVoltage = 2.048f; // Reference Voltage from MAX6106, VOUT = 2.048V
 
         private readonly Byte[] _buffer = new Byte[2]; // Array containing measure from the MCP3201 ADC
-
+        private readonly Hardware.Socket _socket;
         private readonly SpiDevice _light;
         private Int32 _scaleHigh; // Upper bound of scale
         private Int32 _scaleLow; // Upper bound of scale
@@ -117,6 +117,7 @@ namespace MBN.Modules
         /// <param name="socket">The socket on which the Light Click board is inserted on MikroBus.Net</param>
         public LightClick(Hardware.Socket socket)
         {
+            _socket = socket;
             // Initialize SPI
             _light = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
@@ -157,7 +158,7 @@ namespace MBN.Modules
             var average = 0;
             for (var i = 0; i < NumberOfSamples; i++) // Read  n samples for smoothing.
             {
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _light.TransferFullDuplex(new Byte[] { 0xFF, 0xFF }, _buffer);
                 }

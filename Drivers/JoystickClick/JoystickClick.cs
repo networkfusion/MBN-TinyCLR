@@ -104,13 +104,14 @@ namespace MBN.Modules
 
         private readonly GpioPin _reset;
         private readonly I2cDevice _joystick;       // I²C configuration
+        private readonly Hardware.Socket _socket;
 
         #region Private methods
         private Byte ReadRegister(Byte register)
         {
             var result = new Byte[1];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _joystick.WriteRead(new[] { register }, result);
             }
@@ -122,7 +123,7 @@ namespace MBN.Modules
         {
             var result = new Byte[1];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _joystick.WriteRead(new[] { register }, result);
             }
@@ -131,7 +132,7 @@ namespace MBN.Modules
 
         private void WriteRegister(Byte register, Byte data)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _joystick.Write(new[] { register, data });
             }
@@ -147,6 +148,7 @@ namespace MBN.Modules
         /// <param name="address">The address of the module.</param>
         public JoystickClick(Hardware.Socket socket, Byte address = 0x40)
         {
+            _socket = socket;
             // Create the driver's I²C configuration
             _joystick = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
 

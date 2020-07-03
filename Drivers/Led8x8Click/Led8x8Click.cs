@@ -70,6 +70,7 @@ namespace MBN.Modules
         private readonly SpiDevice _led;                // SPI configuration
         private Byte _brightness;                           // Brightness level
         private Byte[] _screen;                              // Internal buffer to hold display
+        private readonly Hardware.Socket _socket;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Led8X8Click"/> class.
@@ -78,6 +79,7 @@ namespace MBN.Modules
         /// <param name="initialState">Initial state of display : enabled (true) or disabled (false). Defaults to Enabled (true).</param>
         public Led8X8Click(Hardware.Socket socket, Boolean initialState = true)
         {
+            _socket = socket;
             // Initialize SPI
             _led = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
@@ -92,7 +94,7 @@ namespace MBN.Modules
 
         private void Init(Boolean initialState)
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _led.Write(new Byte[] { Registers.DISPLAY_TEST, 0x00 });        // Normal mode
                 _led.Write(new Byte[] { Registers.NO_OP, 0xFF });               // No op
@@ -114,7 +116,7 @@ namespace MBN.Modules
         /// </example>
         public void Refresh()
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 for (Byte i = 0; i < 8; i++)
                 {
@@ -135,7 +137,7 @@ namespace MBN.Modules
         /// </example>
         public void Display(Boolean state)
         {
-            lock (Hardware.LockSPI)
+            lock (_socket.LockSpi)
             {
                 _led.Write(new[] { Registers.SHUTDOWN, state ? (Byte)0x01 : (Byte)0x00 });      // Turn on display
             }
@@ -258,7 +260,7 @@ namespace MBN.Modules
             set
             {
                 _brightness = value > 15 ? (Byte)15 : value;
-                lock (Hardware.LockSPI)
+                lock (_socket.LockSpi)
                 {
                     _led.Write(new[] { Registers.INTENSITY, _brightness });      // Sets brightness level
                 }

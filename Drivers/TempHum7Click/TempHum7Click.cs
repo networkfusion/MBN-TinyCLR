@@ -88,6 +88,7 @@ namespace MBN.Modules
         /// </param>
         public TempHum7Click(Hardware.Socket socket)
         {
+            _socket = socket;
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(0x40, 400000));
 
             Thread.Sleep(50); // Time from VDD >= 1.64V until ready for a full conversion.
@@ -142,8 +143,9 @@ namespace MBN.Modules
 
         #region Fields
 
-        private static I2cDevice _sensor;
+        private I2cDevice _sensor;
         private MeasurementMode _humidityMeasurementMode;
+        private readonly Hardware.Socket _socket;
 
         #endregion
 
@@ -467,9 +469,9 @@ namespace MBN.Modules
 
         #region Private Methods
 
-        private static Byte[] ReadRegister(Byte register, Byte bytesToRead, Boolean clockStretch)
+        private Byte[] ReadRegister(Byte register, Byte bytesToRead, Boolean clockStretch)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 Byte[] readBuffer = new Byte[bytesToRead];
 
@@ -508,9 +510,9 @@ namespace MBN.Modules
             }
         }
 
-        private static Byte[] ReadRegister(UInt16 registerAddress, Byte numberOfBytesToRead = 1)
+        private Byte[] ReadRegister(UInt16 registerAddress, Byte numberOfBytesToRead = 1)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 Byte[] writeBuffer = {(Byte) (registerAddress >> 8), (Byte) (registerAddress & 0x00FF)};
                 Byte[] registerData = new Byte[numberOfBytesToRead];
@@ -519,17 +521,17 @@ namespace MBN.Modules
             }
         }
 
-        private static void WriteRegister(Byte registerAdderss, Byte value)
+        private void WriteRegister(Byte registerAdderss, Byte value)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(new[] {registerAdderss, value});
             }
         }
 
-        private static void WriteRegister(Byte registerAddress)
+        private void WriteRegister(Byte registerAddress)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(new[] {registerAddress});
             }

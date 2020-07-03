@@ -83,6 +83,7 @@ namespace MBN.Modules
         /// <param name="socket">The socket on which the TempHum6Click module is plugged on MikroBus.Net board</param>
         public TempHum6Click(Hardware.Socket socket)
         {
+            _socket = socket;
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(0x43, 100000));
 
             // Reset device
@@ -348,7 +349,7 @@ namespace MBN.Modules
         #region Private Fields
 
         private readonly I2cDevice _sensor;
-
+        private readonly Hardware.Socket _socket;
         private SensorConfiguration _currentConfiguration;
 
         #endregion
@@ -480,7 +481,7 @@ namespace MBN.Modules
         {
             Byte[] readBuffer = new Byte[numberOfBytesToRead];
 
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.WriteRead(new[] { registerAddress}, readBuffer );
             }
@@ -490,7 +491,7 @@ namespace MBN.Modules
 
         private void WriteRegister(Byte registerAddress, Byte value)
         {
-            lock (Hardware.LockI2C)
+            lock (_socket.LockI2c)
             {
                 _sensor.Write(new[] { registerAddress, value});
             }
