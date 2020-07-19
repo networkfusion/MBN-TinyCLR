@@ -1,6 +1,6 @@
 # **Drivers status**
 
-2020 June, 20 : This list is up-to-date as of Preview6 of TinyCLR 2.0
+2020 July, 17 : This list is up-to-date as of RC1 of TinyCLR 2.0
 
 * **Status**
   * :heavy_check_mark: : driver is working as expected.

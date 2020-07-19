@@ -33,7 +33,7 @@ namespace Examples
 
             // Initialize SC20260D onboard Can
             _onboardCan = CanController.FromName(STM32H7.CanBus.Can1);
-            _onboardCan.SetBitTiming(new CanBitTiming(propagationPhase1: 13, phase2: 2, baudratePrescaler: 6, synchronizationJumpWidth: 1, useMultiBitSampling: false));
+            _onboardCan.SetNominalBitTiming(new CanBitTiming(propagationPhase1: 13, phase2: 2, baudratePrescaler: 6, synchronizationJumpWidth: 1, useMultiBitSampling: false));
             _onboardCan.Enable();
             _onboardCan.MessageReceived += Can_MessageReceived;
             _onboardCan.ErrorReceived += Can_ErrorReceived;
@@ -48,8 +48,8 @@ namespace Examples
             {
                 ArbitrationId = 0x00,
                 Length = 8,
-                IsRemoteTransmissionRequest = false,
-                IsExtendedId = false
+                RemoteTransmissionRequest = false,
+                ExtendedId = false
             };
 
             for (var i = 0; i < 10; i++)

@@ -113,7 +113,7 @@ namespace MBN.Modules
         public SpeakUpClick(Hardware.Socket socket)
         {
             _sp = UartController.FromName(socket.ComPort);
-            _sp.SetActiveSettings(115200, 8, UartParity.None, UartStopBitCount.One, UartHandshake.None);
+            _sp.SetActiveSettings(new UartSetting() { BaudRate = 115200, DataBits = 8, Parity = UartParity.None, StopBits = UartStopBitCount.One, Handshaking = UartHandshake.None });
             _sp.Enable();
         }
 

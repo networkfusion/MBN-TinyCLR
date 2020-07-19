@@ -114,7 +114,7 @@ namespace MBN.Modules
         public FTDIClick(Hardware.Socket socket, Int32 baudRate = 9600, UartParity parity = UartParity.None, Int32 dataBits = 8, UartStopBitCount stopBits = UartStopBitCount.One)
         {
             _sp = UartController.FromName(socket.ComPort);
-            _sp.SetActiveSettings(baudRate, dataBits, parity, stopBits, UartHandshake.None);
+            _sp.SetActiveSettings(new UartSetting() { BaudRate = baudRate, DataBits = dataBits, Parity = parity, StopBits = stopBits, Handshaking = UartHandshake.None });
             _sp.Enable();
         }
 
