@@ -78,7 +78,7 @@ namespace MBN.Modules
             try
             {
                 _lcdSerial = UartController.FromName(socket.ComPort);
-                _lcdSerial.SetActiveSettings(9600, 8, UartParity.None, UartStopBitCount.Two, UartHandshake.None);
+                _lcdSerial.SetActiveSettings(new UartSetting() { BaudRate = 9600, DataBits = 8, Parity = UartParity.None, StopBits = UartStopBitCount.Two, Handshaking = UartHandshake.None });
                 _lcdSerial.Enable();
                 _isUart = true;
                 Init();

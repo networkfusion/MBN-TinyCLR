@@ -19,7 +19,7 @@ namespace MBN.Modules
             _sl.MessageAvailable += Sl_MessageAvailable;
 
             _gnss = UartController.FromName(socket.ComPort);
-            _gnss.SetActiveSettings(9600, 8, UartParity.None, UartStopBitCount.One, UartHandshake.None);
+            _gnss.SetActiveSettings(new UartSetting() { BaudRate = 9600, DataBits = 8, Parity = UartParity.None, StopBits = UartStopBitCount.One, Handshaking = UartHandshake.None });
             _gnss.DataReceived += Gnss_DataReceived;
             _gnss.Enable();
         }

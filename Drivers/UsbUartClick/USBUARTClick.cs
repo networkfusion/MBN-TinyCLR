@@ -95,7 +95,7 @@ namespace MBN.Modules
         public USBUARTClick(Hardware.Socket socket, BaudRate baudRate, Int32 dataBits = 8, UartParity parity = UartParity.None, UartStopBitCount stopBitCount = UartStopBitCount.One, UartHandshake handShake = UartHandshake.None)
         {
             _serial = UartController.FromName(socket.ComPort);
-            _serial.SetActiveSettings((Int32) baudRate, dataBits, parity, stopBitCount, handShake);
+            _serial.SetActiveSettings(new UartSetting() { BaudRate = (Int32)baudRate, DataBits = dataBits, Parity = parity, StopBits = stopBitCount, Handshaking = handShake });
             _serial.Enable();
 
             _serial.DataReceived += Serial_DataReceived;

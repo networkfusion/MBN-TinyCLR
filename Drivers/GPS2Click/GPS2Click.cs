@@ -37,7 +37,7 @@ namespace MBN.Modules
             Thread.Sleep(100);
 
             _gps2 = UartController.FromName(socket.ComPort); // Socket #1
-            _gps2.SetActiveSettings(4800, 8, UartParity.None, UartStopBitCount.One, UartHandshake.None);
+            _gps2.SetActiveSettings(new UartSetting() { BaudRate = 4800, DataBits = 8, Parity = UartParity.None, StopBits = UartStopBitCount.One, Handshaking = UartHandshake.None });
             _gps2.DataReceived += Gps2_DataReceived;
             _gps2.Enable();
         }
