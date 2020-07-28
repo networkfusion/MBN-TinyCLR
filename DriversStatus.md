@@ -23,7 +23,7 @@
 |Altitude3Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Altitude3Click)
 |AltitudeClick|:heavy_check_mark:|:clock130:||
 |Ambient2Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Ambient2Click)
-|AmbientClick|:heavy_check_mark:|:clock130:||
+|AmbientClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/AmbientClick)
 |BarGraph|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/BargraphClick)
 |BarGraph2|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Bargraph2Click)
 |BarometerClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/BarometerClick)
@@ -52,7 +52,7 @@
 |DCMotorClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/DCMotorClick)
 |DevantechLCD03|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/DevantechLCD03)
 |DigipotClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/DigipotClick)
-|DS18B20Click|:heavy_check_mark:|:clock130:||
+|DS18B20Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/DS18B20)
 |EEpromClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/EEpromClick)
 |eInkClick|:x:|||
 |EnvironmentClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/EnvironmentClick)
@@ -150,12 +150,12 @@
 |TempHumClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/TempHumClick)
 |Thermo13Click|:heavy_check_mark:|:clock130:||
 |Thermo2Click|:x:|||
-|Thermo3Click|:heavy_check_mark:|:clock130:||
+|Thermo3Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Thermo2Click)
 |Thermo4Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Thermo4Click)
 |Thermo6Click|:heavy_check_mark:|:clock130:||
 |Thermo8click|:heavy_check_mark:|:clock130:||
 |ThermoClick|:heavy_check_mark:|:clock130:||
-|Thermostat2Click|:x:|||
+|Thermostat2Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Thermostat2Click)
 |ThremostatClick|:x:|||
 |ThumbstickClick|:heavy_check_mark:|:clock130:||
 |ThunderClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/ThunderClick)
@@ -164,7 +164,7 @@
 |TouchKeyClick|:heavy_check_mark:|:clock130:||
 |tRFClick|:x:|||
 |UniHallClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/UniHallClick)
-|Unique ID Click|:x:|||
+|Unique ID Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/UniqueIDClick)
 |USBSPIClick|:x:|||
 |USBUARTClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/USBUARTClick)
 |UVClick|:heavy_check_mark:|:clock130:||
