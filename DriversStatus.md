@@ -106,7 +106,7 @@
 |OLED-CClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/OLED-CClick)
 |OnboardFlash|:heavy_check_mark:||Onboard Flash not available on GHI dev boards in Preview5|
 |OptoClick|:x:|||
-|Pressure11Click|:heavy_check_mark:|:clock130:||
+|Pressure11Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Pressure11Click)
 |Pressure4Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Pressure4Click)
 |Pressure5Click|:x:|||
 |Pressure8Click|:x:|||
