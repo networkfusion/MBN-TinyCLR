@@ -1,5 +1,5 @@
 ﻿/*
- * BMP280 driver for TinyCLR 2.0
+ * Pressure 4 driver for TinyCLR 2.0
  *
  * Version 1.0 by Stephen Cardinale 
  *
@@ -14,11 +14,10 @@
 #region Usings
 
 using System;
-using System.Diagnostics;
 using System.Threading;
+using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.I2c;
 using GHIElectronics.TinyCLR.Devices.Spi;
-using Math = System.Math;
 
 #endregion
 
@@ -43,21 +42,21 @@ namespace MBN.Modules
     /// {
     ///     public static class Program
     ///     {
-    ///         private static BMP280 _sensor;
+    ///         private static Pressure4Click _sensor;
     ///
     ///         public static void Main()
     ///         {
     ///             Debug.WriteLine("Program started");
     ///
     ///             // Using the SPI Interface
-    ///             //_sensor = new BMP280(Hardware.SC20100_1)
+    ///             //_sensor = new Pressure4Click(Hardware.SC20100_1)
     ///             //{
     ///             //    PressureCompensation = PressureCompensationModes.SeaLevelCompensated,
     ///             //    TemperatureUnit = TemperatureUnits.Fahrenheit
     ///             //};
     ///
     ///             // Using the I2C Interface
-    ///             _sensor = new BMP280(Hardware.SC20100_1, BMP280.I2CAddress.I2CAddress0)
+    ///             _sensor = new Pressure4Click(Hardware.SC20100_1, Pressure4Click.I2CAddress.I2CAddress0)
     ///             {
     ///                 PressureCompensation = PressureCompensationModes.SeaLevelCompensated,
     ///                 TemperatureUnit = TemperatureUnits.Fahrenheit
@@ -66,7 +65,7 @@ namespace MBN.Modules
     ///             Debug.WriteLine($"Device ID is {_sensor.DeviceId}");
     ///
     ///             // Set recommended mode using SetRecemmondedMode method.
-    ///             _sensor.SetRecommendedMode(BMP280.RecommendedModes.WeatherMonitoring);
+    ///             _sensor.SetRecommendedMode(Pressure4Click.RecommendedModes.WeatherMonitoring);
     ///
     ///             // Or set individual parameters as in below. Note: You must call EnableSettings() method to enforce the user settings.
     ///             //_sensor.PressureSamplingRate = Pressure4Click.OversamplingRates.Osr1;
@@ -91,15 +90,15 @@ namespace MBN.Modules
     /// }
     ///  </code>
     /// </example>
-    public sealed class BMP280 : IPressure, ITemperature
+    public sealed class Pressure4Click : IPressure, ITemperature
     {
         #region CTOR
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="BMP280" /> class using the SPI interface.
+        ///     Initializes a new instance of the <see cref="Pressure4Click" /> class using the SPI interface.
         /// </summary>
-        /// <param name="socket">The virtual socket on which the BMP280 module is connected to on the MikroBus.Net board</param>
-        public BMP280(Hardware.Socket socket)
+        /// <param name="socket">The virtual socket on which the Pressure4Click module is connected to on the MikroBus.Net board</param>
+        public Pressure4Click(Hardware.Socket socket)
         {
             _socket = socket;
             _interface = Interface.SPI;
@@ -107,20 +106,20 @@ namespace MBN.Modules
             _sensorSPI = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
-                ChipSelectLine = GHIElectronics.TinyCLR.Devices.Gpio.GpioController.GetDefault().OpenPin(socket.Cs),
+                ChipSelectLine = GpioController.GetDefault().OpenPin(socket.Cs),
                 Mode = SpiMode.Mode0,
-                ClockFrequency = 8 * 1000 * 1000,
+                ClockFrequency = 8 * 1000 * 1000
             });
 
             Initialize();
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="BMP280" /> class using the I2C interface.
+        ///     Initializes a new instance of the <see cref="Pressure4Click" /> class using the I2C interface.
         /// </summary>
-        /// <param name="socket">The virtual socket on which the BMP280 module is connected to on the MikroBus.Net board</param>
+        /// <param name="socket">The virtual socket on which the Pressure4Click module is connected to on the MikroBus.Net board</param>
         /// <param name="slaveAddress">The I2C Slave Address <see cref="I2CAddress"/> to use.</param>
-        public BMP280(Hardware.Socket socket, I2CAddress slaveAddress)
+        public Pressure4Click(Hardware.Socket socket, I2CAddress slaveAddress)
         {
             _interface = Interface.I2C;
 
@@ -724,8 +723,8 @@ namespace MBN.Modules
             adc = (this as IPressure).RawData;
             Int64 var3 = (Int64) tFine - 128000;
             Int64 var4 = var3 * var3 * _digP6;
-            var4 += ((var3 * _digP5) << 17);
-            var4 += ((Int64) _digP4 << 35);
+            var4 += (var3 * _digP5) << 17;
+            var4 += (Int64) _digP4 << 35;
             var3 = ((var3 * var3 * _digP3) >> 8) + ((var3 * _digP2) << 12);
             var3 = ((((Int64) 1 << 47) + var3) * _digP1) >> 33;
 
@@ -945,8 +944,8 @@ namespace MBN.Modules
             adc = (this as IPressure).RawData;
             Int64 var3 = (Int64) tFine - 128000;
             Int64 var4 = var3 * var3 * _digP6;
-            var4 += ((var3 * _digP5) << 17);
-            var4 += ((Int64) _digP4 << 35);
+            var4 += (var3 * _digP5) << 17;
+            var4 += (Int64) _digP4 << 35;
             var3 = ((var3 * var3 * _digP3) >> 8) + ((var3 * _digP2) << 12);
             var3 = ((((Int64) 1 << 47) + var3) * _digP1) >> 33;
 
