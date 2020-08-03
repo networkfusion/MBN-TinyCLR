@@ -78,9 +78,9 @@
 |GSM3Click|:x:|||
 |GSMClick|:x:|||
 |GyroClick|:x:|||
-|HDC1000Click|:heavy_check_mark:|:clock130:||
+|HDC1000Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/HDC1000Click)
 |HT16K33|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/HT16K33)
-|HTU21D|:heavy_check_mark:|:clock130:||
+|HTU21DClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/HTU21DClick)
 |I2CMuxClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/I2CMuxClick)
 |IlluminanceClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/IlluminanceClick)
 |IRClick|:heavy_check_mark:|:clock130:||
@@ -107,10 +107,10 @@
 |OnboardFlash|:heavy_check_mark:||Onboard Flash not available on GHI dev boards in Preview5|
 |OptoClick|:x:|||
 |Pressure11Click|:heavy_check_mark:|:clock130:||
-|Pressure4Click|:heavy_check_mark:|:clock130:||
+|Pressure4Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Pressure4Click)
 |Pressure5Click|:x:|||
 |Pressure8Click|:x:|||
-|Pressure9Click|:heavy_check_mark:|:clock130:||
+|Pressure9Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Pressure9Click)
 |PressureClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/PressureClick)
 |Proximity3Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Proximity3Click)
 |ProximityClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/ProximityClick)
@@ -138,7 +138,7 @@
 |SRAMClick|:x:|||
 |StepperClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/StepperClick)
 |TempHum10Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/TempHum10Click)
-|TempHum11Click|:heavy_check_mark:|:clock130:||
+|TempHum11Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/TempHum11Click)
 |TempHum12Click|:heavy_check_mark:|:clock130:||
 |TempHum2Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/TempHum2Click)
 |TempHum4Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/TempHum4Click)
@@ -156,7 +156,7 @@
 |Thermo8click|:heavy_check_mark:|:clock130:||
 |ThermoClick|:heavy_check_mark:|:clock130:||
 |Thermostat2Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Thermostat2Click)
-|ThremostatClick|:x:|||
+|ThremostatClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/ThermostatClick)
 |ThumbstickClick|:heavy_check_mark:|:clock130:||
 |ThunderClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/ThunderClick)
 |TiltClick|:heavy_check_mark:|:clock130:||
@@ -168,7 +168,7 @@
 |USBSPIClick|:x:|||
 |USBUARTClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/USBUARTClick)
 |UVClick|:heavy_check_mark:|:clock130:||
-|WeatherClick|:heavy_check_mark:|:clock130:|I2C Version only.|
+|WeatherClick|:heavy_check_mark:|:heavy_check_mark:|I2C Version only.|[:floppy_disk:](Drivers/WeatherClick)
 |Wifi|:x:|||
 |Wifi2Click|:x:|||
 |Wifi3Click|:x:|||
