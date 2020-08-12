@@ -82,6 +82,7 @@
 |HT16K33|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/HT16K33)
 |HTU21DClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/HTU21DClick)
 |I2CMuxClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/I2CMuxClick)
+|I2CMux2Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/I2CMux2Click)
 |IlluminanceClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/IlluminanceClick)
 |IRClick|:heavy_check_mark:|:clock130:||
 |IrDA2Click|:x:|||
@@ -106,7 +107,7 @@
 |OLED-CClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/OLED-CClick)
 |OnboardFlash|:heavy_check_mark:||Onboard Flash not available on GHI dev boards in Preview5|
 |OptoClick|:x:|||
-|Pressure11Click|:heavy_check_mark:|:clock130:||
+|Pressure11Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Pressure11Click)
 |Pressure4Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/Pressure4Click)
 |Pressure5Click|:x:|||
 |Pressure8Click|:x:|||
@@ -167,6 +168,7 @@
 |Unique ID Click|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/UniqueIDClick)
 |USBSPIClick|:x:|||
 |USBUARTClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/USBUARTClick)
+|UT7SegClick|:heavy_check_mark:|:heavy_check_mark:|Works for the Small/Medium/Large version of the module|[:floppy_disk:](Drivers/UT-X-7SegClick)
 |UVClick|:heavy_check_mark:|:clock130:||
 |WeatherClick|:heavy_check_mark:|:heavy_check_mark:|I2C Version only.|[:floppy_disk:](Drivers/WeatherClick)
 |Wifi|:x:|||
