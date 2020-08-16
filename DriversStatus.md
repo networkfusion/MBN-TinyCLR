@@ -117,6 +117,7 @@
 |ProximityClick|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/ProximityClick)
 |PWMClick|:x:|||
 |PWMDriverClick|:x:|||
+|QspiMemory|:heavy_check_mark:|:heavy_check_mark:||[:floppy_disk:](Drivers/QspiMemory)
 |RadioStationClick|:x:|||
 |ReedClick|:heavy_check_mark:|:clock130:||
 |Relay2Click|:heavy_check_mark:|:clock130:||
