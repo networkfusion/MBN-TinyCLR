@@ -45,7 +45,7 @@ namespace MBN.Modules
     {
         private IStorageControllerProvider qspi;
 
-        public override Int32 Capacity => 0x01000000;
+        public override Int32 Capacity => Flash.IsEnabledExternalFlash() ? 0x00800000: 0x01000000;
         public override Int32 PageSize => 0x100;
         public override Int32 SectorSize => 0x1000;
         public override Int32 BlockSize => 0x10000;
