@@ -15,6 +15,7 @@ using GHIElectronics.TinyCLR.Devices.Storage;
 using GHIElectronics.TinyCLR.Devices.Storage.Provider;
 using GHIElectronics.TinyCLR.Pins;
 using System;
+using GHIElectronics.TinyCLR.Native;
 
 namespace MBN.Modules
 {
@@ -81,7 +82,7 @@ namespace MBN.Modules
         public override void EraseChip()
         {
             var sectorCount = Capacity / SectorSize;
-            qspi.Erase(0, sectorCount, TimeSpan.FromSeconds(1));
+            qspi.Erase(0, sectorCount, TimeSpan.FromSeconds(100));
         }
 
         /// <summary>
@@ -129,7 +130,7 @@ namespace MBN.Modules
         /// </example>
         public override void EraseBlock(Int32 block, Int32 count)
         {
-            qspi.Erase(block * SectorSize, count, TimeSpan.FromSeconds(1));
+            qspi.Erase(block * BlockSize, count * BlockSize / SectorSize, TimeSpan.FromSeconds(1));
         }
 
         /// <summary>
