@@ -105,6 +105,23 @@ namespace TinyCLRRegexp
             public Byte Checksum;
         }
 
+        public struct VTG
+        {
+            public Byte TalkerID;
+            public Single CourseOverGroundDegrees;
+            public Single CourseOverGroundMagnetic;
+            public Single SpeedOverGroundKnots;
+            public Single SpeedOverGroundKm;
+            public Byte Checksum;
+        }
+
+        public struct HDT
+        {
+            public Byte TalkerID;
+            public Single Heading;
+            public Byte Checksum;
+        }
+
         #endregion
 
         #region Public vars
@@ -112,6 +129,8 @@ namespace TinyCLRRegexp
         public static GGA GGASentence; 
         public static GSA GSASentence;
         public static GSV[] GSVSentence;
+        public static VTG VTGSentence;
+        public static HDT HDTSentence;
         #endregion
 
         #region Constructor
@@ -123,10 +142,14 @@ namespace TinyCLRRegexp
             GGASentence = new GGA();
             GSASentence = new GSA();
             GSVSentence = new GSV[3];
+            VTGSentence = new VTG();
+            HDTSentence = new HDT();
             lockGGA = new Object();
             lockGSA = new Object();
             lockRMC = new Object();
             lockGSV = new Object();
+            lockVTG = new Object();
+            lockHDT = new Object();
         }
         #endregion
 
@@ -135,10 +158,12 @@ namespace TinyCLRRegexp
         private static readonly Byte[] patternGGA = new Byte[3] { 71, 71, 65 };
         private static readonly Byte[] patternGSA = new Byte[3] { 71, 83, 65 };
         private static readonly Byte[] patternGSV = new Byte[3] { 71, 83, 86 };
+        private static readonly Byte[] patternVTG = new Byte[3] { 86, 84, 71 };
+        private static readonly Byte[] patternHDT = new Byte[3] { 72, 68, 84 };
 
-        private static readonly Byte[][] SupportedPatterns = new Byte[][] { patternGGA, patternGSA, patternRMC, patternGSV };
+        private static readonly Byte[][] SupportedPatterns = new Byte[][] { patternGGA, patternGSA, patternRMC, patternGSV, patternVTG, patternHDT };
         private static ArrayList NMEAFields = new ArrayList();
-        private static readonly Object lockGGA, lockGSA, lockRMC, lockGSV;
+        private static readonly Object lockGGA, lockGSA, lockRMC, lockGSV, lockVTG, lockHDT;
 
         private static readonly ArrayList tabtmp;
         private static readonly ArrayList arrayResult;
@@ -341,6 +366,37 @@ namespace TinyCLRRegexp
                 GSVSentence[Seq].Checksum = (Byte)((b0 << 4) + b1);
             }
         }
+
+        private static void ParseVTG(Byte[] sentence)
+        {
+            NMEAFields.Clear();
+            NMEAFields = Split(sentence, 44);
+            lock (lockVTG)
+            {
+                VTGSentence.CourseOverGroundDegrees = SingleFromAscii((Byte[])NMEAFields[1]);
+                VTGSentence.CourseOverGroundMagnetic = SingleFromAscii((Byte[])NMEAFields[3]);
+                VTGSentence.SpeedOverGroundKnots = SingleFromAscii((Byte[])NMEAFields[5]);
+                VTGSentence.SpeedOverGroundKm = SingleFromAscii((Byte[])NMEAFields[7]);
+
+                b0 = (Byte)(((Byte[])NMEAFields[10])[0] >= 65 ? ((Byte[])NMEAFields[10])[0] - 55 : ((Byte[])NMEAFields[10])[0] - 48);
+                b1 = (Byte)(((Byte[])NMEAFields[10])[1] >= 65 ? ((Byte[])NMEAFields[10])[1] - 55 : ((Byte[])NMEAFields[10])[1] - 48);
+                VTGSentence.Checksum = (Byte)((b0 << 4) + b1);
+            }
+        }
+
+        private static void ParseHDT(Byte[] sentence)
+        {
+            NMEAFields.Clear();
+            NMEAFields = Split(sentence, 44);
+            lock (lockHDT)
+            {
+                HDTSentence.Heading = SingleFromAscii((Byte[])NMEAFields[1]);
+
+                b0 = (Byte)(((Byte[])NMEAFields[3])[0] >= 65 ? ((Byte[])NMEAFields[3])[0] - 55 : ((Byte[])NMEAFields[3])[0] - 48);
+                b1 = (Byte)(((Byte[])NMEAFields[3])[1] >= 65 ? ((Byte[])NMEAFields[3])[1] - 55 : ((Byte[])NMEAFields[3])[1] - 48);
+                HDTSentence.Checksum = (Byte)((b0 << 4) + b1);
+            }
+        }
         #endregion
 
         #region Public methods
@@ -370,6 +426,12 @@ namespace TinyCLRRegexp
                     break;
                 case 3:     // GSV sentence
                     ParseGSV(NMEASentence);
+                    break;
+                case 4:     // VTG sentence
+                    ParseVTG(NMEASentence);
+                    break;
+                case 5:     // HDT sentence
+                    ParseHDT(NMEASentence);
                     break;
                 default:
                     Debug.WriteLine("Not supported frame received");
