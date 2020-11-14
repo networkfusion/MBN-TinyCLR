@@ -13,7 +13,7 @@
 
 using System;
 
-namespace TinyCLRRegexp
+namespace MBN.Modules
 {
     public static class NMEAParser
     {
