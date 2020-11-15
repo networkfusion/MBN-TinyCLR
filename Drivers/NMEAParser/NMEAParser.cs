@@ -1,3 +1,7 @@
+!!! DO NOT USE YET !!!
+    This parser still needs some fixes as different GPS devices do not send the same data for the same sentences
+    e.g. some GPS are sending Latitude or Fix time as xxxxxx.xx while others are sending xxxxxxx only, without decimals
+
 /* 
 * NMEA parser for TinyCLR 2.0
 * 
