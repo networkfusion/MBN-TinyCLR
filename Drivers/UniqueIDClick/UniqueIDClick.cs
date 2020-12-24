@@ -11,7 +11,10 @@
  * either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-using GHIElectronics.TinyCLR.Devices.Onewire;
+using Windows.Devices.OneWire;
+#else
+using GHIElectronics.TinyCLR.Devices.OneWire;
+#endif
 
 using System;
 using System.Collections;

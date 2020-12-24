@@ -11,10 +11,16 @@
  * either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
+#if (NANOFRAMEWORK_1_0)
+using gpio = System.Device.Gpio;
+using System.Device.I2c;
+#else
 using GHIElectronics.TinyCLR.Devices.I2c;
+using gpio = GHIElectronics.TinyCLR.Devices.Gpio;
+#endif
+
 using System;
 using System.Threading;
-using gpio = GHIElectronics.TinyCLR.Devices.Gpio;
 
 namespace MBN.Modules
 {

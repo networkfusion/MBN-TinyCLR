@@ -1,5 +1,11 @@
-﻿using GHIElectronics.TinyCLR.Devices.Can;
+﻿#if (NANOFRAMEWORK_1_0)
+using Windows.Devices.Can;
+using nanoFramework.Stm32.Pins;
+#else
+using GHIElectronics.TinyCLR.Devices.Can;
 using GHIElectronics.TinyCLR.Pins;
+#endif
+
 using MBN;
 using MBN.Modules;
 using System;

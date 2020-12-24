@@ -16,7 +16,12 @@
  * 
  */
 
+#if (NANOFRAMEWORK_1_0)
+using Windows.Devices.Spi;
+#else
 using GHIElectronics.TinyCLR.Devices.Spi;
+#endif
+
 using System.Diagnostics;
 using System;
 

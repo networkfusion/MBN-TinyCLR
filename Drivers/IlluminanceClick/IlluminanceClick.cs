@@ -13,7 +13,12 @@
 // ToDo - Add Methodology and Property/Method to enable/disable Interrupt signaling when light Levels is outside set ranges.
 // ToDo - Implement manual integration timePeriod.
 
+#if (NANOFRAMEWORK_1_0)
+using System.Device.I2c;
+#else
 using GHIElectronics.TinyCLR.Devices.I2c;
+#endif
+
 using System;
 using System.Threading;
 

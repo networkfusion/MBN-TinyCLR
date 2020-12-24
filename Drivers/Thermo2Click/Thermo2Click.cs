@@ -4,14 +4,18 @@
  * Version 1.0 :
  *  - Initial revision coded by Stephen Cardinale
  *    
- * Copyright © 2020 MikroBus.Net
+ * Copyright ï¿½ 2020 MikroBus.Net
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
  * either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-using GHIElectronics.TinyCLR.Devices.Onewire;
+#if (NANOFRAMEWORK_1_0)
+using Windows.Devices.OneWire;
+#else
+using GHIElectronics.TinyCLR.Devices.OneWire;
+#endif
 
 using System;
 using System.Collections;
@@ -152,22 +156,22 @@ namespace MBN.Modules
         public enum Resolution
         {
             /// <summary>
-            ///     9-Bit with a resolution of 0.5°C.
+            ///     9-Bit with a resolution of 0.5ï¿½C.
             /// </summary>
             Resolution9Bit = 0,
 
             /// <summary>
-            ///     10-Bit with a resolution of 0.25°C.
+            ///     10-Bit with a resolution of 0.25ï¿½C.
             /// </summary>
             Resolution10Bit = 1,
 
             /// <summary>
-            ///     11-Bit with a resolution of 0.125°C.
+            ///     11-Bit with a resolution of 0.125ï¿½C.
             /// </summary>
             Resolution11Bit = 2,
 
             /// <summary>
-            ///     12-Bit with a resolution of 0.0625°C.
+            ///     12-Bit with a resolution of 0.0625ï¿½C.
             /// </summary>
             Resolution12Bit = 3
         }
@@ -729,7 +733,7 @@ namespace MBN.Modules
         /// <summary>
         ///     Reads all Thermo2 Click on the OneWire Bus.
         /// </summary>
-        /// <returns>A HashTable containing a Key/Value Pair of the unique 64-Bit Address of the Thermo2 Click and the temperature in °C.</returns>
+        /// <returns>A HashTable containing a Key/Value Pair of the unique 64-Bit Address of the Thermo2 Click and the temperature in ï¿½C.</returns>
         /// <remarks>This method works in either a single sensor or multi sensor configuration.</remarks>
         /// <example>Example usage:
         /// <code language="C#">
@@ -844,7 +848,7 @@ namespace MBN.Modules
         }
 
         /// <summary>
-        ///     Resets the Low and High Temperature Alarms Settings for the specified OneWire Device to -55°C and 125° (the range of the Thermo2 Click).
+        ///     Resets the Low and High Temperature Alarms Settings for the specified OneWire Device to -55ï¿½C and 125ï¿½ (the range of the Thermo2 Click).
         /// </summary>
         /// <param name="oneWireAddress">The OneWire device address.</param>
         /// <param name="writeToEeprom">If true, writes the new settings to the device EEPROM.</param>
@@ -879,10 +883,10 @@ namespace MBN.Modules
         }
 
         /// <summary>
-        ///     Returns the Low Temperature Alarm setting of the specified device in °C.
+        ///     Returns the Low Temperature Alarm setting of the specified device in ï¿½C.
         /// </summary>
         /// <param name="oneWireAddress">The OneWire Address of the specified device.</param>
-        /// <returns>The Low Temperature Alarm setting in °C</returns>
+        /// <returns>The Low Temperature Alarm setting in ï¿½C</returns>
         /// <remarks>All temperature alarms settings are in the <see cref="TemperatureUnits.Celsius"/> unit only.</remarks>
         /// <example>Example usage:
         /// <code language="C#">
@@ -911,10 +915,10 @@ namespace MBN.Modules
         }
 
         /// <summary>
-        ///     Returns the High Temperature Alarm setting of the specified device in °C.
+        ///     Returns the High Temperature Alarm setting of the specified device in ï¿½C.
         /// </summary>
         /// <param name="oneWireAddress">The OneWire Address of the specified device.</param>
-        /// <returns>The High Temperature Alarm setting in °C</returns>
+        /// <returns>The High Temperature Alarm setting in ï¿½C</returns>
         /// <remarks>All temperature alarms settings are in the <see cref="TemperatureUnits.Celsius"/> unit only.</remarks>
         /// <example>Example usage:
         /// <code language="C#">
@@ -943,10 +947,10 @@ namespace MBN.Modules
         }
 
         /// <summary>
-        /// Sets the low alarm temperature for a specific device in °C.
+        /// Sets the low alarm temperature for a specific device in ï¿½C.
         /// </summary>
         /// <param name="oneWireAddress">The OneWire Address of the specified device.</param>
-        /// <param name="lowTemperatureAlarm">Low Temperature Alarm set point. The valid range is -55°C - 125°C </param>
+        /// <param name="lowTemperatureAlarm">Low Temperature Alarm set point. The valid range is -55ï¿½C - 125ï¿½C </param>
         /// <param name="writeToEeprom">If true, writes the new Low Temperature Alarm setting to NVRAM EEPROM.</param>
         /// <returns>True if successful or otherwise false.</returns>
         /// <exception cref="ArgumentException">Throws an ArgumentException if the <para>lowTemperatureAlarm</para> setting is higher than or equal to the <see cref="SetHighTempertureAlarm"/> method.</exception>
@@ -970,7 +974,7 @@ namespace MBN.Modules
 
             if (!IsValidId(oneWireAddress)) return false;
 
-            // Make sure the alarm setting is within the device's range (-55°C to 125°C)
+            // Make sure the alarm setting is within the device's range (-55ï¿½C to 125ï¿½C)
             lowTemperatureAlarm = (SByte) (lowTemperatureAlarm < -55 ? -55 : lowTemperatureAlarm > 125 ? 125 : lowTemperatureAlarm);
 
             // Verify the Low Temperature alarm setting is not higher than the High Temperature Alarm setting in EEPROM, if so reset the values to default.
@@ -984,10 +988,10 @@ namespace MBN.Modules
         }
 
         /// <summary>
-        /// Sets the low alarm temperature for a specific device in °C.
+        /// Sets the low alarm temperature for a specific device in ï¿½C.
         /// </summary>
         /// <param name="oneWireAddress">The OneWire Address of the specified device.</param>
-        /// <param name="highTemperatureAlarm">High Temperature Alarm set point. The valid range is -55°C - 125°C </param>
+        /// <param name="highTemperatureAlarm">High Temperature Alarm set point. The valid range is -55ï¿½C - 125ï¿½C </param>
         /// <param name="writeToEeprom">If true, writes the new Low Temperature Alarm setting to NVRAM EEPROM.</param>
         /// <returns>True if successful or otherwise false.</returns>
         /// <exception cref="ArgumentException">Throws an ArgumentException if the <para>lowTemperatureAlarm</para> setting is higher than or equal to the <see cref="SetHighTempertureAlarm"/> method.</exception>
@@ -1011,7 +1015,7 @@ namespace MBN.Modules
 
             if (!IsValidId(oneWireAddress)) throw new ArgumentException("Invalid OneWired Address", nameof(oneWireAddress));
 
-            // Make sure the alarm setting is within the device's range (-55°C to 125°C)
+            // Make sure the alarm setting is within the device's range (-55ï¿½C to 125ï¿½C)
             highTemperatureAlarm = (SByte) (highTemperatureAlarm < -55 ? -55 : highTemperatureAlarm > 125 ? 125 : highTemperatureAlarm);
 
             // Verify the Low Temperature alarm setting is not higher than the High Temperature Alarm setting in EEPROM, if so reset the values to default.
@@ -1025,11 +1029,11 @@ namespace MBN.Modules
         }
 
         /// <summary>
-        /// Sets both the low  and hight temperature alarm at once for a specific device in °C.
+        /// Sets both the low  and hight temperature alarm at once for a specific device in ï¿½C.
         /// </summary>
         /// <param name="oneWireAddress">The OneWire Address of the specified device.</param>
-        /// <param name="lowTemperatureAlarm">Low Temperature Alarm set point. The valid range is -55°C - 125°C </param>
-        /// <param name="highTemperatureAlarm">High Temperature Alarm set point. The valid range is -55°C - 125°C </param>
+        /// <param name="lowTemperatureAlarm">Low Temperature Alarm set point. The valid range is -55ï¿½C - 125ï¿½C </param>
+        /// <param name="highTemperatureAlarm">High Temperature Alarm set point. The valid range is -55ï¿½C - 125ï¿½C </param>
         /// <param name="writeToEeprom">If true, writes the new Low Temperature Alarm setting to NVRAM EEPROM.</param>
         /// <returns>True if successful or otherwise false.</returns>
         /// <exception cref="ArgumentException">Throws an ArgumentException if the <para>lowTemperatureAlarm</para> setting is higher than or equal to the <see cref="SetHighTempertureAlarm"/> method or if the <para>highTemperatureAlarm</para> setting is lower than or equal to the <see cref="SetLowTempertureAlarm"/> method.</exception>
@@ -1053,7 +1057,7 @@ namespace MBN.Modules
 
             if (!IsValidId(oneWireAddress)) return false;
 
-            // Make sure the alarm setting is within the device's range (-55°C to 125°C)
+            // Make sure the alarm setting is within the device's range (-55ï¿½C to 125ï¿½C)
             highTemperatureAlarm = (SByte) (highTemperatureAlarm < -55 ? -55 : highTemperatureAlarm > 125 ? 125 : highTemperatureAlarm);
             lowTemperatureAlarm = (SByte) (lowTemperatureAlarm < -55 ? -55 : lowTemperatureAlarm > 125 ? 125 : lowTemperatureAlarm);
 
@@ -1075,10 +1079,10 @@ namespace MBN.Modules
         }
 
         /// <summary>
-        /// Sets both the low  and hight temperature alarm at once for all devices on the One-Wire Bus device in °C.
+        /// Sets both the low  and hight temperature alarm at once for all devices on the One-Wire Bus device in ï¿½C.
         /// </summary>
-        /// <param name="lowTemperatureAlarm">Low Temperature Alarm set point. The valid range is -55°C - 125°C </param>
-        /// <param name="highTemperatureAlarm">High Temperature Alarm set point. The valid range is -55°C - 125°C </param>
+        /// <param name="lowTemperatureAlarm">Low Temperature Alarm set point. The valid range is -55ï¿½C - 125ï¿½C </param>
+        /// <param name="highTemperatureAlarm">High Temperature Alarm set point. The valid range is -55ï¿½C - 125ï¿½C </param>
         /// <param name="writeToEeprom">If true, writes the new Low Temperature Alarm setting to NVRAM EEPROM.</param>
         /// <returns>True if successful or otherwise false.</returns>
         /// <exception cref="ArgumentException">Throws an ArgumentException if the <para>lowTemperatureAlarm</para> setting is higher than or equal to the <see cref="SetHighTempertureAlarm"/> method or if the <para>highTemperatureAlarm</para> setting is lower than or equal to the <see cref="SetLowTempertureAlarm"/> method.</exception>

@@ -12,7 +12,11 @@
 
 #region Usings
 
+#if (NANOFRAMEWORK_1_0)
+using System.Device.I2c;
+#else
 using GHIElectronics.TinyCLR.Devices.I2c;
+#endif
 
 using System;
 
@@ -50,7 +54,7 @@ namespace MBN.Modules
     /// 
     ///             while (true)
     ///             {
-    ///                 Debug.Print("Temperature : " + _sensor.ReadTemperature().ToString("F1") + " °F");
+    ///                 Debug.Print("Temperature : " + _sensor.ReadTemperature().ToString("F1") + " ï¿½F");
     ///                 Thread.Sleep(2000);
     ///             }
     ///         }

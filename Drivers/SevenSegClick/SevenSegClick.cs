@@ -11,8 +11,14 @@
  * either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
+#if (NANOFRAMEWORK_1_0)
+using Windows.Devices.Spi;
+using Windows.Devices.Pwm;
+#else
 using GHIElectronics.TinyCLR.Devices.Spi;
 using GHIElectronics.TinyCLR.Devices.Pwm;
+#endif
+
 using System;
 
 namespace MBN.Modules
