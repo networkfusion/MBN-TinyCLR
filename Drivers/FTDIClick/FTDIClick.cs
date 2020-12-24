@@ -12,7 +12,12 @@
  */
 
 
+#if (NANOFRAMEWORK_1_0)
+using Windows.Devices.Uart;
+#else
 using GHIElectronics.TinyCLR.Devices.Uart;
+#endif
+
 using System;
 
 namespace MBN.Modules

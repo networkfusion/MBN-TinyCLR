@@ -1,4 +1,9 @@
-﻿using GHIElectronics.TinyCLR.Devices.Uart;
+﻿#if (NANOFRAMEWORK_1_0)
+using Windows.Devices.Uart;
+#else
+using GHIElectronics.TinyCLR.Devices.Uart;
+#endif
+
 using System;
 using System.Text;
 using static MBN.Modules.GPSUtilities;
