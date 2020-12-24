@@ -11,8 +11,14 @@
  * either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-using GHIElectronics.TinyCLR.Devices.I2c;
+#if (NANOFRAMEWORK_1_0)
+using Windows.Devices.Uart;
+using System.Device.I2c;
+#else
 using GHIElectronics.TinyCLR.Devices.Uart;
+using GHIElectronics.TinyCLR.Devices.I2c;
+#endif
+
 using System;
 
 namespace MBN.Modules
