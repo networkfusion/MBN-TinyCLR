@@ -16,7 +16,11 @@
  * either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
+#if (NANOFRAMEWORK_1_0)
+using System.Device.I2c;
+#else
 using GHIElectronics.TinyCLR.Devices.I2c;
+#endif
 
 using System;
 using System.Threading;
@@ -70,7 +74,7 @@ namespace MBN.Modules
     ///
     ///             while (true)
     ///             {
-    ///                 Debug.WriteLine($"Temperature is {_sensor.ReadTemperature():F1} °F");
+    ///                 Debug.WriteLine($"Temperature is {_sensor.ReadTemperature():F1} ï¿½F");
     ///                 Debug.WriteLine($"   Humidity is {_sensor.ReadHumidity():F1} %RH\n");
     ///                 Thread.Sleep(1000);
     ///             }
@@ -403,7 +407,7 @@ namespace MBN.Modules
 
         /// <inheritdoc />
         /// <summary>
-        /// Reads the temperature in °C.
+        /// Reads the temperature in ï¿½C.
         /// </summary>
         /// <param name="source">The temperature source to read. In this case only <see cref="TemperatureSources.Ambient"/> is supported.</param>
         /// <returns>A <see cref="System.Single"/> representing the ambient temperature.</returns>
