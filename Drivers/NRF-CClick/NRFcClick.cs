@@ -24,8 +24,14 @@
 // 2020, April 07 : Modified by MBN to comply with MBN drivers' scheme and use of SPI for TinyCLR 2.0
 #endregion
 
+#if (NANOFRAMEWORK_1_0)
+using System.Device.Gpio;
+using Windows.Devices.Spi;
+#else
 using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Spi;
+#endif
+
 using System;
 using System.Diagnostics;
 using System.Threading;

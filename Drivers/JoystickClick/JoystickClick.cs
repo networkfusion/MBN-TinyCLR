@@ -15,8 +15,14 @@
  * Interrupts cannot be used simultaneously on pins with the same number. See http://docs.ghielectronics.com/software/tinyclr/tutorials/gpio.html
  */
 
+#if (NANOFRAMEWORK_1_0)
+using System.Device.Gpio;
+using System.Device.I2c;
+#else
 using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.I2c;
+#endif
+
 using System;
 using System.Threading;
 
