@@ -1,5 +1,11 @@
-﻿using GHIElectronics.TinyCLR.Devices.Gpio;
+﻿#if (NANOFRAMEWORK_1_0)
+using System.Device.Gpio;
+using Windows.Devices.Uart;
+#else
+using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Uart;
+#endif
+
 using System;
 using System.Text;
 using System.Threading;

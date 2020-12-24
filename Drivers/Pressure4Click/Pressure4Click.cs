@@ -13,11 +13,18 @@
 
 #region Usings
 
-using System;
-using System.Threading;
+#if (NANOFRAMEWORK_1_0)
+using System.Device.Gpio;
+using System.Device.I2c;
+using Windows.Devices.Spi;
+#else
 using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.I2c;
 using GHIElectronics.TinyCLR.Devices.Spi;
+#endif
+
+using System;
+using System.Threading;
 
 #endregion
 

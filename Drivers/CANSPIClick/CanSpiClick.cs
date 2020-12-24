@@ -12,8 +12,14 @@
  * 
  */
 
+#if (NANOFRAMEWORK_1_0)
+using System.Device.Gpio;
+using Windows.Devices.Spi;
+#else
 using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Spi;
+#endif
+
 using System;
 using System.Threading;
 
