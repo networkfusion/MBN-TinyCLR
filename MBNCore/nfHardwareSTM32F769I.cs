@@ -11,6 +11,9 @@
 * either express or implied. See the License for the specific language governing permissions and limitations under the License. 
 */
 
+#if (NANOFRAMEWORK_1_0)
+#warning Click module support on nanoFramwork is not yet tested, try at your own risk.
+
 using System.Device.Gpio;
 
 using System;
@@ -19,7 +22,7 @@ using System.Collections;
 namespace MBN
 {
 
-    #region Hardware Class
+    #region Hardware Class //TODO: make the hardware class abstract for easier support of other boards?
     /// <summary>
     /// Main Hardware class for MikroBus.Net board
     /// </summary>
@@ -222,36 +225,36 @@ namespace MBN
                     // public const Int32 PA3 = STM32H7.PwmChannel.Channel3;
                 }
 
-                // /// <summary>PWM controller 3.</summary>
-                // public static class Controller3
-                // {
-                //     public const String Id = STM32H7.PwmChannel.Tim3;
+                /// <summary>PWM controller 3.</summary>
+                public static class Controller3
+                {
+                    public const String Id = "TIM3";
 
-                //     public const Int32 PC6 = STM32H7.PwmChannel.Channel0;
-                //     public const Int32 PC7 = STM32H7.PwmChannel.Channel1;
-                //     public const Int32 PB0 = STM32H7.PwmChannel.Channel2;
-                //     public const Int32 PB1 = STM32H7.PwmChannel.Channel3;
-                // }
+                    // public const Int32 PC6 = STM32H7.PwmChannel.Channel0;
+                    // public const Int32 PC7 = STM32H7.PwmChannel.Channel1;
+                    // public const Int32 PB0 = STM32H7.PwmChannel.Channel2;
+                    // public const Int32 PB1 = STM32H7.PwmChannel.Channel3;
+                }
 
-                // /// <summary>PWM controller 4.</summary>
-                // public static class Controller4
-                // {
-                //     public const String Id = STM32H7.PwmChannel.Tim4;
+                /// <summary>PWM controller 4.</summary>
+                public static class Controller4
+                {
+                    public const String Id = "TIM4";
 
-                //     public const Int32 PB7 = STM32H7.PwmChannel.Channel1;
+                    // public const Int32 PB7 = STM32H7.PwmChannel.Channel1;
 
-                // }
+                }
 
-                // /// <summary>PWM controller 5.</summary>
-                // public static class Controller5
-                // {
-                //     public const String Id = STM32H7.PwmChannel.Tim5;
+                /// <summary>PWM controller 5.</summary>
+                public static class Controller5
+                {
+                    public const String Id = "TIM5";
 
-                //     public const Int32 PA0 = STM32H7.PwmChannel.Channel0;
-                //     public const Int32 PH11 = STM32H7.PwmChannel.Channel1;
-                //     public const Int32 PH12 = STM32H7.PwmChannel.Channel2;
-                //     public const Int32 PI0 = STM32H7.PwmChannel.Channel3;
-                // }
+                    // public const Int32 PA0 = STM32H7.PwmChannel.Channel0;
+                    // public const Int32 PH11 = STM32H7.PwmChannel.Channel1;
+                    // public const Int32 PH12 = STM32H7.PwmChannel.Channel2;
+                    // public const Int32 PI0 = STM32H7.PwmChannel.Channel3;
+                }
 
                 // /// <summary>PWM controller 8.</summary>
                 // public static class Controller8
@@ -452,29 +455,19 @@ namespace MBN
 
         #region Public objects
         /// <summary>
-        /// RAM onboard Led 1 (Green)
+        /// Onboard Led 1 (Green)
         /// </summary>
         public static readonly GpioPin Led1;
 
         /// <summary>
-        /// RAM onboard Led 2 (Orange)
+        /// Onboard Led 2 (Orange)
         /// </summary>
         public static readonly GpioPin Led2;
 
         /// <summary>
-        /// RAM onboard Led 3 (Red)
+        /// Onboard Led 3 (Red)
         /// </summary>
         public static readonly GpioPin Led3;
-
-        /// <summary>
-        /// SC20260D onboard Led 1 (Green)
-        /// </summary>
-        public static readonly GpioPin SC20260D_Led1;
-
-        /// <summary>
-        /// SC20260D onboard Led 2 (Red)
-        /// </summary>
-        public static readonly GpioPin SC20260D_Led2;
 
         /// <summary>
         /// Lock object used for I2C
@@ -516,3 +509,4 @@ namespace MBN
     #endregion
 
 }
+#endif
