@@ -143,7 +143,7 @@ namespace MBN
         }
         #endregion
 
-        #region Click sockets definitions
+        #region Click socket definitions
 
         #region STM32F769I board definitions
         public static class Stm32f769iDisco
@@ -332,31 +332,31 @@ namespace MBN
                 /// <summary>UART port on PC10 (TX) and PC11 (RX).</summary>
                 public const String Usart3 = STM32H7.UartPort.Usart3;
 
-                /// <summary>UART port on PH13 (TX) and PH14 (RX), PB0 (CTS) and PA15 (RTS).</summary>
-                public const String Uart4 = STM32H7.UartPort.Uart4;
+                // /// <summary>UART port on PH13 (TX) and PH14 (RX), PB0 (CTS) and PA15 (RTS).</summary>
+                // public const String Uart4 = STM32H7.UartPort.Uart4;
 
-                /// <summary>UART port on PB13 (TX) and PB12 (RX), PC9 (CTS) and PC8 (RTS).</summary>
-                public const String Uart5 = STM32H7.UartPort.Uart5;
+                // /// <summary>UART port on PB13 (TX) and PB12 (RX), PC9 (CTS) and PC8 (RTS).</summary>
+                // public const String Uart5 = STM32H7.UartPort.Uart5;
 
-                /// <summary>UART port on PC6 (TX) and PC7 (RX).</summary>
-                public const String Usart6 = STM32H7.UartPort.Usart6;
+                // /// <summary>UART port on PC6 (TX) and PC7 (RX).</summary>
+                // public const String Usart6 = STM32H7.UartPort.Usart6;
 
-                /// <summary>UART port on PF7 (TX) and PF6 (RX), PF9 (CTS) and PF8 (RTS).</summary>
-                public const String Uart7 = STM32H7.UartPort.Uart7;
+                // /// <summary>UART port on PF7 (TX) and PF6 (RX), PF9 (CTS) and PF8 (RTS).</summary>
+                // public const String Uart7 = STM32H7.UartPort.Uart7;
 
-                /// <summary>UART port on PJ8 (TX) and PJ9 (RX).</summary>
-                public const String Uart8 = STM32H7.UartPort.Uart8;
+                // /// <summary>UART port on PJ8 (TX) and PJ9 (RX).</summary>
+                // public const String Uart8 = STM32H7.UartPort.Uart8;
             }
 
             /// <summary>I2C bus definitions.</summary>
             public static class I2cBus
             {
-                /// <summary>I2C bus on PB9 (SDA) and PB8 (SCL).</summary>
-                public const String I2c1 = STM32H7.I2cBus.I2c1;
+                /// <summary>I2C bus on D15 (SDA) and D14 (SCL).</summary>
+                public const Int32 I2c1 = 1;
                 /// <summary>I2C bus on PB11 (SDA) and PB10 (SCL).</summary>
-                public const String I2c2 = STM32H7.I2cBus.I2c2;
-                /// <summary>I2C bus on PH8 (SDA) and PH7 (SCL).</summary>
-                public const String I2c3 = STM32H7.I2cBus.I2c3;
+                // public const String I2c2 = STM32H7.I2cBus.I2c2;
+                // /// <summary>I2C bus on PH8 (SDA) and PH7 (SCL).</summary>
+                // public const String I2c3 = STM32H7.I2cBus.I2c3;
             }
 
             /// <summary>SPI bus definitions.</summary>
@@ -419,7 +419,7 @@ namespace MBN
             ComPort = Stm32f769iDisco.UartPort.Usart6,
             Rx = STM32H7.GpioPin.PC7,
             Tx = STM32H7.GpioPin.PC6,
-            I2cBus = Stm32f769iDisco.I2cBus.I2c2,
+            I2cBus = Stm32f769iDisco.I2cBus.I2c1,
             Scl = STM32H7.GpioPin.PB10,
             Sda = STM32H7.GpioPin.PB11,
             Name = "SocketOne"
@@ -446,7 +446,7 @@ namespace MBN
             ComPort = Stm32f769iDisco.UartPort.Usart2,
             Rx = STM32H7.GpioPin.PD6,
             Tx = STM32H7.GpioPin.PD5,
-            I2cBus = Stm32f769iDisco.I2cBus.I2c2,
+            I2cBus = Stm32f769iDisco.I2cBus.I2c1,
             Scl = STM32H7.GpioPin.PB10,
             Sda = STM32H7.GpioPin.PB11,
             Name = "SocketTwo"

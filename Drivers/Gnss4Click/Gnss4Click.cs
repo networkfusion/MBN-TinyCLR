@@ -1,5 +1,5 @@
 ﻿#if (NANOFRAMEWORK_1_0)
-using Windows.Devices.Uart;
+using Windows.Devices.SerialCommunication;
 #else
 using GHIElectronics.TinyCLR.Devices.Uart;
 #endif
