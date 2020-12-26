@@ -33,8 +33,15 @@ It's as simple as :
 
 ## **How it works**
 
-The main concept in MBN Core is "Sockets".
+The main concept in MBNHardware is `Sockets`.
 Sockets designate the physical Mikrobus sockets available on different boards.
+
+Each socket has a number and is accessible in code using the following syntax :
+
+```csharp
+_transmitter = new T4_20mAClick(Hardware.SocketOne);  // Socket #1 on Ram board
+_receiver = new T4_20mAClick(Hardware.SC20260_1);  // Socket #1 on SC20260D board
+```
 
 So far, the current boards are supported :
 
@@ -46,13 +53,6 @@ So far, the current boards are supported :
 
 ### nanoFramework - WiP
 * STM32F769I-Discovery
-  
-Each socket has a number and is accessible in code using the following syntax :
-
-```csharp
-_transmitter = new T4_20mAClick(Hardware.SocketOne);  // Socket #1 on Ram board
-_receiver = new T4_20mAClick(Hardware.SC20260_1);  // Socket #1 on SC20260D board
-```
 
 ## **Virtual sockets**
 
