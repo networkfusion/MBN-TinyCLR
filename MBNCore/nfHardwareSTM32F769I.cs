@@ -122,7 +122,7 @@ namespace MBN
             public String SpiBus;
 
             /// <summary>
-            /// I2C Bus
+            /// I²C Bus
             /// </summary>
             public Int32 I2cBus;
 
@@ -132,7 +132,7 @@ namespace MBN
             public Object LockSpi;
 
             /// <summary>
-            /// I2C Bus lock object
+            /// I²C Bus lock object
             /// </summary>
             public Object LockI2c;
 
@@ -212,15 +212,15 @@ namespace MBN
 
                 }
 
-                // /// <summary>PWM controller 2.</summary>
-                // public static class Controller2
-                // {
-                //     public const String Id = STM32H7.PwmChannel.Tim2;
+                /// <summary>PWM controller 2.</summary>
+                public static class Controller2
+                {
+                    public const String Id = "TIM2";
 
-                //     public const Int32 PA15 = STM32H7.PwmChannel.Channel0;
-                //     public const Int32 PB3 = STM32H7.PwmChannel.Channel1;
-                //     public const Int32 PA3 = STM32H7.PwmChannel.Channel3;
-                // }
+                    // public const Int32 PA15 = STM32H7.PwmChannel.Channel0;
+                    // public const Int32 PB3 = STM32H7.PwmChannel.Channel1;
+                    // public const Int32 PA3 = STM32H7.PwmChannel.Channel3;
+                }
 
                 // /// <summary>PWM controller 3.</summary>
                 // public static class Controller3
@@ -343,14 +343,14 @@ namespace MBN
                 public const String Uart8 = "COM8";
             }
 
-            /// <summary>I2C bus definitions.</summary>
+            /// <summary>I²C bus definitions.</summary>
             public static class I2cBus
             {
-                /// <summary>I2C bus on D15 (SDA) and D14 (SCL).</summary>
+                /// <summary>I²C bus on D15 (SDA) and D14 (SCL).</summary>
                 public const Int32 I2c1 = 1;
-                /// <summary>I2C bus on PB11 (SDA) and PB10 (SCL).</summary>
+                /// <summary>I²C bus on PB11 (SDA) and PB10 (SCL).</summary>
                 public const Int32 I2c2 = 2;
-                /// <summary>I2C bus on PH8 (SDA) and PH7 (SCL).</summary>
+                /// <summary>I²C bus on PH8 (SDA) and PH7 (SCL).</summary>
                 public const Int32 I2c3 = 3;
             }
 
@@ -500,15 +500,15 @@ namespace MBN
 
             LockI2C = new Object();
             LockSPI = new Object();
-            Led1 = GpioController.GetDefault().OpenPin(SC20260.GpioPin.PK4);
-            Led1.SetDriveMode(GpioPinDriveMode.Output);
-            Led1.Write(GpioPinValue.Low);
-            Led2 = GpioController.GetDefault().OpenPin(SC20260.GpioPin.PK5);
-            Led2.SetDriveMode(GpioPinDriveMode.Output);
-            Led2.Write(GpioPinValue.Low);
-            Led3 = GpioController.GetDefault().OpenPin(SC20260.GpioPin.PK6);
-            Led3.SetDriveMode(GpioPinDriveMode.Output);
-            Led3.Write(GpioPinValue.Low);
+            // Led1 = GpioController.GetDefault().OpenPin(SC20260.GpioPin.PK4);
+            // Led1.SetDriveMode(GpioPinDriveMode.Output);
+            // Led1.Write(GpioPinValue.Low);
+            // Led2 = GpioController.GetDefault().OpenPin(SC20260.GpioPin.PK5);
+            // Led2.SetDriveMode(GpioPinDriveMode.Output);
+            // Led2.Write(GpioPinValue.Low);
+            // Led3 = GpioController.GetDefault().OpenPin(SC20260.GpioPin.PK6);
+            // Led3.SetDriveMode(GpioPinDriveMode.Output);
+            // Led3.Write(GpioPinValue.Low);
             
         }
         #endregion
