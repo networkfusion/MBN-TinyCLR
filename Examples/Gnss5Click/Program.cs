@@ -12,14 +12,14 @@ namespace Examples
 
         static void Main()
         {
-            TestGnss5(Hardware.Socket1);
+            TestGnss5(Hardware.SocketOne);
 
             Thread.Sleep(Timeout.Infinite);
         }
 
         private static void TestGnss5(Hardware.Socket socket)
         {
-            _gnss4 = new Gnss5Click(socket);
+            _gnss5 = new Gnss5Click(socket);
 
             GPSUtilities.GSAFrameReceived += GPSUtilities_GSAFrameReceived;
             GPSUtilities.GGAFrameReceived += GPSUtilities_GGAFrameReceived;
