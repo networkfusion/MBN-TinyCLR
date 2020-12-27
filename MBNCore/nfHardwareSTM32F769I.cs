@@ -403,23 +403,23 @@ namespace MBN
         {
             AdcController = Stm32f769iDisco.AdcChannel.Controller1.Id,
             AdcChannel = Stm32f769iDisco.AdcChannel.Controller1.PA10, //TODO: need to check.
-            AnPin = STM32H7.GpioPin.PC0,
-            Rst = STM32H7.GpioPin.PJ3,
-            Cs = STM32H7.GpioPin.PJ4,
+            AnPin = STM32H7.GpioPin.PC0, //PinNumber('A',2), //GPIO pin purpose dependent on device
+            Rst = STM32H7.GpioPin.PJ3, //PinNumber('A',2), //GPIO module reset pin 
+            Cs = STM32H7.GpioPin.PJ4, //PinNumber('A',2), //SPI Chip Select?
             SpiBus = Stm32f769iDisco.SpiBus.Spi5, //TODO: need to check.
-            Sck = STM32H7.GpioPin.PI1,
-            Miso = STM32H7.GpioPin.PI2,
-            Mosi = STM32H7.GpioPin.PI3,
+            //Sck = STM32H7.GpioPin.PI1, //PinNumber('A',2),
+            //Miso = STM32H7.GpioPin.PI2, //PinNumber('A',2),
+            //Mosi = STM32H7.GpioPin.PI3, //PinNumber('A',2),
             PwmController = Stm32f769iDisco.PwmChannel.Controller1.Id,
             PwmChannel = Stm32f769iDisco.PwmChannel.Controller2.PA15,
-            PwmPin = STM32H7.GpioPin.PA15,
-            Int = STM32H7.GpioPin.PJ5,
+            PwmPin = STM32H7.GpioPin.PA15, //PinNumber('A',2),
+            Int = STM32H7.GpioPin.PJ5, //PinNumber('A',2), //GPIO Interupt Pin?
             ComPort = Stm32f769iDisco.UartPort.Usart6, //TODO: need to check.
-            Rx = STM32H7.GpioPin.PC7,
-            Tx = STM32H7.GpioPin.PC6,
+            //Rx = STM32H7.GpioPin.PC7, //PinNumber('A',2),
+            //Tx = STM32H7.GpioPin.PC6, //PinNumber('A',2),
             I2cBus = Stm32f769iDisco.I2cBus.I2c1, //TODO: need to check.
-            Scl = STM32H7.GpioPin.PB10,
-            Sda = STM32H7.GpioPin.PB11,
+            //Scl = STM32H7.GpioPin.PB10, //PinNumber('A',2),
+            //Sda = STM32H7.GpioPin.PB11, //PinNumber('A',2),
             Name = "SocketOne"
         };
 
@@ -430,23 +430,23 @@ namespace MBN
         {
             AdcController = Stm32f769iDisco.AdcChannel.Controller1.Id,
             AdcChannel = Stm32f769iDisco.AdcChannel.Controller1.PA4, //TODO: need to check.
-            AnPin = STM32H7.GpioPin.PC3,
-            Rst = STM32H7.GpioPin.PJ6,
-            Cs = STM32H7.GpioPin.PH15,
+            AnPin = STM32H7.GpioPin.PC3, //PinNumber('A',2), //GPIO pin purpose dependent on device
+            Rst = STM32H7.GpioPin.PJ6, //PinNumber('A',2), //GPIO module reset pin 
+            Cs = STM32H7.GpioPin.PH15, //PinNumber('A',2), //SPI Chip Select?
             SpiBus = Stm32f769iDisco.SpiBus.Spi5, //TODO: need to check.
-            Sck = STM32H7.GpioPin.PI1,
-            Miso = STM32H7.GpioPin.PI2,
-            Mosi = STM32H7.GpioPin.PI3,
+            //Sck = STM32H7.GpioPin.PI1, //PinNumber('A',2),
+            //Miso = STM32H7.GpioPin.PI2, //PinNumber('A',2),
+            //Mosi = STM32H7.GpioPin.PI3, //PinNumber('A',2),
             PwmController = Stm32f769iDisco.PwmChannel.Controller1.Id,
             PwmChannel = Stm32f769iDisco.PwmChannel.Controller1.PK1,
-            PwmPin = STM32H7.GpioPin.PK1,
-            Int = STM32H7.GpioPin.PI15,
+            PwmPin = STM32H7.GpioPin.PK1, //PinNumber('A',2),
+            Int = STM32H7.GpioPin.PI15, //PinNumber('A',2), //GPIO Interupt Pin?
             ComPort = Stm32f769iDisco.UartPort.Usart5, //TODO: need to check.
-            Rx = STM32H7.GpioPin.PD6,
-            Tx = STM32H7.GpioPin.PD5,
+            //Rx = STM32H7.GpioPin.PD6, //PinNumber('A',2),
+            //Tx = STM32H7.GpioPin.PD5, //PinNumber('A',2),
             I2cBus = Stm32f769iDisco.I2cBus.I2c1, //TODO: need to check.
-            Scl = STM32H7.GpioPin.PB10,
-            Sda = STM32H7.GpioPin.PB11,
+            //Scl = STM32H7.GpioPin.PB10, //PinNumber('A',2),
+            //Sda = STM32H7.GpioPin.PB11, //PinNumber('A',2),
             Name = "SocketTwo"
         };
 
