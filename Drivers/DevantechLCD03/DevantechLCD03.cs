@@ -13,6 +13,7 @@
 
 #if (NANOFRAMEWORK_1_0)
 using Windows.Devices.SerialCommunication;
+using Windows.Storage.Streams;
 using System.Device.I2c;
 #else
 using GHIElectronics.TinyCLR.Devices.Uart;
