@@ -8,8 +8,6 @@ namespace Examples
 {
     class Program
     {
-        private static Gnss5Click _gnss5;
-
         static void Main()
         {
             TestGnss5(Hardware.SocketOne);
@@ -19,7 +17,7 @@ namespace Examples
 
         private static void TestGnss5(Hardware.Socket socket)
         {
-            _gnss5 = new Gnss5Click(socket);
+            Gnss5Click _gnss5 = new Gnss5Click(socket);
 
             GPSUtilities.GSAFrameReceived += GPSUtilities_GSAFrameReceived;
             GPSUtilities.GGAFrameReceived += GPSUtilities_GGAFrameReceived;
