@@ -217,7 +217,7 @@ namespace MBN.Modules
                 SignalOrigin = ResolveSignalOrigin(str.Substring(1, 2));
                 FixMode = Byte.Parse(tab[2]);
 #if (NANOFRAMEWORK_1_0)
-                if (tab[1] == string.Empty)
+                if (tab[1] == string.Empty || tab[1] == null)
                 {
                     Auto2D3D = Char.MinValue;
                 }
@@ -339,7 +339,7 @@ namespace MBN.Modules
                     ? new TimeSpan(Convert.ToInt32(tab[1].Substring(0, 2)), Convert.ToInt32(tab[1].Substring(2, 2)), Convert.ToInt32(tab[1].Substring(4, 2)))
                     : new TimeSpan(0);
 #if (NANOFRAMEWORK_1_0)
-                if (tab[2] == string.Empty)
+                if (tab[2] == string.Empty || tab[2] == null)
                 {
                     ValidFrame = false;
                 }
@@ -352,7 +352,7 @@ namespace MBN.Modules
 #endif
                 Latitude = (Single)Double.Parse(tab[3]) / 100;
 #if (NANOFRAMEWORK_1_0)
-                if (tab[4] == string.Empty)
+                if (tab[4] == string.Empty || tab[4] == null)
                 {
                     LatitudeHemisphere = Char.MinValue;
                 }
@@ -365,7 +365,7 @@ namespace MBN.Modules
 #endif
                 Longitude = (Single)Double.Parse(tab[5]) / 100;
 #if (NANOFRAMEWORK_1_0)
-                if (tab[6] == string.Empty)
+                if (tab[6] == string.Empty || tab[6] == null)
                 {
                     LongitudePosition = Char.MinValue;
                 }
@@ -669,7 +669,7 @@ namespace MBN.Modules
                 FixQuality = Byte.Parse(tab[6]);
                 SatellitesTracked = Byte.Parse(tab[7]);
 #if (NANOFRAMEWORK_1_0)
-                if (tab[10] == string.Empty)
+                if (tab[10] == string.Empty || tab[10] == null)
                 {
                     AltitudeUnit = Char.MinValue;
                 }
@@ -682,7 +682,7 @@ namespace MBN.Modules
 #endif
 
 #if (NANOFRAMEWORK_1_0)
-                if (tab[12] == string.Empty)
+                if (tab[12] == string.Empty || tab[12] == null)
                 {
                     GeoideHeightUnit = Char.MinValue;
                 }
@@ -695,7 +695,7 @@ namespace MBN.Modules
 #endif
                 Latitude = (Single)Double.Parse(tab[2]) / 100;
 #if (NANOFRAMEWORK_1_0)
-                if (tab[3] == string.Empty)
+                if (tab[3] == string.Empty || tab[3] == null)
                 {
                     LatitudeHemisphere = Char.MinValue;
                 }
@@ -708,7 +708,7 @@ namespace MBN.Modules
 #endif
                 Longitude = (Single)Double.Parse(tab[4]) / 100;
 #if (NANOFRAMEWORK_1_0)
-                if (tab[5] == string.Empty)
+                if (tab[5] == string.Empty || tab[5] == null)
                 {
                     LongitudePosition = Char.MinValue;
                 }
