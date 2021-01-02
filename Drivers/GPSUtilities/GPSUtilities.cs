@@ -216,7 +216,18 @@ namespace MBN.Modules
                 var tab = str.Split(',');
                 SignalOrigin = ResolveSignalOrigin(str.Substring(1, 2));
                 FixMode = Byte.Parse(tab[2]);
-                Auto2D3D = String.IsNullOrEmpty(tab[1]) ? Char.MinValue : tab[1][0];
+#if (NANOFRAMEWORK_1_0)
+                if (tab[1] == string.Empty)
+                {
+                    Auto2D3D = Char.MinValue;
+                }
+                else
+                {
+                    Auto2D3D = tab[1][0];
+                }
+#else
+                Auto2D3D = string.IsNullOrEmpty(tab[1]) ? Char.MinValue : tab[1][0];
+#endif
                 Checksum = (Byte)Convert.ToInt32(str.Right(2), 16);
                 PDOP = (Single)Double.Parse(tab[15]);
                 HDOP = (Single)Double.Parse(tab[16]);
@@ -226,13 +237,13 @@ namespace MBN.Modules
                     PRN[i] = tab[3 + i] == "" ? (Byte)0 : Convert.ToByte(tab[3 + i]);
             }
         }
-        #endregion
+#endregion
 
-        #region RMC frame event
+#region RMC frame event
         /// <summary>NMEA RMC sentence fields</summary>
         public class RMCFrameEventArgs
         {
-            #region Fields
+#region Fields
             /// <summary>Gets the signal origin.</summary>
             /// <value>The long name of the satellite system that sent the sentence</value>
             public String SignalOrigin
@@ -317,7 +328,7 @@ namespace MBN.Modules
             {
                 get;
             }
-            #endregion
+#endregion
             /// <summary>Initializes a new instance of the <see cref="RMCFrameEventArgs" /> class.</summary>
             /// <param name="str">The NMEA RMC sentence from the GPS module.</param>
             public RMCFrameEventArgs(String str)
@@ -327,11 +338,45 @@ namespace MBN.Modules
                 FixTime = tab[1] != String.Empty
                     ? new TimeSpan(Convert.ToInt32(tab[1].Substring(0, 2)), Convert.ToInt32(tab[1].Substring(2, 2)), Convert.ToInt32(tab[1].Substring(4, 2)))
                     : new TimeSpan(0);
+#if (NANOFRAMEWORK_1_0)
+                if (tab[2] == string.Empty)
+                {
+                    ValidFrame = false;
+                }
+                else
+                {
+                    ValidFrame = tab[2][0] == 'A';
+                }
+#else
                 ValidFrame = String.IsNullOrEmpty(tab[2]) ? false : tab[2][0] == 'A';
+#endif
                 Latitude = (Single)Double.Parse(tab[3]) / 100;
+#if (NANOFRAMEWORK_1_0)
+                if (tab[4] == string.Empty)
+                {
+                    LatitudeHemisphere = Char.MinValue;
+                }
+                else
+                {
+                    LatitudeHemisphere = tab[4][0];
+                }
+#else
                 LatitudeHemisphere = String.IsNullOrEmpty(tab[4]) ? Char.MinValue : tab[4][0];
+#endif
                 Longitude = (Single)Double.Parse(tab[5]) / 100;
+#if (NANOFRAMEWORK_1_0)
+                if (tab[6] == string.Empty)
+                {
+                    LongitudePosition = Char.MinValue;
+                }
+                else
+                {
+                    LongitudePosition = tab[6][0];
+                }
+#else
                 LongitudePosition = String.IsNullOrEmpty(tab[6]) ? Char.MinValue : tab[6][0];
+#endif
+
                 SpeedKnots = (Single)Double.Parse(tab[7]);
                 SpeedKm = SpeedKnots * 1.852f;
                 TrackAngle = (Single)Double.Parse(tab[8]);
@@ -340,9 +385,9 @@ namespace MBN.Modules
                 Checksum = (Byte)Convert.ToInt32(str.Right(2), 16);
             }
         }
-        #endregion
+#endregion
 
-        #region GSV frame
+#region GSV frame
         /// <summary>
         /// A structure containing necessary information to identify a Satellite.
         /// </summary>
@@ -391,7 +436,7 @@ namespace MBN.Modules
 
         public class GSVFrameEventArgs : EventArgs
         {
-            #region Fields
+#region Fields
             /// <summary>Gets the signal origin.</summary>
             /// <value>The long name of the satellite system that sent the sentence</value>
             public String SignalOrigin
@@ -470,7 +515,7 @@ namespace MBN.Modules
                        ", Satellite ID 1: " + SatelliteID1 + ", Satellite ID 2: " + SatelliteID2 +
                        ", Satellite ID 3: " + SatelliteID3 + ", Satellite ID 4: " + SatelliteID4;
 
-            #endregion
+#endregion
             /// <summary>Initializes a new instance of the <see cref="GSVFrameEventArgs" /> class.</summary>
             /// <param name="str">The NMEA GSV sentence from the GPS module.</param>
             public GSVFrameEventArgs(String str)
@@ -515,13 +560,13 @@ namespace MBN.Modules
                 SatelliteID4 = satId4;
             }
         }
-        #endregion
+#endregion
 
-        #region GGA frame event
+#region GGA frame event
         /// <summary>NMEA GGA sentence fields</summary>
         public class GGAFrameEventArgs
         {
-            #region Fields
+#region Fields
             /// <summary>Gets the signal origin.</summary>
             /// <value>The long name of the satellite system that sent the sentence</value>
             public String SignalOrigin
@@ -611,7 +656,7 @@ namespace MBN.Modules
             {
                 get;
             }
-            #endregion
+#endregion
             /// <summary>Initializes a new instance of the <see cref="GGAFrameEventArgs" /> class.</summary>
             /// <param name="str">The NMEA GGA sentence from the GPS module.</param>
             public GGAFrameEventArgs(String str)
@@ -623,25 +668,71 @@ namespace MBN.Modules
                     : new TimeSpan(0);
                 FixQuality = Byte.Parse(tab[6]);
                 SatellitesTracked = Byte.Parse(tab[7]);
+#if (NANOFRAMEWORK_1_0)
+                if (tab[10] == string.Empty)
+                {
+                    AltitudeUnit = Char.MinValue;
+                }
+                else
+                {
+                    AltitudeUnit = tab[10][0];
+                }
+#else
                 AltitudeUnit = String.IsNullOrEmpty(tab[10]) ? Char.MinValue : tab[10][0];
+#endif
+
+#if (NANOFRAMEWORK_1_0)
+                if (tab[12] == string.Empty)
+                {
+                    GeoideHeightUnit = Char.MinValue;
+                }
+                else
+                {
+                    GeoideHeightUnit = tab[12][0];
+                }
+#else
                 GeoideHeightUnit = String.IsNullOrEmpty(tab[12]) ? Char.MinValue : tab[12][0];
+#endif
                 Latitude = (Single)Double.Parse(tab[2]) / 100;
+#if (NANOFRAMEWORK_1_0)
+                if (tab[3] == string.Empty)
+                {
+                    LatitudeHemisphere = Char.MinValue;
+                }
+                else
+                {
+                    LatitudeHemisphere = tab[3][0];
+                }
+#else
                 LatitudeHemisphere = String.IsNullOrEmpty(tab[3]) ? Char.MinValue : tab[3][0];
+#endif
                 Longitude = (Single)Double.Parse(tab[4]) / 100;
+#if (NANOFRAMEWORK_1_0)
+                if (tab[5] == string.Empty)
+                {
+                    LongitudePosition = Char.MinValue;
+                }
+                else
+                {
+                    LongitudePosition = tab[5][0];
+                }
+#else
                 LongitudePosition = String.IsNullOrEmpty(tab[5]) ? Char.MinValue : tab[5][0];
+#endif
+
                 HorizontalDilution = (Single)Double.Parse(tab[8]);
                 Altitude = (Single)Double.Parse(tab[9]);
                 GeoideHeight = (Single)Double.Parse(tab[11]);
                 Checksum = (Byte)Convert.ToInt32(str.Right(2), 16);
             }
         }
-        #endregion
+#endregion
 
-        #region PMTK frame
+#region PMTK frame
         /// <summary>Quectel L86 proprietary sentence fields</summary>
         public class L86PMTKFrameEventArgs : EventArgs
         {
-            #region Fields
+#region Fields
             /// <summary>Gets the splitted sentence.</summary>
             /// <value>The splitted sentence.</value>
             public String[] SplittedSentence
@@ -655,7 +746,7 @@ namespace MBN.Modules
             {
                 get;
             }
-            #endregion
+#endregion
             /// <summary>Initializes a new instance of the <see cref="L86PMTKFrameEventArgs" /> class.</summary>
             /// <param name="str">The L86 proprietary sentence from the GPS module.</param>
             public L86PMTKFrameEventArgs(String str)
@@ -664,13 +755,13 @@ namespace MBN.Modules
                 PacketType = Convert.ToInt32(str.Substring(5, 3));
             }
         }
-        #endregion
+#endregion
 
-        #region PSRF frame
+#region PSRF frame
         /// <summary>Quectel L30 proprietary sentence fields</summary>
         public class L30PSRFFrameEventArgs : EventArgs
         {
-            #region Fields
+#region Fields
             /// <summary>Gets the splitted sentence.</summary>
             /// <value>The splitted sentence.</value>
             public String[] SplittedSentence
@@ -683,7 +774,7 @@ namespace MBN.Modules
             {
                 get;
             }
-            #endregion
+#endregion
             /// <summary>Initializes a new instance of the <see cref="L30PSRFFrameEventArgs" /> class.</summary>
             /// <param name="str">The L30 proprietary sentence from the GPS module.</param>
             public L30PSRFFrameEventArgs(String str)
@@ -692,7 +783,7 @@ namespace MBN.Modules
                 PacketType = Convert.ToInt32(str.Substring(5, 3));
             }
         }
-        #endregion
+#endregion
     }
 }
 
