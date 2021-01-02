@@ -16,6 +16,7 @@
 #if (NANOFRAMEWORK_1_0)
 using System.Device.Gpio;
 using Windows.Devices.SerialCommunication;
+using Windows.Storage.Streams;
 #else
 using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Uart;
