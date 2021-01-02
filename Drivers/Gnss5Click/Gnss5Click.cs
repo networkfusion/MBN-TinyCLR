@@ -61,7 +61,7 @@ namespace MBN.Modules
                 Parse(strtmp);
         }
 
-        /// <summary>Sends a command to the GNSS 4 module.</summary>
+        /// <summary>Sends a command to the GNSS 5 module.</summary>
         /// <param name="cmd">The command, without both the starting '$' and the ending '*'.</param>
         public void SendCommand(string cmd)
         {
