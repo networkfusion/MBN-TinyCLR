@@ -410,7 +410,7 @@ namespace MBN
             Miso = Stm32f769iDisco.PinNumber('B',14),
             Mosi = Stm32f769iDisco.PinNumber('B',15),
             PwmController = Stm32f769iDisco.PwmChannel.Controller1.Id,
-            PwmChannel = Stm32f769iDisco.PwmChannel.Controller2.PA15,
+            //PwmChannel = Stm32f769iDisco.PwmChannel.Controller2.PA15,
             PwmPin = Stm32f769iDisco.PinNumber('F',7),
             Int = Stm32f769iDisco.PinNumber('J',1), //GPIO Interupt Pin?
             ComPort = Stm32f769iDisco.UartPort.Usart6, //TODO: need to check.
@@ -437,7 +437,7 @@ namespace MBN
             Miso = Stm32f769iDisco.PinNumber('B',14),
             Mosi = Stm32f769iDisco.PinNumber('B',15),
             PwmController = Stm32f769iDisco.PwmChannel.Controller1.Id,
-            PwmChannel = Stm32f769iDisco.PwmChannel.Controller1.PK1, Stm32f769iDisco.PinNumber('C',8),
+            //PwmChannel = Stm32f769iDisco.PwmChannel.Controller1.PK1, Stm32f769iDisco.PinNumber('C',8),
             PwmPin = Stm32f769iDisco.PinNumber('C',8),
             Int = Stm32f769iDisco.PinNumber('F',6), //GPIO Interupt Pin?
             ComPort = Stm32f769iDisco.UartPort.Uart5, //TODO: need to check.
