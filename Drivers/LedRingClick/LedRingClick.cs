@@ -37,6 +37,13 @@ namespace MBN.Modules
             _rst.SetDriveMode(gpio.GpioPinDriveMode.Output);
             _rst.Write(gpio.GpioPinValue.High);
 
+#if (NANOFRAMEWORK_1_0)
+            _ledRing = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            {
+                Mode = SpiMode.Mode3,
+                ClockFrequency = 1000000
+            });
+#else
             _ledRing = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
@@ -44,6 +51,7 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode3,
                 ClockFrequency = 1000000
             });
+#endif
 
             _rst.Write(gpio.GpioPinValue.Low);
             Thread.Sleep(1);

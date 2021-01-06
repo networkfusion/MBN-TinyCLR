@@ -256,16 +256,22 @@ namespace MBN.Modules
 		public OLEDCClick(Hardware.Socket socket)
 		{
 			_socket = socket;
-            SpiConnectionSettings settings = new SpiConnectionSettings
+#if (NANOFRAMEWORK_1_0)
+            _oled = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            {
+                Mode = SpiMode.Mode3,
+                ClockFrequency = 40 * 1000 * 1000
+            });
+#else
+            _oled = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
                 ChipSelectLine = GpioController.GetDefault().OpenPin(socket.Cs),
-                ChipSelectActiveState = false,
+				ChipSelectActiveState = false,
                 Mode = SpiMode.Mode3,
                 ClockFrequency = 40 * 1000 * 1000
-            };
-
-            _oled = SpiController.FromName(socket.SpiBus).GetDevice(settings);
+            });
+#endif
 
             _resetPin = GpioController.GetDefault().OpenPin(socket.Rst);
             _resetPin.SetDriveMode(GpioPinDriveMode.Output);

@@ -19,6 +19,7 @@
 #if (NANOFRAMEWORK_1_0)
 using Windows.Devices.Spi;
 #else
+using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Spi;
 #endif
 
@@ -68,13 +69,22 @@ namespace MBN.Modules
         {
             _socket = socket;
             // Initialize SPI
-            _pot = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
+#if (NANOFRAMEWORK_1_0)
+            _pot = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
             {
-                ChipSelectType = SpiChipSelectType.Gpio,
-                ChipSelectLine = GHIElectronics.TinyCLR.Devices.Gpio.GpioController.GetDefault().OpenPin(socket.Cs),
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 1000000
             });
+#else
+            _pot = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
+            {
+                ChipSelectType = SpiChipSelectType.Gpio,
+                ChipSelectLine = GpioController.GetDefault().OpenPin(socket.Cs),
+                Mode = SpiMode.Mode0,
+                ClockFrequency = 1000000
+            });
+#endif
+
             _currentResistance = initialResistance;
             Resistance = _currentResistance;
         }

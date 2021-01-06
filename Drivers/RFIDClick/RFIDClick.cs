@@ -225,6 +225,13 @@ namespace MBN.Modules
             _irqIn.Write(GpioPinValue.High);
             
             // Now that the chip is in SPI mode, we can create the SPI configuration and talk to the module
+#if (NANOFRAMEWORK_1_0)
+            _rfid = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            {
+                Mode = SpiMode.Mode0,
+                ClockFrequency = 2000000
+            });
+#else
             _rfid = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
@@ -232,6 +239,7 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000
             });
+#endif
 
             _rfid.Write(new byte[] { 0x01, 0x01 });
 

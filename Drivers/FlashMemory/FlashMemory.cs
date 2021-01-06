@@ -73,6 +73,13 @@ namespace MBN.Modules
         public FlashMemory(Hardware.Socket socket, Boolean detectParameters = true, Int32 hold = -1, Int32 wp = -1)
         {
             _socket = socket;
+#if (NANOFRAMEWORK_1_0)
+            _flash = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            {
+                Mode = SpiMode.Mode0,
+                ClockFrequency = 10000000
+            });
+#else
             _flash = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
@@ -80,6 +87,7 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 10000000
             });
+#endif
 
             if (wp != -1)
             {
