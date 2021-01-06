@@ -1,6 +1,10 @@
 ﻿#if (NANOFRAMEWORK_1_0)
+#if USE_I2C
+using System.Device.I2c;
+#else
 using Windows.Devices.SerialCommunication;
 using Windows.Storage.Streams;
+#endif
 #else
 using GHIElectronics.TinyCLR.Devices.Uart;
 #endif
@@ -15,7 +19,11 @@ namespace MBN.Modules
     public sealed partial class Gnss5Click
     {
 #if (NANOFRAMEWORK_1_0)
+#if USE_I2C
+        private readonly I2cDevice _gnss;
+#else
         private readonly SerialDevice _gnss;
+#endif
 #else
         private readonly UartController _gnss;
 #endif
@@ -30,6 +38,14 @@ namespace MBN.Modules
             _sl.MessageAvailable += Sl_MessageAvailable;
 
 #if (NANOFRAMEWORK_1_0)
+#if USE_I2C
+            // store I2C address
+            //_address = address;
+            var address = 0x42;
+
+            // instantiate I2C controller
+            _gnss = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, address, I2cBusSpeed.FastMode));
+#else
             _gnss = SerialDevice.FromId(socket.ComPort);
 
             // set parameters
@@ -38,6 +54,7 @@ namespace MBN.Modules
             _gnss.StopBits = SerialStopBitCount.One;
             _gnss.Handshake = SerialHandshake.None;
             _gnss.DataBits = 8;
+#endif
 #else
             _gnss = UartController.FromName(socket.ComPort);
             _gnss.SetActiveSettings(new UartSetting() { BaudRate = 9600, DataBits = 8, Parity = UartParity.None, StopBits = UartStopBitCount.One, Handshaking = UartHandshake.None });
