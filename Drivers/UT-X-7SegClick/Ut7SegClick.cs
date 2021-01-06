@@ -51,6 +51,10 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode3,
                 ClockFrequency = 2000000
             });
+
+            _en = new GpioController().OpenPin(socket.PwmPin);
+            _en.SetPinMode(PinMode.Output);
+            _en.Write(initialState ? PinValue.High : PinValue.Low);
 #else
             _seg = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
@@ -59,11 +63,11 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode3,
                 ClockFrequency = 2000000
             });
-#endif
 
             _en = GpioController.GetDefault().OpenPin(socket.PwmPin);
             _en.SetDriveMode(GpioPinDriveMode.Output);
             _en.Write(initialState ? GpioPinValue.High : GpioPinValue.Low);
+#endif
         }
 
         /// <summary>

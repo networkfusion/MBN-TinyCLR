@@ -39,8 +39,13 @@ namespace MBN.Modules
         /// <param name="socket">The socket on which the module is plugged.</param>
         public UniHallClick(Hardware.Socket socket)
         {
+#if (NANOFRAMEWORK_1_0)
+            _int = new GpioController().OpenPin(socket.Int);
+            _int.SetPinMode(PinMode.InputPullUp);
+#else
             _int = GpioController.GetDefault().OpenPin(socket.Int);
             _int.SetDriveMode(GpioPinDriveMode.InputPullUp);
+#endif
             _int.ValueChanged += Int_ValueChanged;
         }
 

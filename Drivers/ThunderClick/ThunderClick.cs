@@ -223,9 +223,6 @@ namespace MBN.Modules
         public ThunderClick(Hardware.Socket socket)
         {
             _socket = socket;
-            IRQ = GpioController.GetDefault().OpenPin(socket.Int);
-            IRQ.SetDriveMode(GpioPinDriveMode.Input);
-            IRQ.ValueChanged += IRQ_ValueChanged;
 
             // Initialize SPI
 #if (NANOFRAMEWORK_1_0)
@@ -234,6 +231,9 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000
             });
+
+            IRQ = new GpioController().OpenPin(socket.Int);
+            IRQ.SetPinMode(PinMode.Input);
 #else
             _thunder = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
@@ -242,7 +242,12 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000
             });
+
+            IRQ = GpioController.GetDefault().OpenPin(socket.Int);
+            IRQ.SetDriveMode(GpioPinDriveMode.Input);
 #endif
+
+            IRQ.ValueChanged += IRQ_ValueChanged;
 
             // Direct commands
             lock (_socket.LockSpi)

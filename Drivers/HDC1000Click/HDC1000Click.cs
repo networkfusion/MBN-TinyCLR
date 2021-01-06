@@ -88,9 +88,13 @@ namespace MBN.Modules
         {
             _socket = socket;
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((Int32)ic2Address, 100000));
-
+#if (NANOFRAMEWORK_1_0)
+            _dataReady = new GpioController().OpenPin(socket.Int);
+            _dataReady.SetPinMode(PinMode.InputPullUp);
+#else
             _dataReady = GpioController.GetDefault().OpenPin(socket.Int);
             _dataReady.SetDriveMode(GpioPinDriveMode.InputPullUp);
+#endif
             _dataReady.ValueChangedEdge = GpioPinEdge.FallingEdge;
             _dataReady.ValueChanged += DataReady_ValueChanged;
 

@@ -87,7 +87,16 @@ namespace MBN.Modules
         {
             _socket = socket;
             _mux2 = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, busSpeed));
+#if (NANOFRAMEWORK_1_0)
+            _rst = new GpioController().OpenPin(socket.Rst);
+            _rst.SetPinMode(PinMode.Output);
+            _rst.Write(PinValue.Low);
+            Thread.Sleep(100);
+            _rst.Write(PinValue.High);
 
+            _int = new GpioController().OpenPin(socket.Int);
+            _int.SetPinMode(PinMode.InputPullUp);
+#else
             _rst = GpioController.GetDefault().OpenPin(socket.Rst);
             _rst.SetDriveMode(GpioPinDriveMode.Output);
             _rst.Write(GpioPinValue.Low);
@@ -96,6 +105,7 @@ namespace MBN.Modules
 
             _int = GpioController.GetDefault().OpenPin(socket.Int);
             _int.SetDriveMode(GpioPinDriveMode.InputPullUp);
+#endif
             EnableInterrupts();
         }
 
