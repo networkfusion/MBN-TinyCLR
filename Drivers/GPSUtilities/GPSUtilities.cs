@@ -338,44 +338,11 @@ namespace MBN.Modules
                 FixTime = tab[1] != String.Empty
                     ? new TimeSpan(Convert.ToInt32(tab[1].Substring(0, 2)), Convert.ToInt32(tab[1].Substring(2, 2)), Convert.ToInt32(tab[1].Substring(4, 2)))
                     : new TimeSpan(0);
-#if (NANOFRAMEWORK_1_0)
-                if (tab[2] == string.Empty || tab[2] == null)
-                {
-                    ValidFrame = false;
-                }
-                else
-                {
-                    ValidFrame = tab[2][0] == 'A';
-                }
-#else
                 ValidFrame = String.IsNullOrEmpty(tab[2]) ? false : tab[2][0] == 'A';
-#endif
                 Latitude = (Single)Double.Parse(tab[3]) / 100;
-#if (NANOFRAMEWORK_1_0)
-                if (tab[4] == string.Empty || tab[4] == null)
-                {
-                    LatitudeHemisphere = Char.MinValue;
-                }
-                else
-                {
-                    LatitudeHemisphere = tab[4][0];
-                }
-#else
                 LatitudeHemisphere = String.IsNullOrEmpty(tab[4]) ? Char.MinValue : tab[4][0];
-#endif
                 Longitude = (Single)Double.Parse(tab[5]) / 100;
-#if (NANOFRAMEWORK_1_0)
-                if (tab[6] == string.Empty || tab[6] == null)
-                {
-                    LongitudePosition = Char.MinValue;
-                }
-                else
-                {
-                    LongitudePosition = tab[6][0];
-                }
-#else
                 LongitudePosition = String.IsNullOrEmpty(tab[6]) ? Char.MinValue : tab[6][0];
-#endif
 
                 SpeedKnots = (Single)Double.Parse(tab[7]);
                 SpeedKm = SpeedKnots * 1.852f;
@@ -668,57 +635,13 @@ namespace MBN.Modules
                     : new TimeSpan(0);
                 FixQuality = Byte.Parse(tab[6]);
                 SatellitesTracked = Byte.Parse(tab[7]);
-#if (NANOFRAMEWORK_1_0)
-                if (tab[10] == string.Empty || tab[10] == null)
-                {
-                    AltitudeUnit = Char.MinValue;
-                }
-                else
-                {
-                    AltitudeUnit = tab[10][0];
-                }
-#else
                 AltitudeUnit = String.IsNullOrEmpty(tab[10]) ? Char.MinValue : tab[10][0];
-#endif
 
-#if (NANOFRAMEWORK_1_0)
-                if (tab[12] == string.Empty || tab[12] == null)
-                {
-                    GeoideHeightUnit = Char.MinValue;
-                }
-                else
-                {
-                    GeoideHeightUnit = tab[12][0];
-                }
-#else
                 GeoideHeightUnit = String.IsNullOrEmpty(tab[12]) ? Char.MinValue : tab[12][0];
-#endif
                 Latitude = (Single)Double.Parse(tab[2]) / 100;
-#if (NANOFRAMEWORK_1_0)
-                if (tab[3] == string.Empty || tab[3] == null)
-                {
-                    LatitudeHemisphere = Char.MinValue;
-                }
-                else
-                {
-                    LatitudeHemisphere = tab[3][0];
-                }
-#else
                 LatitudeHemisphere = String.IsNullOrEmpty(tab[3]) ? Char.MinValue : tab[3][0];
-#endif
                 Longitude = (Single)Double.Parse(tab[4]) / 100;
-#if (NANOFRAMEWORK_1_0)
-                if (tab[5] == string.Empty || tab[5] == null)
-                {
-                    LongitudePosition = Char.MinValue;
-                }
-                else
-                {
-                    LongitudePosition = tab[5][0];
-                }
-#else
                 LongitudePosition = String.IsNullOrEmpty(tab[5]) ? Char.MinValue : tab[5][0];
-#endif
 
                 HorizontalDilution = (Single)Double.Parse(tab[8]);
                 Altitude = (Single)Double.Parse(tab[9]);
