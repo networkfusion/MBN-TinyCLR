@@ -3,13 +3,19 @@
 // See LICENSE file in the project root for full license information.
 //
 
-namespace MBN.Drivers
+using System;
+using System.Diagnostics;
+using System.Threading;
+#if (NANOFRAMEWORK_1_0)
+using Windows.Devices.Spi;
+using Windows.Devices.Gpio;
+#else
+using GHIElectronics.TinyCLR.Devices.Spi;
+using GHIElectronics.TinyCLR.Devices.Gpio;
+#endif
+
+namespace MBN.Modules
 {
-    using System;
-    using System.Threading;
-    using Windows.Devices.Spi;
-    using Windows.Devices.Gpio;
-    using System.Diagnostics;
 
     /// <summary>
     /// RTD Click Driver
@@ -106,16 +112,24 @@ namespace MBN.Drivers
         public SensorType Sensor { get; private set; }
 
 
+
+
         /// <summary>
-        /// Opens the SPI connection and control pin
+        /// Initializes a new instance of the <see cref="RTDClick"/> class.
         /// </summary>
-        /// <param name="spiBus">The SPI bus</param>
-        /// <param name="csPin">Chip Enable(CE)/Select(CS) pin</param>
-        public RTDClick(string spiBus, int csPin)
+        /// <param name="socket">The socket on which the RTD Click board is plugged on MikroBus.Net board</param>
+        ///   <param name="config"> The configuration of the sensor</param>
+        ///   <param name="referenceResistor">The reference resistor value (e.g. 470ohm)</param>
+        ///   <param name="sensor">The type of RTD used</param>
+        /// <exception cref="DeviceInitialisationException">RTD module not detected</exception>
+        public RTDClick(Hardware.Socket socket, byte config, float referenceResistor = 470, SensorType sensor = SensorType.PT100)
         {
+            //_socket = socket;
+
+
             // Chip Select : Active Low
             // Clock : Active High, Data clocked in on rising edge
-            var connectionSettings = new SpiConnectionSettings(csPin)
+            var connectionSettings = new SpiConnectionSettings(socket.Cs)
             {
                 DataBitLength = 8,
                 ClockFrequency = 4 * 1000 * 1000, //- max 5MHz
@@ -125,22 +139,10 @@ namespace MBN.Drivers
             };
 
             // create SPI device for Max31865
-            _spiDevice = SpiDevice.FromId(spiBus, connectionSettings);
-
-        }
+            _spiDevice = SpiDevice.FromId(socket.SpiBus, connectionSettings);
 
 
-        /// <summary>
-        ///   Initializes the driver according to your sensor</param>
-        ///   <param name="irqPin"> IRQ (Data Ready) pin as a Socket.Pin</param>
-        ///   <param name="config"> The configuration of the sensor</param>
-        ///   <param name="referenceResistor">The reference resistor value (e.g. 400ohm for PT100, 4000ohm for PT1000)</param>
-        ///   <param name="sensor">The type of RTD used</param>
-        /// </summary>
-        public void Initialize(int irqPin, byte config, float referenceResistor = 400, SensorType sensor = SensorType.PT100)
-        {
-
-            _irqPin = GpioController.GetDefault().OpenPin(irqPin);
+            _irqPin = GpioController.GetDefault().OpenPin(socket.Int);
             _irqPin.SetDriveMode(GpioPinDriveMode.InputPullUp);
             _irqPin.ValueChanged += _irqPin_ValueChanged;
 
