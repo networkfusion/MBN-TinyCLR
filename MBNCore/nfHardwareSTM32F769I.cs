@@ -12,12 +12,11 @@
 */
 
 #if (NANOFRAMEWORK_1_0)
-#warning Click module support on nanoFramwork is not yet tested, try at your own risk.
+#warning Click module support on nanoFramwork is not yet fully tested.
 
 using System.Device.Gpio;
 
 using System;
-//using System.Collections;
 
 namespace MBN
 {
