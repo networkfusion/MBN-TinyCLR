@@ -14,6 +14,7 @@
 #if (NANOFRAMEWORK_1_0)
 using Windows.Devices.Spi;
 #else
+using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Spi;
 #endif
 
@@ -98,13 +99,21 @@ namespace MBN.Modules
         {
             _socket = socket;
             // Initialize SPI
-            _adc = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
+#if (NANOFRAMEWORK_1_0)
+            _adc = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
             {
-                ChipSelectType = SpiChipSelectType.Gpio,
-                ChipSelectLine = GHIElectronics.TinyCLR.Devices.Gpio.GpioController.GetDefault().OpenPin(socket.Cs),
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 1000000
             });
+#else
+            _adc = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
+            {
+                ChipSelectType = SpiChipSelectType.Gpio,
+                ChipSelectLine = GpioController.GetDefault().OpenPin(socket.Cs),
+                Mode = SpiMode.Mode0,
+                ClockFrequency = 1000000
+            });
+#endif
 
             _lastValues = new Int32[4];          // Empty array for last read values
             SetScale();       // No scaling by default

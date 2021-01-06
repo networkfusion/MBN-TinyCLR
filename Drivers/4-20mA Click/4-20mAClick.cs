@@ -15,6 +15,7 @@
 using Windows.Devices.Spi;
 #else
 using GHIElectronics.TinyCLR.Devices.Spi;
+using GHIElectronics.TinyCLR.Devices.Gpio;
 #endif
 
 using System;
@@ -39,13 +40,21 @@ namespace MBN.Modules
         /// <param name="socket">The socket on which the module is plugged.</param>
         public T4_20mAClick(Hardware.Socket socket)
         {
-            _trs = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
+#if (NANOFRAMEWORK_1_0)
+            _trs = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
             {
-                ChipSelectType = SpiChipSelectType.Gpio,
-                ChipSelectLine = GHIElectronics.TinyCLR.Devices.Gpio.GpioController.GetDefault().OpenPin(socket.Cs),
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000
             });
+#else
+            _trs = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
+            {
+                ChipSelectType = SpiChipSelectType.Gpio,
+                ChipSelectLine = GpioController.GetDefault().OpenPin(socket.Cs),
+                Mode = SpiMode.Mode0,
+                ClockFrequency = 2000000
+            });
+#endif
             _socket = socket;
         }
 

@@ -45,6 +45,13 @@ namespace MBN.Modules
         {
             _socket = socket;
             // Initialize SPI
+#if (NANOFRAMEWORK_1_0)
+            _seg = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            {
+                Mode = SpiMode.Mode3,
+                ClockFrequency = 2000000
+            });
+#else
             _seg = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
@@ -52,6 +59,7 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode3,
                 ClockFrequency = 2000000
             });
+#endif
 
             _en = GpioController.GetDefault().OpenPin(socket.PwmPin);
             _en.SetDriveMode(GpioPinDriveMode.Output);

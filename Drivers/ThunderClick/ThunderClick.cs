@@ -228,6 +228,13 @@ namespace MBN.Modules
             IRQ.ValueChanged += IRQ_ValueChanged;
 
             // Initialize SPI
+#if (NANOFRAMEWORK_1_0)
+            _thunder = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            {
+                Mode = SpiMode.Mode0,
+                ClockFrequency = 2000000
+            });
+#else
             _thunder = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
@@ -235,6 +242,7 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000
             });
+#endif
 
             // Direct commands
             lock (_socket.LockSpi)

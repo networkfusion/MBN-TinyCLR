@@ -110,13 +110,21 @@ namespace MBN.Modules
             _socket = socket;
             _interface = Interface.SPI;
 
-            _sensorSPI = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings
+#if (NANOFRAMEWORK_1_0)
+            _sensorSPI = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            {
+                Mode = SpiMode.Mode0,
+                ClockFrequency = 8 * 1000 * 1000
+            });
+#else
+            _sensorSPI = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
                 ChipSelectLine = GpioController.GetDefault().OpenPin(socket.Cs),
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 8 * 1000 * 1000
             });
+#endif
 
             Initialize();
         }

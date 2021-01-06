@@ -59,6 +59,13 @@ namespace MBN.Modules
         public RotaryClick(Hardware.Socket socket)
         {
             _socket = socket;
+#if (NANOFRAMEWORK_1_0)
+            _rot = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            {
+                Mode = SpiMode.Mode0,
+                ClockFrequency = 2000000
+            });
+#else
             _rot = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
@@ -66,6 +73,7 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000
             });
+#endif
 
             // Initialize the display and the internal counter
             Write(0);

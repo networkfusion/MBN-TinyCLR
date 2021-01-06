@@ -129,17 +129,16 @@ namespace MBN.Modules
 
             // Chip Select : Active Low
             // Clock : Active High, Data clocked in on rising edge
-            var connectionSettings = new SpiConnectionSettings(socket.Cs)
+
+            // create SPI device for Max31865
+            _spiDevice = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
             {
                 DataBitLength = 8,
                 ClockFrequency = 4 * 1000 * 1000, //- max 5MHz
                 BitOrder = DataBitOrder.MSB,
                 Mode = SpiMode.Mode1, //supports 1 and 3
                 SharingMode = SpiSharingMode.Shared
-            };
-
-            // create SPI device for Max31865
-            _spiDevice = SpiDevice.FromId(socket.SpiBus, connectionSettings);
+            });
 
 
             _irqPin = new GpioController().OpenPin(socket.Int);

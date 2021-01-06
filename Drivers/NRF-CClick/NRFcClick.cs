@@ -87,6 +87,13 @@ namespace MBN.Modules
         {
             _socket = socket;
             // Initialize SPI
+#if (NANOFRAMEWORK_1_0)
+            _nrf = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            {
+                Mode = SpiMode.Mode0,
+                ClockFrequency = 2000000
+            });
+#else
             _nrf = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
@@ -94,6 +101,7 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000
             });
+#endif
 
             // Initialize IRQ Port
             _irqPin = GpioController.GetDefault().OpenPin(socket.Int);
