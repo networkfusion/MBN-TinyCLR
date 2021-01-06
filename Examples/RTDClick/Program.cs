@@ -17,7 +17,7 @@ namespace Examples
 
         public static byte config = (
             (byte)RTDClick.ConfigValues.VBIAS_ON |
-            (byte)RTDClick.ConfigValues.THREE_WIRE | //note: with default sensor, but should be 3 or 4wire depending on jumpers
+            (byte)RTDClick.ConfigValues.THREE_WIRE | //note: with default sensor, but should be 2wire or 4wire depending on jumpers
             (byte)RTDClick.ConfigValues.FAULT_CLEAR_STATE |
             (byte)RTDClick.ConfigValues.FILTER_60Hz);
 
@@ -34,8 +34,8 @@ namespace Examples
         private static void TestRtd(Hardware.Socket socket)
         {
             //note: if using a PT1000, you should do adjust to fit, e.g.
-            //_rtd.Initialize(PinNumber('J', 0), config, 4301, MAX31865.SensorType.PT1000);
-            _rtd = new RTDClick(socket, config, 470.00f);
+            //_rtd.Initialize(socket, config, 470.00f, MAX31865.SensorType.PT1000);
+            _rtd = new RTDClick(socket, config);
 
 
             PollingSenario();
