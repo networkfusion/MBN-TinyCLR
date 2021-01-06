@@ -159,21 +159,32 @@ namespace MBN.Modules
             _joystick = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
 
             WriteRegister(Registers.CONTROL1, 0b11110000);
+#if (NANOFRAMEWORK_1_0)
+            _reset = new GpioController().OpenPin(socket.PwmPin);
+            _reset.SetPinMode(PinMode.Output);
 
+            Button = new GpioController().OpenPin(socket.Cs);
+            Button.SetPinMode(PinMode.Input);
+            
+            InterruptLine = new GpioController().OpenPin(socket.Int);
+            InterruptLine.SetPinMode(PinMode.InputPullUp);
+#else
             _reset = GpioController.GetDefault().OpenPin(socket.PwmPin);
             _reset.SetDriveMode(GpioPinDriveMode.Output);
+
+            Button = GpioController.GetDefault().OpenPin(socket.Cs);
+            Button.SetDriveMode(GpioPinDriveMode.Input);
+            
+            InterruptLine = GpioController.GetDefault().OpenPin(socket.Int);
+            InterruptLine.SetDriveMode(GpioPinDriveMode.InputPullUp);
+#endif
+
             Reset(ResetModes.Hard);
 
             Sensitivity = 0x3F; // Max sensitivity
             Scaling = 0x09;     // 100% scaling
 
-            Button = GpioController.GetDefault().OpenPin(socket.Cs);
-            Button.SetDriveMode(GpioPinDriveMode.Input);
-
             PowerMode = PowerModes.On;      // Interrupt mode
-            
-            InterruptLine = GpioController.GetDefault().OpenPin(socket.Int);
-            InterruptLine.SetDriveMode(GpioPinDriveMode.InputPullUp);
 
             TimeBase = 3;
             ReadRegister(0x11);     // Don't care about the first data available

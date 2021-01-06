@@ -33,11 +33,11 @@ namespace MBN.Modules
             _sl.MessageAvailable += Sl_MessageAvailable;
 
 #if (NANOFRAMEWORK_1_0)
-            _wakeUp = GpioController.OpenPin(socket.AnPin);
+            _wakeUp = new GpioController().OpenPin(socket.AnPin);
             _wakeUp.SetPinMode(PinMode.Input);
 
-            _onOff = GpioController.OpenPin(socket.PwmPin);
-            _onOff.PinMode(PinMode.Output);
+            _onOff = new GpioController().OpenPin(socket.PwmPin);
+            _onOff.SetPinMode(PinMode.Output);
             // Force full mode
             _onOff.Write(PinValue.Low);
             Thread.Sleep(100);
