@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Threading;
 #if (NANOFRAMEWORK_1_0)
 using Windows.Devices.Spi;
-using Windows.Devices.Gpio;
+using System.Device.Gpio;
 #else
 using GHIElectronics.TinyCLR.Devices.Spi;
 using GHIElectronics.TinyCLR.Devices.Gpio;
@@ -22,11 +22,11 @@ namespace MBN.Modules
     /// </summary>
     public class RTDClick
     {
-        private bool _initialized;
-        private GpioPin _irqPin;
+        private readonly bool _initialized;
+        private readonly GpioPin _irqPin;
         private readonly SpiDevice _spiDevice;
         private Timer FaultScanner;
-        private byte _config;
+        private readonly byte _config;
 
         public delegate void FaultEventHandler(RTDClick sender, byte DataByte);
         public event FaultEventHandler FaultEvent;
@@ -142,8 +142,8 @@ namespace MBN.Modules
             _spiDevice = SpiDevice.FromId(socket.SpiBus, connectionSettings);
 
 
-            _irqPin = GpioController.GetDefault().OpenPin(socket.Int);
-            _irqPin.SetDriveMode(GpioPinDriveMode.InputPullUp);
+            _irqPin = new GpioController().OpenPin(socket.Int);
+            _irqPin.SetPinMode(PinMode.InputPullUp);
             _irqPin.ValueChanged += _irqPin_ValueChanged;
 
 
@@ -158,7 +158,7 @@ namespace MBN.Modules
         }
 
 
-        private void _irqPin_ValueChanged(object sender, GpioPinValueChangedEventArgs e)
+        private void _irqPin_ValueChanged(object sender, PinValueChangedEventArgs e)
         {
             DataReadyFahrenheitEvent?.Invoke(this, GetTemperatureFahrenheit());
             DataReadyCelsiusEvent?.Invoke(this, GetTemperatureCelsius());
