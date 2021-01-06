@@ -28,9 +28,9 @@ namespace MBN.Modules
         private Timer FaultScanner;
         private byte _config;
 
-        public delegate void FaultEventHandler(MAX31865 sender, byte DataByte);
+        public delegate void FaultEventHandler(RTDClick sender, byte DataByte);
         public event FaultEventHandler FaultEvent;
-        public delegate void DataReadyEventHandler(MAX31865 sender, float Data);
+        public delegate void DataReadyEventHandler(RTDClick sender, float Data);
         public event DataReadyEventHandler DataReadyFahrenheitEvent;
         public event DataReadyEventHandler DataReadyCelsiusEvent;
 

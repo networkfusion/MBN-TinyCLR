@@ -3,8 +3,10 @@
 // See LICENSE file in the project root for full license information.
 //
 
-using System.Diagnostics;
+using MBN;
+using MBN.Modules;
 using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Examples
@@ -14,10 +16,10 @@ namespace Examples
         private static RTDClick _rtd;
 
         public static byte config = (
-            (byte)MAX31865.ConfigValues.VBIAS_ON |
-            (byte)MAX31865.ConfigValues.THREE_WIRE | //note: with default sensor, but should be 3 or 4wire depending on jumpers
-            (byte)MAX31865.ConfigValues.FAULT_CLEAR_STATE |
-            (byte)MAX31865.ConfigValues.FILTER_60Hz);
+            (byte)RTDClick.ConfigValues.VBIAS_ON |
+            (byte)RTDClick.ConfigValues.THREE_WIRE | //note: with default sensor, but should be 3 or 4wire depending on jumpers
+            (byte)RTDClick.ConfigValues.FAULT_CLEAR_STATE |
+            (byte)RTDClick.ConfigValues.FILTER_60Hz);
 
 
         public static void Main()
@@ -118,13 +120,13 @@ namespace Examples
         }
 
 
-        public static void _rtd_DataReadyCelEvent(MAX31865 sender, float Data)
+        public static void _rtd_DataReadyCelEvent(object sender, float Data)
         {
             Debug.WriteLine("Temperature: " + GetTemperature() + "c ");
         }
 
 
-        public static void _rtd_FaultEvent(MAX31865 sender, byte FaultByte)
+        public static void _rtd_FaultEvent(object sender, byte FaultByte)
         {
             Debug.WriteLine("Fault: " + FaultByte.ToString("X"));
             _rtd.ClearFaults();
