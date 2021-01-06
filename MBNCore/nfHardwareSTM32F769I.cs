@@ -402,23 +402,23 @@ namespace MBN
         {
             AdcController = Stm32f769iDisco.AdcChannel.Controller1.Id,
             AdcChannel = Stm32f769iDisco.AdcChannel.Controller1.PA10, //TODO: need to check.
-            AnPin = Stm32f769iDisco.PinNumber('A',2), //GPIO pin purpose dependent on device
-            Rst = Stm32f769iDisco.PinNumber('A',2), //GPIO module reset pin 
-            Cs = Stm32f769iDisco.PinNumber('A',2), //SPI Chip Select?
+            AnPin = Stm32f769iDisco.PinNumber('A',6), //GPIO pin purpose dependent on device
+            Rst = Stm32f769iDisco.PinNumber('F',10), //GPIO module reset pin 
+            Cs = Stm32f769iDisco.PinNumber('A',11), //SPI Chip Select?
             SpiBus = Stm32f769iDisco.SpiBus.Spi5, //TODO: need to check.
-            //Sck = PinNumber('A',2),
-            //Miso = PinNumber('A',2),
-            //Mosi = PinNumber('A',2),
+            Sck = Stm32f769iDisco.PinNumber('A',12),
+            Miso = Stm32f769iDisco.PinNumber('B',14),
+            Mosi = Stm32f769iDisco.PinNumber('B',15),
             PwmController = Stm32f769iDisco.PwmChannel.Controller1.Id,
-            //PwmChannel = Stm32f769iDisco.PwmChannel.Controller2.PA15,
-            PwmPin = Stm32f769iDisco.PinNumber('A',2),
-            Int = Stm32f769iDisco.PinNumber('A',2), //GPIO Interupt Pin?
+            PwmChannel = Stm32f769iDisco.PwmChannel.Controller2.PA15,
+            PwmPin = Stm32f769iDisco.PinNumber('F',7),
+            Int = Stm32f769iDisco.PinNumber('J',1), //GPIO Interupt Pin?
             ComPort = Stm32f769iDisco.UartPort.Usart6, //TODO: need to check.
-            //Rx = STM32H7.GpioPin.PC7, //PinNumber('A',2),
-            //Tx = STM32H7.GpioPin.PC6, //PinNumber('A',2),
+            Rx = Stm32f769iDisco.PinNumber('C',7),
+            Tx = Stm32f769iDisco.PinNumber('C',6),
             I2cBus = Stm32f769iDisco.I2cBus.I2c1, //TODO: need to check.
-            //Scl = STM32H7.GpioPin.PB10, //PinNumber('A',2),
-            //Sda = STM32H7.GpioPin.PB11, //PinNumber('A',2),
+            Scl = Stm32f769iDisco.PinNumber('B',8), // Currently on D15 (unsupported), Needs to be on A5
+            Sda = Stm32f769iDisco.PinNumber('B',9), // Currently on D14 (unsupported), Needs to be on A4
             Name = "SocketOne"
         };
 
@@ -429,23 +429,23 @@ namespace MBN
         {
             AdcController = Stm32f769iDisco.AdcChannel.Controller1.Id,
             AdcChannel = Stm32f769iDisco.AdcChannel.Controller1.PA4, //TODO: need to check.
-            AnPin = Stm32f769iDisco.PinNumber('A',2), //GPIO pin purpose dependent on device
-            Rst = Stm32f769iDisco.PinNumber('A',2), //GPIO module reset pin 
-            Cs = Stm32f769iDisco.PinNumber('A',2), //SPI Chip Select?
+            AnPin = Stm32f769iDisco.PinNumber('A',4), //GPIO pin purpose dependent on device
+            Rst = Stm32f769iDisco.PinNumber('C',2), //GPIO module reset pin 
+            Cs = Stm32f769iDisco.PinNumber('H',6), //SPI Chip Select?
             SpiBus = Stm32f769iDisco.SpiBus.Spi5, //TODO: need to check.
-            //Sck = STM32H7.GpioPin.PI1, //PinNumber('A',2),
-            //Miso = STM32H7.GpioPin.PI2, //PinNumber('A',2),
-            //Mosi = STM32H7.GpioPin.PI3, //PinNumber('A',2),
+            Sck = Stm32f769iDisco.PinNumber('A',12),
+            Miso = Stm32f769iDisco.PinNumber('B',14),
+            Mosi = Stm32f769iDisco.PinNumber('B',15),
             PwmController = Stm32f769iDisco.PwmChannel.Controller1.Id,
-            //PwmChannel = Stm32f769iDisco.PwmChannel.Controller1.PK1,
-            PwmPin = Stm32f769iDisco.PinNumber('A',2),
-            Int = Stm32f769iDisco.PinNumber('A',2), //GPIO Interupt Pin?
+            PwmChannel = Stm32f769iDisco.PwmChannel.Controller1.PK1, Stm32f769iDisco.PinNumber('C',8),
+            PwmPin = Stm32f769iDisco.PinNumber('C',8),
+            Int = Stm32f769iDisco.PinNumber('F',6), //GPIO Interupt Pin?
             ComPort = Stm32f769iDisco.UartPort.Uart5, //TODO: need to check.
-            //Rx = STM32H7.GpioPin.PD6, //PinNumber('A',2),
-            //Tx = STM32H7.GpioPin.PD5, //PinNumber('A',2),
+            Rx = Stm32f769iDisco.PinNumber('C',7),
+            Tx = Stm32f769iDisco.PinNumber('C',6),
             I2cBus = Stm32f769iDisco.I2cBus.I2c1, //TODO: need to check.
-            //Scl = STM32H7.GpioPin.PB10, //PinNumber('A',2),
-            //Sda = STM32H7.GpioPin.PB11, //PinNumber('A',2),
+            Scl = Stm32f769iDisco.PinNumber('B',8), // Currently on D15 (unsupported), Needs to be on A5
+            Sda = Stm32f769iDisco.PinNumber('B',9), // Currently on D14 (unsupported), Needs to be on A4
             Name = "SocketTwo"
         };
 
