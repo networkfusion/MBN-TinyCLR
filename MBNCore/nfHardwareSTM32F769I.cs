@@ -360,7 +360,7 @@ namespace MBN
             public static class SpiBus
             {
                 // /// <summary>SPI bus on PI3 (MOSI), PI2 (MISO), and PI1 (SCK).</summary>
-                // public const String Spi2 = STM32H7.SpiBus.Spi2;
+                public const String Spi2 = "SPI2";
                 // /// <summary>SPI bus on PB5 (MOSI), PB4 (MISO), and PB3 (SCK).</summary>
                 // public const String Spi3 = STM32H7.SpiBus.Spi3;
                 /// <summary>SPI bus on PF9 (MOSI), PF8 (MISO), and PF7 (SCK).</summary>
@@ -405,7 +405,7 @@ namespace MBN
             AnPin = Stm32f769iDisco.PinNumber('A',6), //GPIO pin purpose dependent on device
             Rst = Stm32f769iDisco.PinNumber('F',10), //GPIO module reset pin 
             Cs = Stm32f769iDisco.PinNumber('A',11), //SPI Chip Select?
-            SpiBus = Stm32f769iDisco.SpiBus.Spi5, //TODO: need to check.
+            SpiBus = Stm32f769iDisco.SpiBus.Spi2, //TODO: need to check.
             Sck = Stm32f769iDisco.PinNumber('A',12),
             Miso = Stm32f769iDisco.PinNumber('B',14),
             Mosi = Stm32f769iDisco.PinNumber('B',15),
@@ -432,7 +432,7 @@ namespace MBN
             AnPin = Stm32f769iDisco.PinNumber('A',4), //GPIO pin purpose dependent on device
             Rst = Stm32f769iDisco.PinNumber('C',2), //GPIO module reset pin 
             Cs = Stm32f769iDisco.PinNumber('H',6), //SPI Chip Select?
-            SpiBus = Stm32f769iDisco.SpiBus.Spi5, //TODO: need to check.
+            SpiBus = Stm32f769iDisco.SpiBus.Spi2, //TODO: need to check.
             Sck = Stm32f769iDisco.PinNumber('A',12),
             Miso = Stm32f769iDisco.PinNumber('B',14),
             Mosi = Stm32f769iDisco.PinNumber('B',15),
