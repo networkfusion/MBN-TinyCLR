@@ -25,12 +25,12 @@ It's as simple as :
 * Use an example for the required driver from the [Examples folder](Examples) as a start for your program
 * That's all !
 
-### nanoFramework WiP
+### nanoFramework
 It's as simple as :
 
 * Create a nanoFramework application project in Visual Studio
 * Add [**_MBNCore.cs_**](MBNCore) to your project
-* Add [**_MBNCore.cs_**](MBNCore)/**_MBNHardware<deviceType>.cs_** to your project
+* Add **_nfHardware<device>.cs_** to your project
 * Add the required driver source as well, from the [Drivers folder](Drivers)
 * Use an example for the required driver from the [Examples folder](Examples) as a start for your program
 * That's all !
@@ -55,7 +55,7 @@ So far, the current boards are supported :
 * GHI SC20260 dev board (2 sockets)
 * GHI FEZ Stick (2 sockets)
 
-### nanoFramework - WiP
+### nanoFramework
 * STM32F769I-Discovery + Arduino Uno Click Shield
 
 ## **Virtual sockets**
