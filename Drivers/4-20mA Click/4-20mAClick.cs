@@ -119,13 +119,21 @@ namespace MBN.Modules
         /// <param name="calibration20mA">The calibration value for 20mA.</param>
         public R4_20mAClick(Hardware.Socket socket, UInt16 calibration4mA, UInt16 calibration20mA)
         {
-            _rec = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
+#if (NANOFRAMEWORK_1_0)
+            _rec = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
             {
-                ChipSelectType = SpiChipSelectType.Gpio,
-                ChipSelectLine = GHIElectronics.TinyCLR.Devices.Gpio.GpioController.GetDefault().OpenPin(socket.Cs),
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000
             });
+#else
+            _rec = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
+            {
+                ChipSelectType = SpiChipSelectType.Gpio,
+                ChipSelectLine = GpioController.GetDefault().OpenPin(socket.Cs),
+                Mode = SpiMode.Mode0,
+                ClockFrequency = 2000000
+            });
+#endif
             _socket = socket;
             _4mACalibration = calibration4mA;
             _20mACalibration = calibration20mA;

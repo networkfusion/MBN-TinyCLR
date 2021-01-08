@@ -15,6 +15,7 @@
 using Windows.Devices.Pwm;
 using Windows.Devices.Spi;
 #else
+using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Pwm;
 using GHIElectronics.TinyCLR.Devices.Spi;
 #endif
@@ -83,13 +84,21 @@ namespace MBN.Modules
         {
             _socket = socket;
             // Initialize SPI
-            _bargraph = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
+#if (NANOFRAMEWORK_1_0)
+            _bargraph = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
             {
-                ChipSelectType = SpiChipSelectType.Gpio,
-                ChipSelectLine = GHIElectronics.TinyCLR.Devices.Gpio.GpioController.GetDefault().OpenPin(socket.Cs),
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000
             });
+#else
+            _bargraph = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
+            {
+                ChipSelectType = SpiChipSelectType.Gpio,
+                ChipSelectLine = GpioController.GetDefault().OpenPin(socket.Cs),
+                Mode = SpiMode.Mode0,
+                ClockFrequency = 2000000
+            });
+#endif
 
             // Initialize PWM and set initial brightness
             var PWM = PwmController.FromName(socket.PwmController);
