@@ -106,7 +106,7 @@ This list is up-to-date as of 2021-01-08
 |nRFsClick          |:x:|||
 |OLEDBW             |:x:|||
 |OLED-CClick        |:x:|||[:floppy_disk:](Drivers/OLED-CClick)
-|OnboardFlash       |:x:||Onboard Flash not available on GHI dev boards in Preview5|
+|OnboardFlash       |:x:|||
 |OptoClick          |:x:|||
 |Pressure11Click    |:x:|||[:floppy_disk:](Drivers/Pressure11Click)
 |Pressure4Click     |:x:|||[:floppy_disk:](Drivers/Pressure4Click)
