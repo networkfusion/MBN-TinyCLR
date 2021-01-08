@@ -27,6 +27,13 @@ namespace MBN.Modules
             _sl.MessageAvailable += Sl_MessageAvailable;
 
             // Initialize SPI
+#if (NANOFRAMEWORK_1_0)
+            _zoe = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            {
+                Mode = SpiMode.Mode0,
+                ClockFrequency = 4000000
+            });
+#else
             _zoe = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
@@ -34,6 +41,7 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 4000000
             });
+#endif
 
             _rBuff = new Byte[1024];
 
