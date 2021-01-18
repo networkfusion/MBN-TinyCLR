@@ -713,10 +713,11 @@ namespace MBN.Modules
         //private void ADXL345_Interrupt_OnInterrupt(uint data1, uint data2, DateTime time)
 #if (NANOFRAMEWORK_1_0)
         private void ADXL345_Interrupt_OnInterrupt(Object sender, PinValueChangedEventArgs e)
+        {
 #else
         private void ADXL345_Interrupt_OnInterrupt(Object sender, GpioPinValueChangedEventArgs e)
-#endif
         {
+#endif
             // Read the interrupt source register to see what caused the event
             var source = (InterruptSource) ReadRegister(RegisterMap.INT_SOURCE);
 

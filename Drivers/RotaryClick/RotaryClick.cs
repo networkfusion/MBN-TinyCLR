@@ -160,10 +160,11 @@ namespace MBN.Modules
 
 #if (NANOFRAMEWORK_1_0)
         private void EncA_ValueChanged(GpioPin sender, PinValueChangedEventArgs e)
+        {
 #else
         private void EncA_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e)
-#endif
         {
+#endif
             _aState = _encA.Read();
             if (_aState != _aLastState)
             {
