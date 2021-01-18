@@ -13,7 +13,7 @@
 
 #if (NANOFRAMEWORK_1_0)
 using Windows.Devices.Spi;
-using gpio = System.Device.Gpio;
+using System.Device.Gpio;
 #else
 using GHIElectronics.TinyCLR.Devices.Spi;
 using gpio = GHIElectronics.TinyCLR.Devices.Gpio;
@@ -33,17 +33,24 @@ namespace MBN.Modules
         public LedRingClick(Hardware.Socket socket)
         {
             _socket = socket;
-            gpio.GpioPin _rst = gpio.GpioController.GetDefault().OpenPin(socket.Rst);
-            _rst.SetDriveMode(gpio.GpioPinDriveMode.Output);
-            _rst.Write(gpio.GpioPinValue.High);
 
 #if (NANOFRAMEWORK_1_0)
+            GpioPin _rst = new gpio.GpioController().OpenPin(socket.Rst, PinMode.Output);
+            _rst.Write(gpio.PinValue.High);
+
             _ledRing = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
             {
                 Mode = SpiMode.Mode3,
                 ClockFrequency = 1000000
             });
+
+            _rst.Write(gpio.PinValue.Low);
+            Thread.Sleep(1);
+            _rst.Write(gpio.PinValue.High);
 #else
+            gpio.GpioPin _rst = gpio.GpioController.GetDefault().OpenPin(socket.Rst);
+            _rst.SetDriveMode(gpio.GpioPinDriveMode.Output);
+            _rst.Write(gpio.GpioPinValue.High);
             _ledRing = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
                 ChipSelectType = SpiChipSelectType.Gpio,
@@ -51,11 +58,12 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode3,
                 ClockFrequency = 1000000
             });
-#endif
 
             _rst.Write(gpio.GpioPinValue.Low);
             Thread.Sleep(1);
             _rst.Write(gpio.GpioPinValue.High);
+#endif
+
         }
 
         public void Write(UInt32 data)

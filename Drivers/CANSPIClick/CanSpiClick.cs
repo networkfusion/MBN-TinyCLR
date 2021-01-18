@@ -66,11 +66,14 @@ namespace MBN.Modules
         const Byte regRXB1DLC = 0x75;
         const Byte regRXB1D0 = 0x76;
 
-        public const Byte normalMode = 0;
-        public const Byte sleepMode = 1;
-        public const Byte loopbackMode = 2;
-        public const Byte listenonlyMode = 3;
-        public const Byte configMode = 4;
+        public enum Mode : byte
+        {
+            NormalMode = 0x00;
+            SleepMode = 0x01;
+            LoopbackMode = 0x02;
+            ListenonlyMode = 0x03;
+            ConfigMode = 0x04;
+        }
 
         public struct Config
         {
@@ -114,6 +117,11 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode3,
                 ClockFrequency = 2000000
             });
+
+            _rst = new GpioController().OpenPin(socket.Rst, PinMode.Output);
+            _rst.Write(PinValue.High);
+
+            _int = new GpioController().OpenPin(socket.Int, PinMode.Input, PinEventTypes.Falling, INT_ValueChanged);
 #else
             _canSpi = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
@@ -122,7 +130,6 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode3,
                 ClockFrequency = 2000000
             });
-#endif
 
             _rst = GpioController.GetDefault().OpenPin(socket.Rst);
             _rst.SetDriveMode(GpioPinDriveMode.Output);
@@ -132,6 +139,7 @@ namespace MBN.Modules
             _int.SetDriveMode(GpioPinDriveMode.Input);
             _int.ValueChangedEdge = GpioPinEdge.FallingEdge;
             _int.ValueChanged += INT_ValueChanged;
+#endif
 
             if (!Reset(ResetModes.Hard))
                 throw new NotImplementedException("MCP2515 initialisation failed!");
@@ -187,7 +195,7 @@ namespace MBN.Modules
         /// <param name="baudrate">Speed of CAN bus (predefined Baudrate100k, Baudrate125k, Baudrate250k, Baudrate500k)</param>
         /// <param name="opmode">Operation mode of MCP2515 (5 different modes, normalMode=0)</param>
         /// <returns>True, when OpMode is correvtly set</returns>
-        public Boolean Init(String name, Config baudrate, Byte opmode)
+        public Boolean Init(String name, Config baudrate, Mode opmode)
         {
             Name = name;
 
@@ -243,9 +251,15 @@ namespace MBN.Modules
             switch (resetMode)
             {
                 case ResetModes.Hard:
+#if (NANOFRAMEWORK_1_0)
+                    _rst.Write(PinValue.Low);
+                    Thread.Sleep(10);
+                    _rst.Write(PinValue.High);
+#else
                     _rst.Write(GpioPinValue.Low);
                     Thread.Sleep(10);
                     _rst.Write(GpioPinValue.High);
+#endif
                     break;
                 case ResetModes.Soft:
                     lock (_socket.LockSpi)
@@ -290,13 +304,13 @@ namespace MBN.Modules
             }
         }
 
-        public Boolean SetOpMode(Byte opmode)
+        public Boolean SetOpMode(Mode opmode)
         {
             lock (_socket.LockSpi)
             {
-                _canSpi.Write(new Byte[] { cmdBitModify, regCANCTRL, 0xE0, (Byte)(opmode << 5) });
+                _canSpi.Write(new Byte[] { cmdBitModify, regCANCTRL, 0xE0, (byte)((byte)opmode << 5) });
             }
-            return (ReadReg(regCANSTAT) >> 5) == opmode;
+            return (ReadReg(regCANSTAT) >> 5) == (byte)opmode;
         }
 
         /// <summary>
