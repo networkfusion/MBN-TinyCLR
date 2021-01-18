@@ -105,12 +105,19 @@ namespace MBN.Modules
             _states = new[] {relay0InitialState, relay1InitialState};
 
             // Initialize hardware ports with requested initial states
+#if (NANOFRAMEWORK_1_0)
+            _r0 = new GpioController().OpenPin(socket.PwmPin, PinMode.Output);
+            _r1 = new GpioController().OpenPin(socket.Cs, PinMode.Output);
+            _r0.Write(relay0InitialState ? PinValue.High : PinValue.Low);
+            _r1.Write(relay1InitialState ? PinValue.High : PinValue.Low);
+#else
             _r0 = GpioController.GetDefault().OpenPin(socket.PwmPin);
             _r1 = GpioController.GetDefault().OpenPin(socket.Cs);
             _r0.SetDriveMode(GpioPinDriveMode.Output);
             _r1.SetDriveMode(GpioPinDriveMode.Output);
             _r0.Write(relay0InitialState ? GpioPinValue.High : GpioPinValue.Low);
             _r1.Write(relay1InitialState ? GpioPinValue.High : GpioPinValue.Low);
+#endif
 
             _relays = new[] {_r0, _r1};
 
@@ -170,8 +177,11 @@ namespace MBN.Modules
             }
 
             if (state == _states[relay]) return;
-
+#if (NANOFRAMEWORK_1_0)
+            _relays[relay].Write(state ? PinValue.High : PinValue.Low);
+#else
             _relays[relay].Write(state ? GpioPinValue.High : GpioPinValue.Low);
+#endif
             _states[relay] = state;
 
             RelayStateChangedEventHandler relayEvent = RelayStateChanged;

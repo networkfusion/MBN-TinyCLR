@@ -47,6 +47,13 @@ namespace MBN.Modules
         /// <param name="frequency">PWM frequency. Depends on the motor.</param>
         public DCMotor4Click(Hardware.Socket socket, Double frequency = 1000.0)
         {
+#if (NANOFRAMEWORK_1_0)
+            _enable = new GpioController().OpenPin(socket.Cs, PinMode.Output);
+            _enable.Write(PinValue.High);
+
+            _direction = new GpioController().OpenPin(socket.AnPin, PinMode.Output);
+            _direction.Write(PinValue.High);
+#else
             _enable = GpioController.GetDefault().OpenPin(socket.Cs);
             _enable.SetDriveMode(GpioPinDriveMode.Output);
             _enable.Write(GpioPinValue.High);
@@ -54,6 +61,7 @@ namespace MBN.Modules
             _direction = GpioController.GetDefault().OpenPin(socket.AnPin);
             _direction.SetDriveMode(GpioPinDriveMode.Output);
             _direction.Write(GpioPinValue.High);
+#endif
 
             var controller = PwmController.FromName(socket.PwmController);
             _pwmOut = controller.OpenChannel(socket.PwmChannel);
@@ -86,7 +94,11 @@ namespace MBN.Modules
             get => _motorEnabled;
             set
             {
+#if (NANOFRAMEWORK_1_0)
+                _enable.Write(value ? PinValue.Low : PinValue.High);
+#else
                 _enable.Write(value ? GpioPinValue.Low : GpioPinValue.High);
+#endif
                 _motorEnabled = !value;
             }
         }
@@ -104,8 +116,13 @@ namespace MBN.Modules
                 _pwmOut.Stop();
                 Thread.Sleep(200);
             }
+#if (NANOFRAMEWORK_1_0)
+            _direction.Write(direction == Directions.Backward ? PinValue.Low : PinValue.High);
+            _enable.Write(PinValue.Low);
+#else
             _direction.Write(direction == Directions.Backward ? GpioPinValue.Low : GpioPinValue.High);
             _enable.Write(GpioPinValue.Low);
+#endif
             if (rampTime == 0)
             {
                 _pwmOut.SetActiveDutyCyclePercentage(speed);
@@ -135,7 +152,11 @@ namespace MBN.Modules
             {
                 _pwmOut.Stop();
                 IsMoving = false;
+#if (NANOFRAMEWORK_1_0)
+                _enable.Write(PinValue.High);
+#else
                 _enable.Write(GpioPinValue.High);
+#endif
             }
             else
             {
@@ -177,7 +198,11 @@ namespace MBN.Modules
             }
             _pwmOut.Stop();
             IsMoving = false;
+#if (NANOFRAMEWORK_1_0)
+            _enable.Write(PinValue.High);
+#else
             _enable.Write(GpioPinValue.High);
+#endif
         }
         #endregion
     }

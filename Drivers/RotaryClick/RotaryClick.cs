@@ -78,12 +78,21 @@ namespace MBN.Modules
             // Initialize the display and the internal counter
             Write(0);
             InternalCounter = 0;
+#if (NANOFRAMEWORK_1_0)
+            // First encoder
+            _encA = new GpioController().OpenPin(socket.PwmPin, PinMode.Input);
+            _aLastState = _encA.Read();
 
+            // Second encoder
+            _encB = new GpioController().OpenPin(socket.AnPin, PinMode.Input);
+
+            // Button switch
+            _sw = new GpioController().OpenPin(socket.Int, PinMode.InputPullDown);
+#else
             // First encoder
             _encA = GpioController.GetDefault().OpenPin(socket.PwmPin);
             _encA.SetDriveMode(GpioPinDriveMode.Input);
             _aLastState = _encA.Read();
-            _encA.ValueChanged += EncA_ValueChanged;
 
             // Second encoder
             _encB = GpioController.GetDefault().OpenPin(socket.AnPin);
@@ -92,6 +101,9 @@ namespace MBN.Modules
             // Button switch
             _sw = GpioController.GetDefault().OpenPin(socket.Int);
             _sw.SetDriveMode(GpioPinDriveMode.InputPullDown);
+#endif
+
+            _encA.ValueChanged += EncA_ValueChanged;
             _sw.ValueChanged += Sw_ValueChanged;
         }
 
@@ -146,7 +158,11 @@ namespace MBN.Modules
             }
         }
 
+#if (NANOFRAMEWORK_1_0)
+        private void EncA_ValueChanged(GpioPin sender, PinValueChangedEventArgs e)
+#else
         private void EncA_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e)
+#endif
         {
             _aState = _encA.Read();
             if (_aState != _aLastState)
@@ -167,11 +183,19 @@ namespace MBN.Modules
             _aLastState = _aState;
         }
 
+#if (NANOFRAMEWORK_1_0)
+        private void Sw_ValueChanged(GpioPin sender, PinValueChangedEventArgs e)
+        {
+            ButtonPressedEventHandler buttonEvent = ButtonPressed;
+            buttonEvent(this, new ButtonPressedEventArgs(e.ChangeType));
+        }
+#else
         private void Sw_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e)
         {
             ButtonPressedEventHandler buttonEvent = ButtonPressed;
             buttonEvent(this, new ButtonPressedEventArgs(e.Edge));
         }
+#endif
 
     }
 }
