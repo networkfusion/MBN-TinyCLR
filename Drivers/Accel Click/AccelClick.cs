@@ -270,8 +270,12 @@ namespace MBN.Modules
 
             if (ReadRegister((Byte)RegisterMap.DEVID) != 0xE5) { throw new SystemException("ADXL345 not detected"); }
 
+#if (NANOFRAMEWORK_1_0)
+            intPin = new GpioController().OpenPin(socket.Int, PinMode.Input);
+#else
             intPin = GpioController.GetDefault().OpenPin(socket.Int);
             intPin.SetDriveMode(GpioPinDriveMode.Input);
+#endif
             
             // Initialize our sensor
             InitSensor(autoStart);
@@ -707,7 +711,11 @@ namespace MBN.Modules
         /// A private callback function called when there is an interrupt generated from the sensor
         /// </summary>
         //private void ADXL345_Interrupt_OnInterrupt(uint data1, uint data2, DateTime time)
+#if (NANOFRAMEWORK_1_0)
+        private void ADXL345_Interrupt_OnInterrupt(Object sender, PinValueChangedEventArgs e)
+#else
         private void ADXL345_Interrupt_OnInterrupt(Object sender, GpioPinValueChangedEventArgs e)
+#endif
         {
             // Read the interrupt source register to see what caused the event
             var source = (InterruptSource) ReadRegister(RegisterMap.INT_SOURCE);

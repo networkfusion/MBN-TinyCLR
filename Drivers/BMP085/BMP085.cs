@@ -86,8 +86,12 @@ namespace MBN.Modules
             // Create the driver's I²C configuration
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(0x77, 100000));
 
+#if (NANOFRAMEWORK_1_0)
+            _dataReady = new GpioController().OpenPin(dataReadyPin, PinMode.Input);
+#else
             _dataReady = GpioController.GetDefault().OpenPin(dataReadyPin);
             _dataReady.SetDriveMode(GpioPinDriveMode.Input);
+#endif
 
             // Get Calibration Data
             if (!GetCalibrationData()) throw new DeviceInitialisationException("BMP085 GetCalibrationData failed.");
@@ -363,7 +367,11 @@ namespace MBN.Modules
             {
                 WriteByte(0xF4, (Byte)(((Byte)_overSamplingSetting << 6) + 0x34));
 
+#if (NANOFRAMEWORK_1_0)
+                while (_dataReady.Read() == PinValue.Low) {Thread.Sleep(10);}
+#else
                 while (_dataReady.Read() == GpioPinValue.Low) {Thread.Sleep(10);}
+#endif
 
                 Byte[] upData = ReadRegister(0xF6, 3);
 
@@ -386,7 +394,11 @@ namespace MBN.Modules
             {
                 WriteByte(0xF4, 0x2E);
 
+#if (NANOFRAMEWORK_1_0)
+                while (_dataReady.Read() == PinValue.Low) {Thread.Sleep(10);}
+#else
                 while (_dataReady.Read() == GpioPinValue.Low) {Thread.Sleep(10);}
+#endif
 
                 Byte[] data = ReadRegister(0xF6, 2);
 
