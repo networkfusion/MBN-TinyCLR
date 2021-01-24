@@ -1,7 +1,7 @@
-/* 
+﻿/* 
 * NMEA parser for TinyCLR 2.0
 * 
-* Version 1.0 : 
+* Version 1.1 : 
 * - Initial revision
 * 
 * Copyright 2020 MBNSoftware.Net 
@@ -204,18 +204,10 @@ namespace MBN.Modules
         #endregion
 
         #region Private vars
-        private static readonly Byte[] patternRMC = new Byte[3] { 82, 77, 67 };
-        private static readonly Byte[] patternGGA = new Byte[3] { 71, 71, 65 };
-        private static readonly Byte[] patternGSA = new Byte[3] { 71, 83, 65 };
-        private static readonly Byte[] patternGSV = new Byte[3] { 71, 83, 86 };
-        private static readonly Byte[] patternVTG = new Byte[3] { 86, 84, 71 };
-        private static readonly Byte[] patternHDT = new Byte[3] { 72, 68, 84 };
-        private static readonly Byte[] patternGLL = new Byte[3] { 71, 76, 76 };
-        private static readonly Byte[][] SupportedPatterns = new Byte[][] { patternGGA, patternGSA, patternRMC, patternGSV, patternVTG, patternHDT, patternGLL };
-
         private static readonly Object lockGGA, lockGSA, lockRMC, lockGSV, lockVTG, lockHDT, lockGLL;
 
         private static Byte b0, b1;
+        private static Byte pow, dec;
         private static Int32 resultInt32;
         private static Int64 resultInt64;
         private static Boolean CRLFAppended;
@@ -224,29 +216,24 @@ namespace MBN.Modules
         #endregion
 
         #region Private methods
-        
+
         private static Int32 IntFromAscii(Byte[] bytes, Int32 startIndex, Int32 count)
         {
-            if (bytes.Length == 0)
-                return 0;
             resultInt32 = 0;
             for (Byte i = 0; i < count; ++i)
             {
                 resultInt32 += (Int32)((bytes[i + startIndex] - 48) * Math.Pow(10, count - i - 1));
             }
-            
+
             return resultInt32;
         }
 
         private static Double DoubleFromAscii(Byte[] bytes, Int32 startIndex, Int32 count)
         {
-            if (bytes.Length == 0)
-                return 0.0;
-
             resultInt64 = 0;
-            var pow = 0;
-            var dec = 0;
-            for (var i = 0; i < count; ++i)
+            pow = 0;
+            dec = 0;
+            for (Byte i = 0; i < count; ++i)
             {
                 if (bytes[i + startIndex] != 46)
                 {
@@ -262,19 +249,21 @@ namespace MBN.Modules
             return resultInt64 / Math.Pow(10, count - dec);
         }
 
-        private static void FindCommas(Byte[] sentence)
+        private static void GetChecksum(Byte[] sentence, ref Byte checksum, ref DataStatus dataStatus)
         {
-            for (var i = 0; i < 20; i++)
+            if (CRLFAppended)
             {
-                commas[i] = 0;
+                b0 = (Byte)(sentence[sentence.Length - 4] >= 65 ? sentence[sentence.Length - 4] - 55 : sentence[sentence.Length - 4] - 48);
+                b1 = (Byte)(sentence[sentence.Length - 3] >= 65 ? sentence[sentence.Length - 3] - 55 : sentence[sentence.Length - 3] - 48);
             }
-            for (Byte i = 0, count = 0; i < sentence.Length; i++)
+            else
             {
-                if (sentence[i] == 44)
-                {
-                    commas[count++] = i;
-                }
+                b0 = (Byte)(sentence[sentence.Length - 2] >= 65 ? sentence[sentence.Length - 2] - 55 : sentence[sentence.Length - 2] - 48);
+                b1 = (Byte)(sentence[sentence.Length - 1] >= 65 ? sentence[sentence.Length - 1] - 55 : sentence[sentence.Length - 1] - 48);
             }
+            checksum = (Byte)((b0 << 4) + b1);
+            if (!VerifyChecksum(sentence, checksum))
+                dataStatus = DataStatus.InvalidChecksum;
         }
         #endregion
 
@@ -309,19 +298,7 @@ namespace MBN.Modules
                     RMCSentence.MagneticVariation = DoubleFromAscii(sentence, commas[9] + 1, commas[10] - commas[9] - 1);
                     RMCSentence.MagneticVariationDirection = (Char)sentence[commas[10] + 1];
 
-                    if (CRLFAppended)
-                    {
-                        b0 = (Byte)(sentence[sentence.Length - 4] >= 65 ? sentence[sentence.Length - 4] - 55 : sentence[sentence.Length - 4] - 48);
-                        b1 = (Byte)(sentence[sentence.Length - 3] >= 65 ? sentence[sentence.Length - 3] - 55 : sentence[sentence.Length - 3] - 48);
-                    }
-                    else
-                    {
-                        b0 = (Byte)(sentence[sentence.Length - 2] >= 65 ? sentence[sentence.Length - 2] - 55 : sentence[sentence.Length - 2] - 48);
-                        b1 = (Byte)(sentence[sentence.Length - 1] >= 65 ? sentence[sentence.Length - 1] - 55 : sentence[sentence.Length - 1] - 48);
-                    }
-                    RMCSentence.Checksum = (Byte)((b0 << 4) + b1);
-                    if (!VerifyChecksum(sentence, RMCSentence.Checksum))
-                        RMCSentence.DataStatus = DataStatus.InvalidChecksum;
+                    GetChecksum(sentence, ref RMCSentence.Checksum, ref RMCSentence.DataStatus);
                 }
                 catch
                 {
@@ -359,19 +336,7 @@ namespace MBN.Modules
                     GGASentence.AgeOfDifferentialData = DoubleFromAscii(sentence, commas[12] + 1, commas[13] - commas[12] - 1);
                     GGASentence.DifferentialReferenceStationID = sentence[commas[13] + 1] >= 48 ? IntFromAscii(sentence, commas[13] + 1, 4) : 0;         // Irrelevant if AgeOfDifferentialData = 0.0
 
-                    if (CRLFAppended)
-                    {
-                        b0 = (Byte)(sentence[sentence.Length - 4] >= 65 ? sentence[sentence.Length - 4] - 55 : sentence[sentence.Length - 4] - 48);
-                        b1 = (Byte)(sentence[sentence.Length - 3] >= 65 ? sentence[sentence.Length - 3] - 55 : sentence[sentence.Length - 3] - 48);
-                    }
-                    else
-                    {
-                        b0 = (Byte)(sentence[sentence.Length - 2] >= 65 ? sentence[sentence.Length - 2] - 55 : sentence[sentence.Length - 2] - 48);
-                        b1 = (Byte)(sentence[sentence.Length - 1] >= 65 ? sentence[sentence.Length - 1] - 55 : sentence[sentence.Length - 1] - 48);
-                    }
-                    GGASentence.Checksum = (Byte)((b0 << 4) + b1);
-                    if (!VerifyChecksum(sentence, GGASentence.Checksum))
-                        GGASentence.DataStatus = DataStatus.InvalidChecksum;
+                    GetChecksum(sentence, ref GGASentence.Checksum, ref GGASentence.DataStatus);
                 }
                 catch
                 {
@@ -407,21 +372,7 @@ namespace MBN.Modules
                     GSASentence.PDOP = DoubleFromAscii(sentence, commas[14] + 1, commas[15] - commas[14] - 1);
                     GSASentence.HDOP = DoubleFromAscii(sentence, commas[15] + 1, commas[16] - commas[15] - 1);
 
-                    if (CRLFAppended)
-                    {
-                        GSASentence.VDOP = DoubleFromAscii(sentence, commas[16] + 1, sentence.Length - commas[16] - 6);
-                        b0 = (Byte)(sentence[sentence.Length - 4] >= 65 ? sentence[sentence.Length - 4] - 55 : sentence[sentence.Length - 4] - 48);
-                        b1 = (Byte)(sentence[sentence.Length - 3] >= 65 ? sentence[sentence.Length - 3] - 55 : sentence[sentence.Length - 3] - 48);
-                    }
-                    else
-                    {
-                        GSASentence.VDOP = DoubleFromAscii(sentence, commas[16] + 1, sentence.Length - commas[16] - 4);
-                        b0 = (Byte)(sentence[sentence.Length - 2] >= 65 ? sentence[sentence.Length - 2] - 55 : sentence[sentence.Length - 2] - 48);
-                        b1 = (Byte)(sentence[sentence.Length - 1] >= 65 ? sentence[sentence.Length - 1] - 55 : sentence[sentence.Length - 1] - 48);
-                    }
-                    GSASentence.Checksum = (Byte)((b0 << 4) + b1);
-                    if (!VerifyChecksum(sentence, GSASentence.Checksum))
-                        GSASentence.DataStatus = DataStatus.InvalidChecksum;
+                    GetChecksum(sentence, ref GSASentence.Checksum, ref GSASentence.DataStatus);
                 }
                 catch
                 {
@@ -444,7 +395,7 @@ namespace MBN.Modules
                 {
                     return;
                 }
-                
+
                 try
                 {
                     GSVSentence[Seq].DataStatus = DataStatus.Valid;
@@ -458,7 +409,7 @@ namespace MBN.Modules
                     GSVSentence[Seq].Satellite1Id = IntFromAscii(sentence, commas[3] + 1, commas[4] - commas[3] - 1);
                     GSVSentence[Seq].Satellite1Elevation = IntFromAscii(sentence, commas[4] + 1, commas[5] - commas[4] - 1);
                     GSVSentence[Seq].Satellite1Azimuth = IntFromAscii(sentence, commas[5] + 1, commas[6] - commas[5] - 1);
-                    GSVSentence[Seq].Satellite1SNR = (Byte)(sentence[commas[6] + 1] >=48 ? (Byte)IntFromAscii(sentence, commas[6] + 1, 2) : 0);
+                    GSVSentence[Seq].Satellite1SNR = (Byte)(sentence[commas[6] + 1] >= 48 ? (Byte)IntFromAscii(sentence, commas[6] + 1, 2) : 0);
 
                     if (numberOfSatellitesToProcess >= 2)
                     {
@@ -484,20 +435,7 @@ namespace MBN.Modules
                         GSVSentence[Seq].Satellite4SNR = (Byte)(sentence[commas[18] + 1] >= 48 ? (Byte)IntFromAscii(sentence, commas[18] + 1, 2) : 0);
                     }
 
-                    if (CRLFAppended)
-                    {
-                        b0 = (Byte)(sentence[sentence.Length - 4] >= 65 ? sentence[sentence.Length - 4] - 55 : sentence[sentence.Length - 4] - 48);
-                        b1 = (Byte)(sentence[sentence.Length - 3] >= 65 ? sentence[sentence.Length - 3] - 55 : sentence[sentence.Length - 3] - 48);
-                    }
-                    else
-                    {
-                        b0 = (Byte)(sentence[sentence.Length - 2] >= 65 ? sentence[sentence.Length - 2] - 55 : sentence[sentence.Length - 2] - 48);
-                        b1 = (Byte)(sentence[sentence.Length - 1] >= 65 ? sentence[sentence.Length - 1] - 55 : sentence[sentence.Length - 1] - 48);
-                    }
-                    GSVSentence[Seq].Checksum = (Byte)((b0 << 4) + b1);
-
-                    if (!VerifyChecksum(sentence, GSVSentence[Seq].Checksum))
-                        GSVSentence[Seq].DataStatus = DataStatus.InvalidChecksum;
+                    GetChecksum(sentence, ref GSVSentence[Seq].Checksum, ref GSVSentence[Seq].DataStatus);
                 }
                 catch
                 {
@@ -521,19 +459,7 @@ namespace MBN.Modules
                     VTGSentence.SpeedOverGroundKnots = DoubleFromAscii(sentence, commas[4] + 1, commas[5] - commas[4] - 1);
                     VTGSentence.SpeedOverGroundKm = DoubleFromAscii(sentence, commas[6] + 1, commas[7] - commas[6] - 1);
 
-                    if (CRLFAppended)
-                    {
-                        b0 = (Byte)(sentence[sentence.Length - 4] >= 65 ? sentence[sentence.Length - 4] - 55 : sentence[sentence.Length - 4] - 48);
-                        b1 = (Byte)(sentence[sentence.Length - 3] >= 65 ? sentence[sentence.Length - 3] - 55 : sentence[sentence.Length - 3] - 48);
-                    }
-                    else
-                    {
-                        b0 = (Byte)(sentence[sentence.Length - 2] >= 65 ? sentence[sentence.Length - 2] - 55 : sentence[sentence.Length - 2] - 48);
-                        b1 = (Byte)(sentence[sentence.Length - 1] >= 65 ? sentence[sentence.Length - 1] - 55 : sentence[sentence.Length - 1] - 48);
-                    }
-                    VTGSentence.Checksum = (Byte)((b0 << 4) + b1);
-                    if (!VerifyChecksum(sentence, VTGSentence.Checksum))
-                        VTGSentence.DataStatus = DataStatus.InvalidChecksum;
+                    GetChecksum(sentence, ref VTGSentence.Checksum, ref VTGSentence.DataStatus);
                 }
                 catch
                 {
@@ -554,19 +480,7 @@ namespace MBN.Modules
                     HDTSentence.TalkerID = (Int16)((sentence[1] << 8) + sentence[2]);
                     HDTSentence.Heading = DoubleFromAscii(sentence, commas[0] + 1, commas[1] - commas[0] - 1);
 
-                    if (CRLFAppended)
-                    {
-                        b0 = (Byte)(sentence[sentence.Length - 4] >= 65 ? sentence[sentence.Length - 4] - 55 : sentence[sentence.Length - 4] - 48);
-                        b1 = (Byte)(sentence[sentence.Length - 3] >= 65 ? sentence[sentence.Length - 3] - 55 : sentence[sentence.Length - 3] - 48);
-                    }
-                    else
-                    {
-                        b0 = (Byte)(sentence[sentence.Length - 2] >= 65 ? sentence[sentence.Length - 2] - 55 : sentence[sentence.Length - 2] - 48);
-                        b1 = (Byte)(sentence[sentence.Length - 1] >= 65 ? sentence[sentence.Length - 1] - 55 : sentence[sentence.Length - 1] - 48);
-                    }
-                    HDTSentence.Checksum = (Byte)((b0 << 4) + b1);
-                    if (!VerifyChecksum(sentence, HDTSentence.Checksum))
-                        HDTSentence.DataStatus = DataStatus.InvalidChecksum;
+                    GetChecksum(sentence, ref HDTSentence.Checksum, ref HDTSentence.DataStatus);
                 }
                 catch
                 {
@@ -596,19 +510,7 @@ namespace MBN.Modules
                     GLLSentence.LongitudePosition = (Char)sentence[commas[3] + 1];
                     GLLSentence.Status = (Char)sentence[commas[5] + 1];
 
-                    if (CRLFAppended)
-                    {
-                        b0 = (Byte)(sentence[sentence.Length - 4] >= 65 ? sentence[sentence.Length - 4] - 55 : sentence[sentence.Length - 4] - 48);
-                        b1 = (Byte)(sentence[sentence.Length - 3] >= 65 ? sentence[sentence.Length - 3] - 55 : sentence[sentence.Length - 3] - 48);
-                    }
-                    else
-                    {
-                        b0 = (Byte)(sentence[sentence.Length - 2] >= 65 ? sentence[sentence.Length - 2] - 55 : sentence[sentence.Length - 2] - 48);
-                        b1 = (Byte)(sentence[sentence.Length - 1] >= 65 ? sentence[sentence.Length - 1] - 55 : sentence[sentence.Length - 1] - 48);
-                    }
-                    GLLSentence.Checksum = (Byte)((b0 << 4) + b1);
-                    if (!VerifyChecksum(sentence, GLLSentence.Checksum))
-                        GLLSentence.DataStatus = DataStatus.InvalidChecksum;
+                    GetChecksum(sentence, ref GLLSentence.Checksum, ref GLLSentence.DataStatus);
                 }
                 catch
                 {
@@ -769,54 +671,49 @@ namespace MBN.Modules
                 GLLSentence.Checksum = 0;
             }
         }
-        
+
         #endregion
 
         #region Public methods
         /// <summary>
-        /// Parse the NMEA sentence if found in the supported patterns
+        /// Parse the NMEA sentence
         /// </summary>
         /// <param name="NMEASentence">A byte array containing the NMEA sentence</param>
         public static void Parse(Byte[] NMEASentence)
         {
-            // Determine which NMEA sentence has been received
-            var index = -1;
-            for (var i = 0; i < SupportedPatterns.Length; i++)
+            // Find commas
+            for (Byte i = 0, count = 0; i < NMEASentence.Length; i++)
             {
-                // A supported frame pattern has been found, get its index and exit the loop
-                if (NMEASentence[3] == SupportedPatterns[i][0] && NMEASentence[4] == SupportedPatterns[i][1] && NMEASentence[5] == SupportedPatterns[i][2])
+                if (NMEASentence[i] == 44)
                 {
-                    index = i;
-                    FindCommas(NMEASentence);
-
-                    break;
+                    commas[count++] = i;
                 }
             }
 
             // Some MikroElektronika GPs do not send CRLF at the end of the sentence (GNSS Zoe, so far) so we have to check this
             CRLFAppended = NMEASentence[NMEASentence.Length - 2] == 13 && NMEASentence[NMEASentence.Length - 1] == 10;
 
-            switch (index)
+            switch ((NMEASentence[3] << 16) + (NMEASentence[4] << 8) + NMEASentence[5])
             {
-                case 0:     // GGA sentence
+                case 0x474741:     // GGA sentence
                     ParseGGA(NMEASentence);
                     break;
-                case 1:     // GSA sentence
+                case 0x475341:     // GSA sentence
                     ParseGSA(NMEASentence);
                     break;
-                case 2:     // RMC sentence
+                case 0x524D43:     // RMC sentence
                     ParseRMC(NMEASentence);
                     break;
-                case 3:     // GSV sentence
+                case 0x475356:     // GSV sentence
                     ParseGSV(NMEASentence);
                     break;
-                case 4:     // VTG sentence
+                case 0x565447:     // VTG sentence
                     ParseVTG(NMEASentence);
                     break;
-                case 5:     // HDT sentence
+                case 0x484454:     // HDT sentence
                     ParseHDT(NMEASentence);
                     break;
-                case 6:     // GLL sentence
+                case 0x474C4C:     // GLL sentence
                     ParseGLL(NMEASentence);
                     break;
                 default:
@@ -826,7 +723,7 @@ namespace MBN.Modules
         }
 
         /// <summary>Verifies the checksum of a given NMEA sentence</summary>
-        /// <param name="frame">  The complete sentence, including starting '$' and trailing '*' chars.</param>
+        /// <param name="frame">  The complete sentence, including starting '$' char.</param>
         /// <param name="checksum">The checksum to check</param>
         /// <returns>
         /// True if both checksums match, False otherwise.
@@ -843,16 +740,16 @@ namespace MBN.Modules
         }
 
         /// <summary>Calculates the checksum of an NMEA sentence.</summary>
-        /// <param name="sentence">The byte array representing the NMEA sentence, excluding the starting $ and the ending * chars.</param>
+        /// <param name="sentence">The byte array representing the NMEA sentence, including the starting '$' and the ending '*' chars.</param>
         /// <returns>The calculated checksum</returns>
         public static Byte CalculateChecksum(Byte[] sentence)
         {
-            Int32 checksum = sentence[0];
-            for (var i = 1; i < sentence.Length; i++)
+            Int32 calculatedChecksum = sentence[1];
+            for (var i = 2; i < sentence.Length - 1; i++)
             {
-                checksum ^= sentence[i];
+                calculatedChecksum ^= sentence[i];
             }
-            return (Byte)checksum;
+            return (Byte)calculatedChecksum;
         }
         #endregion
     }
