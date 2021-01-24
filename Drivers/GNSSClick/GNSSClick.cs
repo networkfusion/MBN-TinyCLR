@@ -1,7 +1,6 @@
 ﻿using GHIElectronics.TinyCLR.Devices.Uart;
 using System;
 using System.Text;
-using static MBN.Modules.GPSUtilities;
 
 namespace MBN.Modules
 {
@@ -27,23 +26,13 @@ namespace MBN.Modules
             SendCommand("PMTK605");
         }
 
-        private void Sl_MessageAvailable(Object sender, EventArgs e)
-        {
-            var param = (Byte[])_sl.MessagesQueue.Dequeue();
-            var _chars = new Char[param.Length];
-
-            Encoding.UTF8.GetDecoder().Convert(param, 0, param.Length, _chars, 0, param.Length, false, out _, out var _charsUsed, out _);
-            var strtmp = new String(_chars, 0, _charsUsed).Trim('\r', '\n');
-
-            if (strtmp != String.Empty)
-                Parse(strtmp);
-        }
+        private void Sl_MessageAvailable(Object sender, EventArgs e) => NMEAParser.Parse((Byte[])_sl.MessagesQueue.Dequeue());
 
         /// <summary>Sends a command to the GNSS module.</summary>
-        /// <param name="cmd">The command, without both the starting '$' and the ending '*'.</param>
+        /// <param name="cmd">The command, with both the starting '$' and the ending '*'.</param>
         public void SendCommand(String cmd)
         {
-            _gnss.Write(Encoding.UTF8.GetBytes($"${cmd}*{CalculateChecksum(cmd):X2}\r\n"));
+            _gnss.Write(Encoding.UTF8.GetBytes($"{cmd}{NMEAParser.CalculateChecksum(Encoding.UTF8.GetBytes(cmd)):X2}\r\n"));
             _gnss.Flush();
         }
 

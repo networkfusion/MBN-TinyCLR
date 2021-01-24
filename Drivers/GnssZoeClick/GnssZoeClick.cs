@@ -1,7 +1,6 @@
 ﻿using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Spi;
 using System;
-using System.Text;
 using System.Threading;
 
 
@@ -100,16 +99,6 @@ namespace MBN.Modules
         /// </summary>
         public void StopPolling() => PollingActive = false;
 
-        private void Sl_MessageAvailable(Object sender, EventArgs e)
-        {
-            var param = (Byte[])_sl.MessagesQueue.Dequeue();
-            var _chars = new Char[param.Length];
-
-            Encoding.UTF8.GetDecoder().Convert(param, 0, param.Length, _chars, 0, param.Length, false, out _, out var _charsUsed, out _);
-            var strtmp = new String(_chars, 0, _charsUsed).Trim('\r', '\n');
-
-            if (strtmp != String.Empty)
-                GPSUtilities.Parse(strtmp);
-        }
+        private void Sl_MessageAvailable(Object sender, EventArgs e) => NMEAParser.Parse((Byte[])_sl.MessagesQueue.Dequeue());
     }
 }
