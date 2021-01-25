@@ -49,17 +49,7 @@ namespace MBN.Modules
 #endif
         }
 
-        private void Sl_MessageAvailable(object sender, EventArgs e)
-        {
-            var param = (byte[])_sl.MessagesQueue.Dequeue();
-            var _chars = new char[param.Length];
-
-            Encoding.UTF8.GetDecoder().Convert(param, 0, param.Length, _chars, 0, param.Length, false, out _, out var _charsUsed, out _);
-            var strtmp = new string(_chars, 0, _charsUsed).Trim('\r', '\n');
-
-            if (strtmp != String.Empty)
-                Parse(strtmp);
-        }
+        private void Sl_MessageAvailable(Object sender, EventArgs e) => NMEAParser.Parse((Byte[])_sl.MessagesQueue.Dequeue());
 
         /// <summary>Sends a command to the GNSS 5 module.</summary>
         /// <param name="cmd">The command, without both the starting '$' and the ending '*'.</param>
@@ -67,11 +57,11 @@ namespace MBN.Modules
         {
 #if (NANOFRAMEWORK_1_0)
             DataWriter outputDataWriter = new DataWriter(_gnss.OutputStream);
-            var bytesToWrite = Encoding.UTF8.GetBytes($"${cmd}*{CalculateChecksum(cmd):X2}\r\n");
+            var bytesToWrite = Encoding.UTF8.GetBytes($"{cmd}{NMEAParser.CalculateChecksum(Encoding.UTF8.GetBytes(cmd)):X2}\r\n");
             outputDataWriter.WriteBytes(bytesToWrite);
             outputDataWriter.Store();
 #else
-            _gnss.Write(Encoding.UTF8.GetBytes($"${cmd}*{CalculateChecksum(cmd):X2}\r\n"));
+            _gnss.Write(Encoding.UTF8.GetBytes($"{cmd}{NMEAParser.CalculateChecksum(Encoding.UTF8.GetBytes(cmd)):X2}\r\n"));
             _gnss.Flush();
 #endif
         }
