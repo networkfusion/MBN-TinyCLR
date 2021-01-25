@@ -7,7 +7,6 @@ using GHIElectronics.TinyCLR.Devices.Uart;
 
 using System;
 using System.Text;
-using static MBN.Modules.GPSUtilities;
 
 namespace MBN.Modules
 {
@@ -52,7 +51,7 @@ namespace MBN.Modules
         private void Sl_MessageAvailable(Object sender, EventArgs e) => NMEAParser.Parse((Byte[])_sl.MessagesQueue.Dequeue());
 
         /// <summary>Sends a command to the GNSS 5 module.</summary>
-        /// <param name="cmd">The command, without both the starting '$' and the ending '*'.</param>
+        /// <param name="cmd">The command, with both the starting '$' and the ending '*'.</param>
         public void SendCommand(string cmd)
         {
 #if (NANOFRAMEWORK_1_0)
