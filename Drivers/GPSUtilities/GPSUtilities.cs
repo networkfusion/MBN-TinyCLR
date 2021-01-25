@@ -216,18 +216,7 @@ namespace MBN.Modules
                 var tab = str.Split(',');
                 SignalOrigin = ResolveSignalOrigin(str.Substring(1, 2));
                 FixMode = Byte.Parse(tab[2]);
-#if (NANOFRAMEWORK_1_0)
-                if (tab[1] == string.Empty || tab[1] == null)
-                {
-                    Auto2D3D = Char.MinValue;
-                }
-                else
-                {
-                    Auto2D3D = tab[1][0];
-                }
-#else
                 Auto2D3D = string.IsNullOrEmpty(tab[1]) ? Char.MinValue : tab[1][0];
-#endif
                 Checksum = (Byte)Convert.ToInt32(str.Right(2), 16);
                 PDOP = (Single)Double.Parse(tab[15]);
                 HDOP = (Single)Double.Parse(tab[16]);
