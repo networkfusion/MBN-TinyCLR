@@ -71,7 +71,7 @@ namespace MBN.Modules
         private readonly SpiDevice _bargraph;                // SPI configuration
         private Double _pwmLevel;                            // Brightness level
 #if (NANOFRAMEWORK_1_0)
-        private readonly PwmChannel _pwm;                    // Brightness control
+        private readonly PwmPin _pwm;                    // Brightness control
 #else
         private readonly PwmChannel _pwm;                    // Brightness control
 #endif
@@ -94,6 +94,10 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000
             });
+            // Initialize PWM and set initial brightness
+            var PWM = PwmController.FromId(socket.PwmController);
+            PWM.SetDesiredFrequency(5000);
+            _pwm = PWM.OpenPin(socket.PwmChannel);
 #else
             _bargraph = SpiController.FromName(socket.SpiBus).GetDevice(new SpiConnectionSettings()
             {
@@ -102,12 +106,11 @@ namespace MBN.Modules
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000
             });
-#endif
-
             // Initialize PWM and set initial brightness
             var PWM = PwmController.FromName(socket.PwmController);
             PWM.SetDesiredFrequency(5000);
             _pwm = PWM.OpenChannel(socket.PwmChannel);
+#endif
             _pwm.SetActiveDutyCyclePercentage(initialBrightness);
             _pwm.Start();
         }

@@ -29,7 +29,7 @@ namespace MBN.Modules
         private readonly SpiDevice _bargraph;
         private Double _pwmLevel;
 #if (NANOFRAMEWORK_1_0)
-        private readonly PwmChannel _pwm;
+        private readonly PwmPin _pwm;
 #else
         private readonly PwmChannel _pwm;
 #endif
@@ -67,7 +67,7 @@ namespace MBN.Modules
             var PWM = PwmController.FromId(socket.PwmController);
             PWM.SetDesiredFrequency(5000);
             _pwm = PWM.OpenPin(socket.PwmPin);
-            _pwm.SetDesiredFrequency(initialBrightness);
+            _pwm.SetActiveDutyCyclePercentage(initialBrightness);
 #else
             var PWM = PwmController.FromName(socket.PwmController);
             PWM.SetDesiredFrequency(5000);

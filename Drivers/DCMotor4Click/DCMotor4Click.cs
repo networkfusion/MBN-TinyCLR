@@ -30,7 +30,11 @@ namespace MBN.Modules
         private readonly GpioPin _enable;
         private readonly GpioPin _direction;
         private Boolean _motorEnabled;
+#if (NANOFRAMEWORK_1_0)
+        private readonly PwmPin _pwmOut;
+#else
         private readonly PwmChannel _pwmOut;
+#endif
         private Int32 _rampIncrement, _rampWaitTime;
 
         /// <summary>
@@ -53,6 +57,9 @@ namespace MBN.Modules
 
             _direction = new GpioController().OpenPin(socket.AnPin, PinMode.Output);
             _direction.Write(PinValue.High);
+
+            var controller = PwmController.FromId(socket.PwmController);
+            _pwmOut = controller.OpenPin(socket.PwmChannel);
 #else
             _enable = GpioController.GetDefault().OpenPin(socket.Cs);
             _enable.SetDriveMode(GpioPinDriveMode.Output);
@@ -61,10 +68,10 @@ namespace MBN.Modules
             _direction = GpioController.GetDefault().OpenPin(socket.AnPin);
             _direction.SetDriveMode(GpioPinDriveMode.Output);
             _direction.Write(GpioPinValue.High);
-#endif
 
             var controller = PwmController.FromName(socket.PwmController);
             _pwmOut = controller.OpenChannel(socket.PwmChannel);
+#endif
             controller.SetDesiredFrequency(frequency);
 
             // Motor not running at startup
@@ -167,7 +174,7 @@ namespace MBN.Modules
             _pwmOut.SetActiveDutyCyclePercentage(0.0);
         }
 
-        #region Private methods
+#region Private methods
         private void RampUp()
         {
             var i = 0;
@@ -204,7 +211,7 @@ namespace MBN.Modules
             _enable.Write(GpioPinValue.High);
 #endif
         }
-        #endregion
+#endregion
     }
 }
 

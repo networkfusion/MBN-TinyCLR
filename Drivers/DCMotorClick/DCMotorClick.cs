@@ -84,7 +84,11 @@ namespace MBN.Modules
 
         private readonly GpioPin _fault;
         private readonly GpioPin _select1, _select2, _sleep;
+#if (NANOFRAMEWORK_1_0)
+        private readonly PwmPin _pwmOut;
+#else
         private readonly PwmChannel _pwmOut;
+#endif
         private PowerModes _powerMode;
 
         // Internal variables
@@ -110,6 +114,10 @@ namespace MBN.Modules
             _sleep.Write(PinValue.High);
 
             _fault = new GpioController.GetDefault().OpenPin(socket.Int, PinMode.Input);
+
+            var PWM = PwmController.FromId(socket.PwmController);
+            PWM.SetDesiredFrequency(frequency);
+            _pwmOut = PWM.OpenPin(socket.PwmChannel);
 #else
             // Select1/2 : selection of decay modes. Only Fast decay implemented here.
             _select1 = GpioController.GetDefault().OpenPin(socket.Rst);
@@ -126,13 +134,13 @@ namespace MBN.Modules
 
             _fault = GpioController.GetDefault().OpenPin(socket.Int);
             _fault.SetDriveMode(GpioPinDriveMode.Input);
+            var PWM = PwmController.FromName(socket.PwmController);
+            PWM.SetDesiredFrequency(frequency);
+            _pwmOut = PWM.OpenChannel(socket.PwmChannel);
 #endif
 
             _fault.ValueChanged += Fault_ValueChanged;
 
-            var PWM = PwmController.FromName(socket.PwmController);
-            PWM.SetDesiredFrequency(frequency);
-            _pwmOut = PWM.OpenChannel(socket.PwmChannel);
             _pwmOut.SetActiveDutyCyclePercentage(dutyCycle);
 
 
@@ -142,7 +150,7 @@ namespace MBN.Modules
         }
 
 #if (NANOFRAMEWORK_1_0)
-        private void Fault_ValueChanged(GpioPin sender, PinValueChangedEventArgs e)
+        private void Fault_ValueChanged(object sender, PinValueChangedEventArgs e)
         {
 #else
         private void Fault_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e)

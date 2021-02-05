@@ -172,7 +172,7 @@ namespace MBN.Modules
 
         #region Private methods
 #if (NANOFRAMEWORK_1_0)
-        private void DataReady_ValueChanged(GpioPin sender, PinValueChangedEventArgs e)
+        private void DataReady_ValueChanged(object sender, PinValueChangedEventArgs e)
 #else
         private void DataReady_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e)
 #endif
@@ -181,7 +181,7 @@ namespace MBN.Modules
             GetChannel('R');
             GetChannel('G');
             GetChannel('B');
-            DataReadyEventHandler colorEvent = DataReady;
+            var colorEvent = DataReady;
             colorEvent(this, new DataReadyEventArgs(_red, _green, _blue, _clear));
             Thread.Sleep(10);
         }
