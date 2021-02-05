@@ -12,7 +12,7 @@
  */
 
 #if (NANOFRAMEWORK_1_0)
-using Windows.Devices.Onewire;
+using nanoFramework.Devices.OneWire;
 #else
 using GHIElectronics.TinyCLR.Devices.Onewire;
 #endif
@@ -840,7 +840,21 @@ namespace MBN.Modules
         public ArrayList AlarmList()
         {
             ArrayList alarmList = new ArrayList();
+#if (NANOFRAMEWORK_1_0)
+            // find the first device (only devices alarming)
+            bool rslt = _oneWire.FindFirstDevice(true, true);
+            while (rslt == true)
+            {
+                // retrieve the serial number just found
+                var sNum = _oneWire.SerialNumber;
 
+                // save serial number
+                alarmList.Add(sNum);
+
+                // find the next alarming device
+                rslt = _oneWire.FindNextDevice(true, true);
+            }
+#else
             // find the first device (only devices alarming)
             Int32 rslt = _oneWire.FindFirstDevice(true, true);
             while (rslt != 0)
@@ -856,6 +870,7 @@ namespace MBN.Modules
                 // find the next alarming device
                 rslt = _oneWire.FindNextDevice(true, true);
             }
+#endif
             return alarmList;
         }
 
@@ -1112,11 +1127,11 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
 
-        #region Private Methods
+#region Private Methods
 
         private Byte[] ReadScratchPad(Byte[] oneWireAddress)
         {
@@ -1261,6 +1276,6 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
     }
 }

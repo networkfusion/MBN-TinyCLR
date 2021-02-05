@@ -94,7 +94,12 @@ namespace MBN.Modules
         public BarometerClick(Hardware.Socket socket, I2CAddress slaveAddress)
         {
             _socket = socket;
+
+#if (NANOFRAMEWORK_1_0)
+            _sensor = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, (int)slaveAddress, I2cBusSpeed.FastMode));
+#else
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((Int32) slaveAddress, 400000));
+#endif
 
             if (!Reset()) throw new ApplicationException("Unable to reset Barometer to Factory defaults");
 
@@ -672,7 +677,11 @@ namespace MBN.Modules
 
             lock (_socket.LockI2c)
             {
-                _sensor.WritePartial(writeBuffer);
+#if (NANOFRAMEWORK_1_0)
+                _sensor.Write(writeBuffer);
+#else
+                _sensor..WritePartial(writeBuffer);
+#endif
             }
         }
 
@@ -731,6 +740,6 @@ namespace MBN.Modules
             return 101325 + uncompensatedPressure - seaLevelCompensation;
         }
 
-        #endregion
+#endregion
     }
 }

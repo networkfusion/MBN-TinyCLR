@@ -94,8 +94,11 @@ namespace MBN.Modules
         public Altitude2Click(Hardware.Socket socket, I2CAddress address)
         {
             _socket = socket;
+#if (NANOFRAMEWORK_1_0)
+            _sensor = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, (int)address, I2cBusSpeed.StandardMode));
+#else
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((Int32) address, 100000));
-
+#endif
             Reset();
 
             ReadCalibrationData();
@@ -106,17 +109,17 @@ namespace MBN.Modules
             PressureCompensationMode = PressureCompensationModes.SeaLevelCompensated;
         }
 
-        #endregion
+#endregion
 
-        #region Private Fields
+#region Private Fields
 
         private readonly I2cDevice _sensor;
         private readonly UInt32[] CalibrationData = new UInt32[8];
         private readonly Hardware.Socket _socket;
 
-        #endregion
+#endregion
 
-        #region Public ENUMS
+#region Public ENUMS
 
         /// <summary>
         ///     Possible I2C Slave Addresses for the Altitude 2 Click
@@ -165,9 +168,9 @@ namespace MBN.Modules
             ADC4096 = MS5607_CMD_ADC_4096
         }
 
-        #endregion
+#endregion
 
-        #region Constants
+#region Constants
 
         private const Byte MS5607_CMD_RESET = 0x1E; // Reset
         private const Byte MS5607_CMD_ADC_READ = 0x00; // Initiate read sequence
@@ -181,9 +184,9 @@ namespace MBN.Modules
         private const Byte MS5607_CMD_ADC_4096 = 0x08; // ADC oversampling ratio to 4096
         private const Byte MS5607_CMD_PROM_RD = 0xA0; // Read PROM registers
 
-        #endregion
+#endregion
 
-        #region Public Properties
+#region Public Properties
 
         /// <summary>
         /// Sets or gets the oversampling rate or resolution for pressure conversion.
@@ -237,9 +240,9 @@ namespace MBN.Modules
         /// </example>
         public TemperatureUnits TemperatureUnit { get; set; }
 
-        #endregion
+#endregion
 
-        #region Private Methods
+#region Private Methods
 
         private void WriteByte(Byte registerAddress)
         {
@@ -350,9 +353,9 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
 
-        #region Public Methods
+#region Public Methods
 
         /// <summary>
         /// Trigger a pressure and temperature conversion.
@@ -444,9 +447,9 @@ namespace MBN.Modules
             return true;
         }
 
-        #endregion
+#endregion
 
-        #region Interface Implementations
+#region Interface Implementations
 
         /// <inheritdoc />
         /// <summary>Reads the temperature.</summary>
@@ -488,6 +491,6 @@ namespace MBN.Modules
             throw new NotSupportedException(
                 "Reading raw data is not supported by this module or implemented in this driver.");
 
-        #endregion
+#endregion
     }
 }

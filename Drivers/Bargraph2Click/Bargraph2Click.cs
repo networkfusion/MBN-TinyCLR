@@ -28,7 +28,11 @@ namespace MBN.Modules
     {
         private readonly SpiDevice _bargraph;
         private Double _pwmLevel;
+#if (NANOFRAMEWORK_1_0)
         private readonly PwmChannel _pwm;
+#else
+        private readonly PwmChannel _pwm;
+#endif
         private UInt32 _mask = 0b0000_0000000000_1111111111;
         private readonly Byte[] _data = new byte[3];
         private readonly Hardware.Socket _socket;
@@ -59,11 +63,18 @@ namespace MBN.Modules
 #endif
 
             // Initialize PWM and set initial brightness
+#if (NANOFRAMEWORK_1_0)
+            var PWM = PwmController.FromId(socket.PwmController);
+            PWM.SetDesiredFrequency(5000);
+            _pwm = PWM.OpenPin(socket.PwmPin);
+            _pwm.SetDesiredFrequency(initialBrightness);
+#else
             var PWM = PwmController.FromName(socket.PwmController);
             PWM.SetDesiredFrequency(5000);
             _pwm = PWM.OpenChannel(socket.PwmChannel);
             _pwm.SetActiveDutyCyclePercentage(initialBrightness);
             _pwm.Start();
+#endif
         }
 
         /// <summary>

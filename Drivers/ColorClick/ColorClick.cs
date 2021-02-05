@@ -134,6 +134,23 @@ namespace MBN.Modules
         public ColorClick(Hardware.Socket socket, Byte address = 0x29)
         {
             _socket = socket;
+#if (NANOFRAMEWORK_1_0)
+            _color = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, address, I2cBusSpeed.StandardMode));
+
+            LedR = new GpioController().OpenPin(socket.AnPin);
+            LedR.SetPinMode(PinMode.Output);
+            LedR.Write(PinValue.Low);
+            LedG = new GpioController().OpenPin(socket.Cs);
+            LedG.SetPinMode(PinMode.Output);
+            LedG.Write(PinValue.Low);
+            LedB = new GpioController().OpenPin(socket.PwmPin);
+            LedB.SetPinMode(PinMode.Output);
+            LedB.Write(PinValue.Low);
+
+            GpioPin dataReady = new GpioController().OpenPin(socket.Int);
+            dataReady.SetPinMode(PinMode.Input);
+            dataReady.ValueChanged += DataReady_ValueChanged;
+#else
             _color = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
 
             Init();
@@ -150,10 +167,15 @@ namespace MBN.Modules
             GpioPin dataReady = GpioController.GetDefault().OpenPin(socket.Int);
             dataReady.SetDriveMode(GpioPinDriveMode.Input);
             dataReady.ValueChanged += DataReady_ValueChanged;
+#endif
         }
 
         #region Private methods
+#if (NANOFRAMEWORK_1_0)
+        private void DataReady_ValueChanged(GpioPin sender, PinValueChangedEventArgs e)
+#else
         private void DataReady_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e)
+#endif
         {
             GetChannel('C');
             GetChannel('R');
@@ -206,7 +228,7 @@ namespace MBN.Modules
 
             return result[0] + result[1] << 8;
         }
-        #endregion
+#endregion
 
         /// <summary>
         /// Gets the status register.

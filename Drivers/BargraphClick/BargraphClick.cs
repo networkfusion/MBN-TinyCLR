@@ -70,7 +70,11 @@ namespace MBN.Modules
     {
         private readonly SpiDevice _bargraph;                // SPI configuration
         private Double _pwmLevel;                            // Brightness level
+#if (NANOFRAMEWORK_1_0)
         private readonly PwmChannel _pwm;                    // Brightness control
+#else
+        private readonly PwmChannel _pwm;                    // Brightness control
+#endif
         private readonly Byte[] _data = new byte[2];
         private UInt16 _value;
         private readonly Hardware.Socket _socket;

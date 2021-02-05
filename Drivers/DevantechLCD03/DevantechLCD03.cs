@@ -69,7 +69,11 @@ namespace MBN.Modules
             Blink
         };
 
+#if (NANOFRAMEWORK_1_0)
+        private readonly SerialDevice _lcdSerial;
+#else
         private readonly UartController _lcdSerial;
+#endif
         private readonly I2cDevice _lcdI2C;
         private Cursors _cursor;
         private Boolean _backLight;
@@ -84,6 +88,11 @@ namespace MBN.Modules
         {
             try
             {
+#if (NANOFRAMEWORK_1_0)
+                _lcdSerial = SerialDevice.FromId(socket.ComPort);
+#else
+                _lcdSerial = UartController.FromName(socket.ComPort);
+#endif
                 _lcdSerial = UartController.FromName(socket.ComPort);
                 _lcdSerial.SetActiveSettings(new UartSetting() { BaudRate = 9600, DataBits = 8, Parity = UartParity.None, StopBits = UartStopBitCount.Two, Handshaking = UartHandshake.None });
                 _lcdSerial.Enable();
@@ -103,7 +112,11 @@ namespace MBN.Modules
             _socket = socket;
             try
             {
+#if (NANOFRAMEWORK_1_0)
+                _lcdI2C = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, address, I2cBusSpeed.StandardMode));
+#else
                 _lcdI2C = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
+#endif
                 _isUart = false;
                 Init();
             }
