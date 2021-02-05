@@ -280,7 +280,7 @@ namespace MBN.Modules
 
 		private ButtonEventHandler _onButtonEvent;
 #if (NANOFRAMEWORK_1_0)
-        private void ButtonValueChanged(GpioPin sender, PinValueChangedEventArgs e)
+        private void ButtonValueChanged(object sender, PinValueChangedEventArgs e)
         {
             ButtonState state = e.ChangeType == PinEventTypes.Falling ? ButtonState.Released : ButtonState.Pressed;
 #else

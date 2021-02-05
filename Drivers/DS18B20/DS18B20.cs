@@ -281,7 +281,11 @@ namespace MBN.Modules
         /// <param name="oneWirePin">The data input/output pin for the 1-Wire Bus.</param>
         public DS18B20(Int32 oneWirePin)
         {
+#if (NANOFRAMEWORK_1_0)
+            _oneWire = new OneWireController(); //TODO: is this on the right pin?
+#else
             _oneWire = new OneWireController(oneWirePin);
+#endif
 
             _deviceList = new ArrayList();
             _deviceList = GetDeviceList();
@@ -507,8 +511,11 @@ namespace MBN.Modules
         public Resolution GetResolution(Byte[] oneWireAddress)
         {
             GetDeviceList();
-
+#if (NANOFRAMEWORK_1_0)
+            if (!IsValidId(oneWireAddress) || _oneWire.TouchReset() == false)
+#else
             if (!IsValidId(oneWireAddress) || _oneWire.TouchReset() <= 0)
+#endif
             {
                 return Resolution.Resolution12Bit;
             }
@@ -640,9 +647,9 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
 
-        #region Temperature Measurement Related Methods
+#region Temperature Measurement Related Methods
 
         /// <summary>
         ///     Reads the temperature of a single DS18B20 Temperature Sensor configuration or the first device found on the OneWire Bus in a multiple sensor configuration.
@@ -666,8 +673,11 @@ namespace MBN.Modules
             if (source == TemperatureSources.Object) throw new ArgumentException("TemperatureSources.Object not implemented for this module.");
 
             if (IsParasitic((Byte[]) DeviceList[0])) throw new NotSupportedException("Reading temperature in Parasitic Mode is not supported.");
-
+#if (NANOFRAMEWORK_1_0)
+            if (_oneWire.TouchReset() == false) return Single.MinValue;
+#else
             if (_oneWire.TouchReset() <= 0) return Single.MinValue;
+#endif
 
             _oneWire.WriteByte((Byte) RomCommands.SkipRom); // Skip ROM, we only have one device
             _oneWire.WriteByte((Byte) FunctionCommands.StartTemperatureConversion); // Start temperature conversion
@@ -821,9 +831,9 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
 
-        #region Alarm Related Methods
+#region Alarm Related Methods
 
         /// <summary>
         ///     Gets an ArrayList of all DS18B20 sensors on the OneWire Bus that have the AlarmFlag set.
@@ -954,7 +964,11 @@ namespace MBN.Modules
         {
             GetDeviceList();
 
+#if (NANOFRAMEWORK_1_0)
+            if (!IsValidId(oneWireAddress) || _oneWire.TouchReset() == false) return Int32.MinValue;
+#else
             if (!IsValidId(oneWireAddress) || _oneWire.TouchReset() <= 0) return Int32.MinValue;
+#endif
 
             SelectDevice(oneWireAddress);
 
@@ -981,7 +995,11 @@ namespace MBN.Modules
         {
             GetDeviceList();
 
+#if (NANOFRAMEWORK_1_0)
+            if (!IsValidId(oneWireAddress) || _oneWire.TouchReset() == false) return Int32.MinValue;
+#else
             if (!IsValidId(oneWireAddress) || _oneWire.TouchReset() <= 0) return Int32.MinValue;
+#endif
 
             SelectDevice(oneWireAddress);
 
@@ -1173,7 +1191,11 @@ namespace MBN.Modules
 
         private static Boolean SelectDevice(Byte[] oneWireAddress)
         {
+#if (NANOFRAMEWORK_1_0)
+            if (_oneWire.TouchReset() == false) return false;
+#else
             if (_oneWire.TouchReset() <= 0) return false;
+#endif
 
             _oneWire.WriteByte((Byte) RomCommands.MatchRom);
 
@@ -1225,10 +1247,17 @@ namespace MBN.Modules
 
             SelectDevice(oneWireAddress);
 
+#if (NANOFRAMEWORK_1_0)
+            _oneWire.WriteByte((byte)FunctionCommands.WriteScratchPad);
+            _oneWire.WriteByte((byte)scratchPad[HighTempAlarmBit]); // high alarm temp
+            _oneWire.WriteByte((byte)scratchPad[LowTempAlarmbit]); // low alarm temp
+            _oneWire.WriteByte((byte)scratchPad[ConfigurationBit]); // configuration
+#else
             _oneWire.WriteByte((Byte) FunctionCommands.WriteScratchPad);
             _oneWire.WriteByte(scratchPad[HighTempAlarmBit]); // high alarm temp
             _oneWire.WriteByte(scratchPad[LowTempAlarmbit]); // low alarm temp
             _oneWire.WriteByte(scratchPad[ConfigurationBit]); // configuration
+#endif
 
 
             SelectDevice(oneWireAddress);
