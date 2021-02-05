@@ -75,7 +75,7 @@ namespace MBN.Modules
 		{
 			// Initialize PWM and set initial brightness
 #if (NANOFRAMEWORK_1_0)
-			var PWM = PwmController.FromId(socket.PwmController);
+			PWM = PwmController.FromId(socket.PwmController);
 			PWM.SetDesiredFrequency(5000);
 			_buzzPwm = PWM.OpenPin(socket.PwmPin);
 			_buzzPwm.SetActiveDutyCyclePercentage(0.0);
