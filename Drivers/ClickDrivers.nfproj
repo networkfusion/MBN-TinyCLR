@@ -32,7 +32,7 @@
     <Compile Include="BiHallClick\BiHallClick.cs" />
     <Compile Include="BME280\bme280.cs" />
     <Compile Include="BMP085\BMP085.cs" />
-    <Compile Include="BMP810\BMP810.cs" />
+    <Compile Include="BMP180\BMP180.cs" />
     <Compile Include="BMP183\BMP183.cs" />
     <Compile Include="BMP280\BMP280.cs" />
     <Compile Include="ButtonRClick\ButtonRClick.cs" />
@@ -46,11 +46,33 @@
     <Compile Include="DevantechLCD03\DevantechLCD03.cs" />
     <Compile Include="DigiPotClick\DigiPotClick.cs" />
     <Compile Include="DS18B20\DS18B20.cs" />
+    <Compile Include="..\MBNCore\MBNCore.cs" /> <!--This should be a seperate proj?-->
+    <Compile Include="..\MBNCore\nfHardwareSTM32F769I.cs" /> <!-- Make this an interface?-->
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib, Version=1.10.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
       <HintPath>packages\nanoFramework.CoreLibrary.1.10.1-preview.9\lib\mscorlib.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
+    <Reference Include="nanoFramework.Runtime.Events, Version=1.9.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>packages\nanoFramework.Runtime.Events.1.9.0-preview.9\lib\nanoFramework.Runtime.Events.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
+    <Reference Include="System.Device.Gpio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>packages\nanoFramework.System.Device.Gpio.1.0.0-preview.26\lib\System.Device.Gpio.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
+    <Reference Include="System.Device.I2c, Version=1.0.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>packages\nanoFramework.System.Device.I2c.1.0.1-preview.18\lib\System.Device.I2c.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
+    <Reference Include="Windows.Devices.Spi, Version=1.4.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>packages\nanoFramework.Windows.Devices.Spi.1.4.1-preview.26\lib\Windows.Devices.Spi.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
