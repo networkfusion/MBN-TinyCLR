@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <NanoFrameworkProjectSystemPath>$(MSBuildToolsPath)..\..\..\nanoFramework\v1.0\</NanoFrameworkProjectSystemPath>
+  </PropertyGroup>
+  <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.Default.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.Default.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{11A8DD76-328B-46DF-9F39-F559912D0360};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>af593d8b-80ff-4561-adbe-220f56fff432</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <FileAlignment>512</FileAlignment>
+    <RootNamespace>MBN.Modules</RootNamespace>
+    <AssemblyName>MBN.Modules</AssemblyName>
+    <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
+  <ItemGroup>
+    <Compile Include="4-20mA Click\4-20mAClick.cs" />
+    <Compile Include="Accel Click\AccelClick.cs" />
+    <Compile Include="Adc3 Click\Adc3Click.cs" />
+    <Compile Include="AdcClick\AdcClick.cs" />
+    <Compile Include="Altitude2Click\Altitude2Click.cs" />
+    <Compile Include="Altitude3Click\Altitude3Click.cs" />
+    <Compile Include="Ambient2Click\Ambient2Click.cs" />
+    <Compile Include="AmbientClick\AmbientClick.cs" />
+    <Compile Include="Bargraph2Click\Bargraph2Click.cs" />
+    <Compile Include="BargraphClick\BargraphClick.cs" />
+    <Compile Include="BarometerClick\BarometerClick.cs" />
+    <Compile Include="BiHallClick\BiHallClick.cs" />
+    <Compile Include="BME280\bme280.cs" />
+    <Compile Include="BMP085\BMP085.cs" />
+    <Compile Include="BMP810\BMP810.cs" />
+    <Compile Include="BMP183\BMP183.cs" />
+    <Compile Include="BMP280\BMP280.cs" />
+    <Compile Include="ButtonRClick\ButtonRClick.cs" />
+    <Compile Include="BuzzerClick\BuzzerClick.cs" />
+    <Compile Include="CANSPIClick\CanSpiClick.cs" />
+    <Compile Include="CapSenseClick\CapSenseClick.cs" />
+    <Compile Include="ColorClick\ColorClick.cs" />
+    <Compile Include="DacClick\DacClick.cs" />
+    <Compile Include="DCMotor4Click\DCMotor4Click.cs" />
+    <Compile Include="DCMotorClick\DCMotorClick.cs" />
+    <Compile Include="DevantechLCD03\DevantechLCD03.cs" />
+    <Compile Include="DigiPotClick\DigiPotClick.cs" />
+    <Compile Include="DS18B20\DS18B20.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib, Version=1.10.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>packages\nanoFramework.CoreLibrary.1.10.1-preview.9\lib\mscorlib.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets')" />
+  <ProjectExtensions>
+    <ProjectCapabilities>
+      <ProjectConfigurationsDeclaredAsItems />
+    </ProjectCapabilities>
+  </ProjectExtensions>
+</Project>
