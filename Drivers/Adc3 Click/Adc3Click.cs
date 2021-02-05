@@ -78,7 +78,11 @@ namespace MBN.Modules
         public Adc3Click(Hardware.Socket socket, Int32 address = 0x68)
         {
             _socket = socket;
+#if (NANOFRAMEWORK_1_0)
+            _adc = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, address, I2cBusSpeed.StandardMode));
+#else
             _adc = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
+#endif
 
             // Default power on configuration :
             // - Conversion not completed

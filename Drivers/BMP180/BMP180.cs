@@ -81,7 +81,11 @@ namespace MBN.Modules
         {
             _socket = socket;
             // Create the driver's I²C configuration
+#if (NANOFRAMEWORK_1_0)
+            _bmp180 = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, (int)address, I2cBusSpeed.StandardMode));
+#else
             _bmp180 = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(0x77, 100000));
+#endif
 
             Reset(ResetModes.Soft);
 

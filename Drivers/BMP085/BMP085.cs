@@ -84,7 +84,11 @@ namespace MBN.Modules
         {
             _socket = socket;
             // Create the driver's I²C configuration
+#if (NANOFRAMEWORK_1_0)
+            _sensor = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, (int)address, I2cBusSpeed.StandardMode));
+#else
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(0x77, 100000));
+#endif
 
 #if (NANOFRAMEWORK_1_0)
             _dataReady = new GpioController().OpenPin(dataReadyPin, PinMode.Input);

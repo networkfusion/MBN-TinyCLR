@@ -266,7 +266,11 @@ namespace MBN.Modules
         {
             _socket = socket;
             // Create the driver's I²C configuration
+#if (NANOFRAMEWORK_1_0)
+            _accel = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, address, I2cBusSpeed.StandardMode));
+#else
             _accel = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
+#endif
 
             if (ReadRegister((Byte)RegisterMap.DEVID) != 0xE5) { throw new SystemException("ADXL345 not detected"); }
 

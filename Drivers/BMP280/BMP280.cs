@@ -139,7 +139,11 @@ namespace MBN.Modules
         {
             _interface = Interface.I2C;
 
+#if (NANOFRAMEWORK_1_0)
+            _sensorI2C = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, (int)slaveAddress, I2cBusSpeed.FastMode));
+#else
             _sensorI2C = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((Int32) slaveAddress, 400000));
+#endif
 
             Initialize();
         }

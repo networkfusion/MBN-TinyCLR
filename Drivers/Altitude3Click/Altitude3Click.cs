@@ -89,7 +89,11 @@ namespace MBN.Modules
         public Altitude3Click(Hardware.Socket socket)
         {
             _socket = socket;
+#if (NANOFRAMEWORK_1_0)
+            _sensor = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, (int)address, I2cBusSpeed.StandardMode));
+#else
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(0x63, 100000));
+#endif
 
             Reset();
 

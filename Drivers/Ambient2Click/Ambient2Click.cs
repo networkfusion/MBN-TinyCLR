@@ -83,7 +83,11 @@ namespace MBN.Modules
         public Ambient2Click(Hardware.Socket socket, I2CAddresses slaveAddress)
         {
             _socket = socket;
+#if (NANOFRAMEWORK_1_0)
+            _sensor = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, (int)slaveAddress, I2cBusSpeed.StandardMode));
+#else
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((Int32) slaveAddress, 100000));
+#endif
 
             if (GetDeviceId() != 0x3001) throw new DeviceInitialisationException("Ambient2 Click not found on the I2C Bus.");
 
