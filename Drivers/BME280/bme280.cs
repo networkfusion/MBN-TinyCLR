@@ -849,7 +849,11 @@ namespace MBN.Modules
             Byte[] readBuffer = new Byte[bytesToRead];
             lock (_socket.LockI2c)
             {
+#if (NANOFRAMEWORK_1_0)
+                _sensor.WriteRead(writeBuffer, readBuffer);
+#else
                 _sensor?.WriteRead(writeBuffer, readBuffer);
+#endif
             }
             return readBuffer;
         }
@@ -915,9 +919,9 @@ namespace MBN.Modules
             WriteByte(REG_CTRL_MEAS, registerData);
         }
 
-        #endregion
+#endregion
 
-        #region Interface Implementations
+#region Interface Implementations
 
         /// <inheritdoc cref="IPressure" />
         /// <summary>
@@ -1129,6 +1133,6 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
     }
 }
