@@ -28,8 +28,8 @@
     <Compile Include="AmbientClick\AmbientClick.cs" />
     <Compile Include="Bargraph2Click\Bargraph2Click.cs" />
     <Compile Include="BargraphClick\BargraphClick.cs" />
-    <Compile Include="BarometerClick\BarometerClick.cs" />
-    <Compile Include="BiHallClick\BiHallClick.cs" />
+    <Compile Include="BarometerClick\Barometer.cs" />
+    <Compile Include="BiHallClick\BiHall.cs" />
     <Compile Include="BME280\bme280.cs" />
     <Compile Include="BMP085\BMP085.cs" />
     <Compile Include="BMP180\BMP180.cs" />
@@ -44,7 +44,7 @@
     <Compile Include="DCMotor4Click\DCMotor4Click.cs" />
     <Compile Include="DCMotorClick\DCMotorClick.cs" />
     <Compile Include="DevantechLCD03\DevantechLCD03.cs" />
-    <Compile Include="DigiPotClick\DigiPotClick.cs" />
+    <Compile Include="DigiPotClick\DigiPot.cs" />
     <Compile Include="DS18B20\DS18B20.cs" />
     <Compile Include="..\MBNCore\MBNCore.cs" /> <!--This should be a seperate proj?-->
     <Compile Include="..\MBNCore\nfHardwareSTM32F769I.cs" /> <!-- Make this an interface?-->
