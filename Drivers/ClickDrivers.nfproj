@@ -39,7 +39,11 @@
     <Compile Include="BuzzerClick\BuzzerClick.cs" />
     <Compile Include="CANSPIClick\CanSpiClick.cs" />
     <Compile Include="CapSenseClick\CapSenseClick.cs" />
+    <Compile Include="CapSenseClick\CapSenseClickEvents.cs" />
+    <Compile Include="CapSenseClick\Registers.cs" />
     <Compile Include="ColorClick\ColorClick.cs" />
+    <Compile Include="ColorClick\ColorClickEvents.cs" />
+    <Compile Include="ColorClick\Registers.cs" />
     <Compile Include="DacClick\DacClick.cs" />
     <Compile Include="DCMotor4Click\DCMotor4Click.cs" />
     <Compile Include="DCMotorClick\DCMotorClick.cs" />
@@ -65,6 +69,11 @@
     </Reference>
     <Reference Include="nanoFramework.Runtime.Events, Version=1.9.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
       <HintPath>packages\nanoFramework.Runtime.Events.1.9.0-preview.9\lib\nanoFramework.Runtime.Events.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
+    <Reference Include="nanoFramework.System.Collections, Version=1.2.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>packages\nanoFramework.System.Collections.1.2.0-preview.24\lib\nanoFramework.System.Collections.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>

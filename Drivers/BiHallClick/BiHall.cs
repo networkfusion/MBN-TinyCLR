@@ -84,7 +84,7 @@ namespace MBN.Modules
         #region Private Methods/Internal Interrupt Routines
 
 #if (NANOFRAMEWORK_1_0)
-        private void Interrupt_ValueChanged(GpioPin sender, PinValueChangedEventArgs e)
+        private void Interrupt_ValueChanged(object sender, PinValueChangedEventArgs e)
         {
             SwitchStateChangedEventHandler tempEvent = SwitchStateChanged;
             tempEvent?.Invoke(this, e.ChangeType ==  PinEventTypes.Rising);
