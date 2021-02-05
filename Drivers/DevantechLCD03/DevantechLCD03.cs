@@ -90,12 +90,18 @@ namespace MBN.Modules
             {
 #if (NANOFRAMEWORK_1_0)
                 _lcdSerial = SerialDevice.FromId(socket.ComPort);
+                // set parameters
+                _lcdSerial.BaudRate = 9600;
+                _lcdSerial.DataBits = 8;
+                _lcdSerial.Parity = SerialParity.None;
+                _lcdSerial.StopBits = SerialStopBitCount.Two;
+                _lcdSerial.Handshake = SerialHandshake.None;
 #else
                 _lcdSerial = UartController.FromName(socket.ComPort);
-#endif
-
                 _lcdSerial.SetActiveSettings(new UartSetting() { BaudRate = 9600, DataBits = 8, Parity = UartParity.None, StopBits = UartStopBitCount.Two, Handshaking = UartHandshake.None });
                 _lcdSerial.Enable();
+#endif
+
                 _isUart = true;
                 Init();
             }
@@ -145,7 +151,18 @@ namespace MBN.Modules
             get { return _cursor; }
             set
             {
-                if (_isUart) _lcdSerial.Write(new[] { (Byte)(4 + value) });
+#if (NANOFRAMEWORK_1_0)
+                if (_isUart)
+                {
+                    using (DataWriter outputDataWriter = new DataWriter(_lcdSerial.OutputStream))
+                    {
+                        outputDataWriter.WriteByte((byte)(4 + value));
+                        outputDataWriter.Store();
+                    }
+                }
+#else
+            if (_isUart) _lcdSerial.Write(new[] { (Byte)(4 + value) });
+#endif
                 else
                 {
                     lock (_socket.LockI2c)
@@ -173,7 +190,19 @@ namespace MBN.Modules
             get { return _backLight; }
             set
             {
+#if (NANOFRAMEWORK_1_0)
+                if (_isUart)
+                {
+                    using (DataWriter outputDataWriter = new DataWriter(_lcdSerial.OutputStream))
+                    {
+                        var bytesToWrite = new[] { value ? (byte)19 : (byte)20 };
+                        outputDataWriter.WriteBytes(bytesToWrite);
+                        outputDataWriter.Store();
+                    }
+                }
+#else
                 if (_isUart) _lcdSerial.Write(new[] { value ? (Byte)19 : (Byte)20 });
+#endif
                 else
                 {
                     lock (_socket.LockI2c)
@@ -199,7 +228,20 @@ namespace MBN.Modules
         public void SetCursor(Byte x, Byte y)
         {
             if (x <= 0 || x > 20 || y <= 0 || y > 4) { return; }
+
+#if (NANOFRAMEWORK_1_0)
+            if (_isUart)
+            {
+                using (DataWriter outputDataWriter = new DataWriter(_lcdSerial.OutputStream))
+                {
+                    var bytesToWrite = new byte[] { 3, y, x };
+                    outputDataWriter.WriteBytes(bytesToWrite);
+                    outputDataWriter.Store();
+                }
+            }
+#else
             if (_isUart) _lcdSerial.Write(new Byte[] { 3, y, x });
+#endif
             else
             {
                 lock (_socket.LockI2c)
@@ -221,7 +263,19 @@ namespace MBN.Modules
         /// </example>
         public void Write(String text)
         {
+#if (NANOFRAMEWORK_1_0)
+            if (_isUart)
+            {
+                using (DataWriter outputDataWriter = new DataWriter(_lcdSerial.OutputStream))
+                {
+                    var bytesToWrite = System.Text.Encoding.UTF8.GetBytes(text);
+                    outputDataWriter.WriteBytes(bytesToWrite);
+                    outputDataWriter.Store();
+                }
+            }
+#else
             if (_isUart) _lcdSerial.Write(System.Text.Encoding.UTF8.GetBytes(text));
+#endif
             else
             {
                 lock (_socket.LockI2c)
@@ -260,7 +314,18 @@ namespace MBN.Modules
         /// </example>
         public void ClearScreen()
         {
+#if (NANOFRAMEWORK_1_0)
+            if (_isUart)
+            {
+                using (DataWriter outputDataWriter = new DataWriter(_lcdSerial.OutputStream))
+                {
+                    outputDataWriter.WriteByte(12);
+                    outputDataWriter.Store();
+                }
+            }
+#else
             if (_isUart) _lcdSerial.Write(new Byte[] { 12 });
+#endif
             else
             {
                 lock (_socket.LockI2c)

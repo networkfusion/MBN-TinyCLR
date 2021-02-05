@@ -113,7 +113,7 @@ namespace MBN.Modules
             _sleep = new GpioController().OpenPin(socket.AnPin, PinMode.Output);
             _sleep.Write(PinValue.High);
 
-            _fault = new GpioController.GetDefault().OpenPin(socket.Int, PinMode.Input);
+            _fault = new GpioController().OpenPin(socket.Int, PinMode.Input);
 
             var PWM = PwmController.FromId(socket.PwmController);
             PWM.SetDesiredFrequency(frequency);
