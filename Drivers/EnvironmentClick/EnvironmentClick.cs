@@ -204,8 +204,11 @@ namespace MBN.Modules
         public EnvironmentClick(Hardware.Socket socket, I2CAddress slaveAddress)
         {
             _socket = socket;
+#if (NANOFRAMEWORK_1_0)
+            _sensor = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, (int)slaveAddress, I2cBusSpeed.StandardMode));
+#else
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((Int32) slaveAddress, 100000));
-
+#endif
             Reset();
 
             if (DeviceId != BME680_CHIP_ID) throw new DeviceInitialisationException("Failed to find EnvironmentClick Click on the I2C Bus. Please check your constructor for correct I2CAddress");
@@ -216,9 +219,9 @@ namespace MBN.Modules
             SetRecommendedMode(RecommendedModes.WeatherMonitoring);
         }
 
-        #endregion
+#endregion
 
-        #region Enumerations
+#region Enumerations
 
         /// <summary>
         ///     Possible I2C addresses that the EnvironmentClick Click supports.
@@ -416,9 +419,9 @@ namespace MBN.Modules
             Profile_9 = 0x09
         }
 
-        #endregion
+#endregion
 
-        #region Constants
+#region Constants
 
         // Registers
         private const Byte BME680_RESET = 0xE0;
@@ -509,16 +512,16 @@ namespace MBN.Modules
         private const Byte BME680_GH1_REG = 37;
         private const Byte BME680_GH3_REG = 38;
 
-        #endregion
+#endregion
 
-        #region Fields
+#region Fields
 
         private readonly I2cDevice _sensor;
         private readonly Hardware.Socket _socket;
 
-        #endregion
+#endregion
 
-        #region Private Methods
+#region Private Methods
 
         private void ReadCalibrationData()
         {
@@ -754,9 +757,9 @@ namespace MBN.Modules
             WriteRegister(BME680_CTRL_GAS_1, configValue);
         }
 
-        #endregion
+#endregion
 
-        #region Public Properties
+#region Public Properties
 
         /// <summary>
         ///     Controls the time constant of the IIR filter.
@@ -908,9 +911,9 @@ namespace MBN.Modules
         /// </example>
         public Boolean HeaterStable { get; private set; }
 
-        #endregion
+#endregion
 
-        #region Public Methods
+#region Public Methods
 
         /// <summary>
         ///     Reads the sea level compensated Altitude in meters.
@@ -1114,9 +1117,9 @@ namespace MBN.Modules
             return ReadRegister(BME680_RESET)[0] == 0;
         }
 
-        #endregion
+#endregion
 
-        #region Interface Implementations
+#region Interface Implementations
 
         /// <inheritdoc />
         /// <summary>
@@ -1263,6 +1266,6 @@ namespace MBN.Modules
         /// </summary>
         public TemperatureUnits TemperatureUnit { get; set; }
 
-        #endregion
+#endregion
     }
 }

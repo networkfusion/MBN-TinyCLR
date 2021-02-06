@@ -50,6 +50,13 @@
     <Compile Include="DevantechLCD03\DevantechLCD03.cs" />
     <Compile Include="DigiPotClick\DigiPot.cs" />
     <Compile Include="DS18B20\DS18B20.cs" />
+    <Compile Include="EepromClick\EepromClick.cs" />
+    <Compile Include="EnvironmentClick\EnvironmentClick.cs" />
+    <Compile Include="FlashMemory\FlashMemory.cs" />
+    <Compile Include="FMClick\FMClick.cs" />
+    <Compile Include="FRamClick\FRAMClick.cs" />
+    <Compile Include="FTDIClick\FTDIClick.cs" />
+    <Compile Include="FTDIClick\FTDIClickEvents.cs" />
     <Compile Include="..\MBNCore\MBNCore.cs" />
     <!--This should be a seperate proj?-->
     <Compile Include="..\MBNCore\nfHardwareSTM32F769I.cs" />
