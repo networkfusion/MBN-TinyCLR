@@ -57,6 +57,17 @@
     <Compile Include="FRamClick\FRAMClick.cs" />
     <Compile Include="FTDIClick\FTDIClick.cs" />
     <Compile Include="FTDIClick\FTDIClickEvents.cs" />
+    <Compile Include="Gnss4Click\Gnss4Click.cs" />
+    <Compile Include="Gnss5Click\Gnss5Click.cs" />
+    <Compile Include="GNSSClick\GNSSClick.cs" />
+    <Compile Include="GnssZoeClick\GnssZoeClick.cs" />
+    <Compile Include="GPS2Click\GPS2Click.cs" />
+    <Compile Include="GPSUtilities\GPSUtilities.cs" />
+
+    <Compile Include="NMEAParser\NMEAParser.cs" />
+
+    <Compile Include="SerialListener\SerialListener.cs" />
+
     <Compile Include="..\MBNCore\MBNCore.cs" />
     <!--This should be a seperate proj?-->
     <Compile Include="..\MBNCore\nfHardwareSTM32F769I.cs" />
