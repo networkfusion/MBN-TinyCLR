@@ -146,19 +146,24 @@ namespace MBN.Modules
         private void Sp_DataReceived(UartController sender, GHIElectronics.TinyCLR.Devices.Uart.DataReceivedEventArgs e)
 #endif
         {
-            var nb = _sp.BytesToRead;
-            var buf = new Byte[nb];
 #if (NANOFRAMEWORK_1_0)
-
             using (DataReader dataReader = new DataReader(_sp.InputStream))
             {
-                dataReader.ReadBytes(buf); //WHAT ABOUT THE AMOUNT (nb)!
+                dataReader.InputStreamOptions = InputStreamOptions.Partial;
+                var nb = dataReader.Load(_sp.BytesToRead);
+                var buf = new byte[nb];
+                dataReader.ReadBytes(buf);
+
+                DataReceivedEventHandler tempEvent = DataReceived;
+                tempEvent(this, new DataReceivedEventArgs(buf, (int)nb));
             }
 #else
+            var nb = _sp.BytesToRead;
+            var buf = new Byte[nb];
             _sp.Read(buf, 0, nb);
-#endif
             DataReceivedEventHandler tempEvent = DataReceived;
             tempEvent(this, new DataReceivedEventArgs(buf, nb));
+#endif
         }
 
         /// <summary>
