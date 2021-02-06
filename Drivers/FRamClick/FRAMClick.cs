@@ -238,7 +238,11 @@ namespace MBN.Modules
                 Array.Copy(array, index + (i * PageSize), _dataPage, 3, length);
                 lock (_socket.LockSpi)
                 {
+#if (NANOFRAMEWORK_1_0)
                     _fram.TransferFullDuplex(_dataPage, 0, length + 3, null, 0, 0);
+#else
+                    _fram.TransferFullDuplex(_dataPage, 0, length + 3, null, 0, 0);
+#endif
                 }
                 while (WriteInProgress()) Thread.Sleep(1);
             }
