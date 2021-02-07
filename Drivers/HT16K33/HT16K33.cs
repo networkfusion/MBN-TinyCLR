@@ -124,7 +124,11 @@ namespace MBN.Modules
         {
             _socket = socket;
             // Create the driver's I²C configuration
+#if (NANOFRAMEWORK_1_0)
+            _disp = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, address, I2cBusSpeed.FastMode));
+#else
             _disp = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 400000));
+#endif
 
             _buffer = new Byte[11];
             PowerMode = PowerModes.On;

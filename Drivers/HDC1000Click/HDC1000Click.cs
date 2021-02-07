@@ -87,15 +87,18 @@ namespace MBN.Modules
         public Hdc1000Click(Hardware.Socket socket, I2CAddress ic2Address = I2CAddress.I2CAddressOne)
         {
             _socket = socket;
-            _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((Int32)ic2Address, 100000));
 #if (NANOFRAMEWORK_1_0)
+            _sensor = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, (int)ic2Address, I2cBusSpeed.StandardMode));
             _dataReady = new GpioController().OpenPin(socket.Int);
             _dataReady.SetPinMode(PinMode.InputPullUp);
+            //_dataReady.ValueChangedEdge = PinEventTypes.Falling;
 #else
+            _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((Int32)ic2Address, 100000));
             _dataReady = GpioController.GetDefault().OpenPin(socket.Int);
             _dataReady.SetDriveMode(GpioPinDriveMode.InputPullUp);
-#endif
             _dataReady.ValueChangedEdge = GpioPinEdge.FallingEdge;
+#endif
+
             _dataReady.ValueChanged += DataReady_ValueChanged;
 
             if (GetManufacturerId() != 0x5449 && GetDeviceId() != 0x1000) throw new DeviceInitialisationException("HDC1000 click not found on I2C Bus");
@@ -233,9 +236,15 @@ namespace MBN.Modules
 
         #region Private Methods
 
+#if (NANOFRAMEWORK_1_0)
+        private void DataReady_ValueChanged(object sender, PinValueChangedEventArgs e)
+        {
+            if (e.ChangeType == PinEventTypes.Falling)
+#else
         private void DataReady_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e)
         {
             if (e.Edge== GpioPinEdge.FallingEdge)
+#endif
             {
                 _dataAvailable = true;
             }
@@ -312,9 +321,9 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
 
-        #region Public Properties
+#region Public Properties
 
         /// <summary>
         /// Returns the raw data as read from the HDC1000 Click.
@@ -338,9 +347,9 @@ namespace MBN.Modules
         /// </example>
         public TemperatureUnits TemperatureUnit { get; set; } = TemperatureUnits.Celsius;
 
-        #endregion
+#endregion
 
-        #region Public Methods
+#region Public Methods
 
         /// <summary>
         /// Configures the HDC1000 Click for temperature, humidity acquisition.
@@ -533,6 +542,6 @@ namespace MBN.Modules
             return ReadRegister(ConfigRegister)[0] == 0x10;
         }
 
-        #endregion
+#endregion
     }
 }

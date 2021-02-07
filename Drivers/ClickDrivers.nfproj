@@ -63,8 +63,18 @@
     <Compile Include="GnssZoeClick\GnssZoeClick.cs" />
     <Compile Include="GPS2Click\GPS2Click.cs" />
     <Compile Include="GPSUtilities\GPSUtilities.cs" />
+    <Compile Include="HDC1000Click\HDC1000Click.cs" />
+    <Compile Include="HT16K33\HT16K33.cs" />
+    <Compile Include="HTU21DClick\HTU21DClick.cs" />
+    <Compile Include="I2cMux2Click\I2cMux2Click.cs" />
+    <Compile Include="I2cMux2Click\I2cMux2ClickEvents.cs" />
+    <Compile Include="I2cMuxClick\I2cMuxClick.cs" />
+    <Compile Include="IlluminanceClick\IlluminanceClick.cs" />
+    <Compile Include="IRThermoClick\IRThermoClick.cs" />
 
     <Compile Include="NMEAParser\NMEAParser.cs" />
+
+    <Compile Include="RTDClick\RTDClick.cs" />
 
     <Compile Include="SerialListener\SerialListener.cs" />
 

@@ -239,7 +239,7 @@ namespace MBN.Modules
                 lock (_socket.LockSpi)
                 {
 #if (NANOFRAMEWORK_1_0)
-                    _fram.TransferFullDuplex(_dataPage, 0, length + 3, null, 0, 0);
+                    _fram.Write(_dataPage); //TODO: this might be wrong, but probably due to the Array.copy above.
 #else
                     _fram.TransferFullDuplex(_dataPage, 0, length + 3, null, 0, 0);
 #endif
