@@ -71,12 +71,19 @@
     <Compile Include="I2cMuxClick\I2cMuxClick.cs" />
     <Compile Include="IlluminanceClick\IlluminanceClick.cs" />
     <Compile Include="IRThermoClick\IRThermoClick.cs" />
-
-    <Compile Include="NMEAParser\NMEAParser.cs" />
+    <Compile Include="JoystickClick\JoystickClick.cs" />
+    <Compile Include="JoystickClick\JoystickClickRegisters.cs" />
+    <Compile Include="Keypad4x3\Keypad4x3.cs" />
+    <Compile Include="Keypad4x3\Keypad4x3Events.cs" />
+    <Compile Include="Led8x8Click\Led8x8Click.cs" />
+    <Compile Include="Led8x8Click\Registers.cs" />
+    <Compile Include="LedRingClick\LedRingClick.cs" />
+    <Compile Include="LightClick\LightClick.cs" />
+    <Compile Include="NMEAParser\NMEAParser.cs" /> <!--This should be part of GPS driver sub dir?-->
 
     <Compile Include="RTDClick\RTDClick.cs" />
 
-    <Compile Include="SerialListener\SerialListener.cs" />
+    <Compile Include="SerialListener\SerialListener.cs" /> <!--This should be part of GPS driver sub dir?-->
 
     <Compile Include="..\MBNCore\MBNCore.cs" />
     <!--This should be a seperate proj?-->

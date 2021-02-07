@@ -156,7 +156,11 @@ namespace MBN.Modules
         {
             _socket = socket;
             // Create the driver's I²C configuration
-            _joystick = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
+#if (NANOFRAMEWORK_1_0)
+            _joystick = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, address, I2cBusSpeed.StandardMode));
+#else
+			_joystick = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(address, 100000));
+#endif
 
             WriteRegister(Registers.CONTROL1, 0b11110000);
 #if (NANOFRAMEWORK_1_0)
@@ -323,9 +327,15 @@ namespace MBN.Modules
         {
             if (resetMode == ResetModes.Hard)
             {
+#if (NANOFRAMEWORK_1_0)
+                _reset.Write(PinValue.Low);
+                Thread.Sleep(200);
+                _reset.Write(PinValue.High);
+#else
                 _reset.Write(GpioPinValue.Low);
                 Thread.Sleep(200);
                 _reset.Write(GpioPinValue.High);
+#endif
             }
             else
             {

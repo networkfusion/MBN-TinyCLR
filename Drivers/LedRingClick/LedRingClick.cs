@@ -35,8 +35,8 @@ namespace MBN.Modules
             _socket = socket;
 
 #if (NANOFRAMEWORK_1_0)
-            GpioPin _rst = new gpio.GpioController().OpenPin(socket.Rst, PinMode.Output);
-            _rst.Write(gpio.PinValue.High);
+            GpioPin _rst = new GpioController().OpenPin(socket.Rst, PinMode.Output);
+            _rst.Write(PinValue.High);
 
             _ledRing = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
             {
@@ -44,9 +44,9 @@ namespace MBN.Modules
                 ClockFrequency = 1000000
             });
 
-            _rst.Write(gpio.PinValue.Low);
+            _rst.Write(PinValue.Low);
             Thread.Sleep(1);
-            _rst.Write(gpio.PinValue.High);
+            _rst.Write(PinValue.High);
 #else
             gpio.GpioPin _rst = gpio.GpioController.GetDefault().OpenPin(socket.Rst);
             _rst.SetDriveMode(gpio.GpioPinDriveMode.Output);
