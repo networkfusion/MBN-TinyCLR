@@ -12,7 +12,11 @@
  */
 
 using System;
+#if (NANOFRAMEWORK_1_0)
+using System.Resources;
+#else
 using MBN.Modules.Properties;
+#endif
 
 namespace MBN.Modules
 {
@@ -21,7 +25,7 @@ namespace MBN.Modules
 	/// </summary>
 	public static class FontManager
 	{
-		#region ENUMS
+#region ENUMS
 
 		/// <summary>
 		/// A set of predefined Fonts of varying sizes (8-24 points).
@@ -50,9 +54,9 @@ namespace MBN.Modules
 
 		}
 
-		#endregion
+#endregion
 
-		#region Public Methods
+#region Public Methods
 
 		/// <summary>
 		/// Returns a MikroFont resource specified by a predefined font.
@@ -84,7 +88,7 @@ namespace MBN.Modules
 			}
 		}
 
-		#endregion
+#endregion
 	}
 }
 
