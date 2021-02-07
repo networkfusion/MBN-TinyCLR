@@ -31,11 +31,15 @@ namespace MBN.Modules
     public sealed class SevenSegClick
     {
         private static SpiDevice _sevenSeg;
+#if (NANOFRAMEWORK_1_0)
+        private static PwmPin _pwm;
+#else
         private static PwmChannel _pwm;
+#endif
         private Double _pwmLevel;                            // Brightness level
         private readonly Hardware.Socket _socket;
 
-        #region CharTable
+#region CharTable
         /// <summary>
         /// Contains binary values for digits and chars
         /// </summary>
@@ -93,7 +97,7 @@ namespace MBN.Modules
             0x00, // '^'
             0x10  // '_'
         };
-        #endregion
+#endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SevenSegClick"/> class.
@@ -120,9 +124,15 @@ namespace MBN.Modules
 #endif
 
             // Sets initial brightness
+#if (NANOFRAMEWORK_1_0)
+            var PWM = PwmController.GetDefault();
+            PWM.SetDesiredFrequency(5000);
+            _pwm = PWM.OpenPin(socket.PwmChannel);
+#else
             var PWM = PwmController.FromName(socket.PwmController);
             PWM.SetDesiredFrequency(5000);
             _pwm = PWM.OpenChannel(socket.PwmChannel);
+#endif
             Brightness = initialBrightness;
         }
 

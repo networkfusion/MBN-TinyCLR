@@ -66,7 +66,11 @@ namespace MBN.Modules
     /// </example>
     public sealed partial class SpeakUpClick
     {
+#if (NANOFRAMEWORK_1_0)
+        private static SerialDevice _sp;
+#else
         private static UartController _sp;
+#endif
         private static Boolean _listening;
 
         /// <summary>
@@ -118,9 +122,19 @@ namespace MBN.Modules
         /// <param name="socket">The socket on which the SpeakUpClick module is plugged on MikroBus.Net board</param>
         public SpeakUpClick(Hardware.Socket socket)
         {
+#if (NANOFRAMEWORK_1_0)
+            _sp = SerialDevice.FromId(socket.ComPort);
+            _sp.BaudRate = 115200;
+            _sp.DataBits = 8;
+            _sp.Parity = SerialParity.None;
+            _sp.StopBits = SerialStopBitCount.One;
+            _sp.Handshake = SerialHandshake.None;
+            //_sp.Enable();
+#else
             _sp = UartController.FromName(socket.ComPort);
             _sp.SetActiveSettings(new UartSetting() { BaudRate = 115200, DataBits = 8, Parity = UartParity.None, StopBits = UartStopBitCount.One, Handshaking = UartHandshake.None });
             _sp.Enable();
+#endif
         }
 
         /// <summary>
@@ -187,7 +201,11 @@ namespace MBN.Modules
             }
         }
 
+#if (NANOFRAMEWORK_1_0)
+        private void Sp_DataReceived(object sender, DataReceivedEventArgs e)
+#else
         private void Sp_DataReceived(UartController sender, DataReceivedEventArgs e)
+#endif
         {
             var nb = _sp.BytesToRead;
             var buf = new Byte[nb];
