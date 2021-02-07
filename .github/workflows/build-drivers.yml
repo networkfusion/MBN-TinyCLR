@@ -1,4 +1,4 @@
-name: build Click Driver examples
+name: Build Click Drivers
 
 on:
   push:

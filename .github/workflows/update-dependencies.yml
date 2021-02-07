@@ -3,7 +3,7 @@
 
 # This workflow will periodically check .NET nanoFramework dependencies and updates them in the repository it's running.
 
-name: Update dependencies
+name: Update nuget dependencies
 
 on:
   schedule:
@@ -18,7 +18,7 @@ defaults:
 
 jobs:
   update-dotnet-preview:
-    name: Update .NET nanoFramework dependencies
+    name: Update .NET nanoFramework nuget dependencies
     timeout-minutes: 15
     runs-on: windows-latest
     steps:
