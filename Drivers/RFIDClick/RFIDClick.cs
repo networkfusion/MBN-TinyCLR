@@ -13,7 +13,7 @@
 
 #if (NANOFRAMEWORK_1_0)
 using System.Device.Gpio;
-using Windows.Devices.Spi
+using Windows.Devices.Spi;
 #else
 using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Spi;
@@ -211,6 +211,20 @@ namespace MBN.Modules
             _rBuffer = new Byte[261];
             _tmpBuffer = new byte[260];
 
+#if (NANOFRAMEWORK_1_0)
+            GpioPin _rst = new GpioController().OpenPin(socket.Rst);
+            _rst.SetPinMode(PinMode.Output);
+            GpioPin _an = new GpioController().OpenPin(socket.AnPin);
+            _an.SetPinMode(PinMode.Output);
+            _irqIn = new GpioController().OpenPin(socket.PwmPin);
+            _irqIn.SetPinMode(PinMode.Output);
+
+            // Set SPI mode on the chip
+
+            _rst.Write(PinValue.High);
+            _an.Write(PinValue.Low);
+            _irqIn.Write(PinValue.High);
+#else
             GpioPin _rst = GpioController.GetDefault().OpenPin(socket.Rst);
             _rst.SetDriveMode(GpioPinDriveMode.Output);
             GpioPin _an = GpioController.GetDefault().OpenPin(socket.AnPin);
@@ -223,7 +237,8 @@ namespace MBN.Modules
             _rst.Write(GpioPinValue.High);
             _an.Write(GpioPinValue.Low);
             _irqIn.Write(GpioPinValue.High);
-            
+#endif
+
             // Now that the chip is in SPI mode, we can create the SPI configuration and talk to the module
 #if (NANOFRAMEWORK_1_0)
             _rfid = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
@@ -247,10 +262,14 @@ namespace MBN.Modules
             ToggleIRQ_IN();
             Thread.Sleep(100);
 
-            
 
+#if (NANOFRAMEWORK_1_0)
+            _dataReady = new GpioController().OpenPin(socket.Int);
+            _dataReady.SetPinMode(PinMode.InputPullUp);
+#else
             _dataReady = GpioController.GetDefault().OpenPin(socket.Int);
             _dataReady.SetDriveMode(GpioPinDriveMode.InputPullUp);
+#endif
             //_dataReady.ValueChangedEdge = GpioPinEdge.FallingEdge;
             _dataReady.ValueChanged += DataReady_ValueChanged;
 
@@ -267,7 +286,11 @@ namespace MBN.Modules
             _lastTag = "";
         }
 
+#if (NANOFRAMEWORK_1_0)
+        private void DataReady_ValueChanged(object sender, PinValueChangedEventArgs e)
+#else
         private void DataReady_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e)
+#endif
         {
             lock (_socket.LockSpi)
             {
@@ -473,14 +496,20 @@ namespace MBN.Modules
             }
         }
 
-        #region Private methods
+#region Private methods
         private void Blinky()
         {
             while (_calibrationRunning)
             {
+#if (NANOFRAMEWORK_1_0)
+                _blinkPin.Write(PinValue.High);
+                Thread.Sleep(100);
+                _blinkPin.Write(PinValue.Low);
+#else
                 _blinkPin.Write(GpioPinValue.High);
                 Thread.Sleep(100);
                 _blinkPin.Write(GpioPinValue.Low);
+#endif
                 Thread.Sleep(100);
             }
         }
@@ -519,9 +548,15 @@ namespace MBN.Modules
 
         private void ToggleIRQ_IN()
         {
+#if (NANOFRAMEWORK_1_0)
+            _irqIn.Write(PinValue.Low);
+            Thread.Sleep(1);
+            _irqIn.Write(PinValue.High);
+#else
             _irqIn.Write(GpioPinValue.Low);
             Thread.Sleep(1);
             _irqIn.Write(GpioPinValue.High);
+#endif
             Thread.Sleep(100);
         }
 
@@ -608,10 +643,10 @@ namespace MBN.Modules
         {
             while (!_canSend) { Thread.Sleep(5); }
         }
-        #endregion
+#endregion
     }
 
-    #region BitConverter
+#region BitConverter
     internal static class BitConverter  // Borrowed from "jimox"
     {
         public static String ToString(Byte[] value, Char sep = ':', Int32 index = 0) => ToString(value, sep, index, value.Length - index);
@@ -632,6 +667,6 @@ namespace MBN.Modules
             return new String(c, 0, c.Length - 1);
         }
     }
-    #endregion
+#endregion
 }
 

@@ -38,7 +38,11 @@ namespace MBN.Modules
     public sealed partial class RotaryClick
     {
         private readonly GpioPin _encA, _encB, _sw;
+#if (NANOFRAMEWORK_1_0)
+        private PinValue _aState, _aLastState;
+#else
         private GpioPinValue _aState, _aLastState;
+#endif
         private readonly SpiDevice _rot;
         private readonly Byte[] _buffer = new Byte[2];
         private readonly Hardware.Socket _socket;
@@ -159,7 +163,7 @@ namespace MBN.Modules
         }
 
 #if (NANOFRAMEWORK_1_0)
-        private void EncA_ValueChanged(GpioPin sender, PinValueChangedEventArgs e)
+        private void EncA_ValueChanged(object sender, PinValueChangedEventArgs e)
         {
 #else
         private void EncA_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e)
@@ -185,7 +189,7 @@ namespace MBN.Modules
         }
 
 #if (NANOFRAMEWORK_1_0)
-        private void Sw_ValueChanged(GpioPin sender, PinValueChangedEventArgs e)
+        private void Sw_ValueChanged(object sender, PinValueChangedEventArgs e)
         {
             ButtonPressedEventHandler buttonEvent = ButtonPressed;
             buttonEvent(this, new ButtonPressedEventArgs(e.ChangeType));

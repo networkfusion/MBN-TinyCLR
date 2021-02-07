@@ -431,7 +431,7 @@ namespace MBN.Modules
             snValue[1] = readBuffer2[0];
             snValue[0] = readBuffer3[1];
 
-            return BitConverter.ToUInt32(snValue, 0);
+            return System.BitConverter.ToUInt32(snValue, 0); //TODO: requires "System" as "MBN"  overrides it!
         }
 
         /// <summary>
