@@ -34,11 +34,17 @@ namespace MBN.Modules
         {
             #region .ctor
 
+#if (NANOFRAMEWORK_1_0)
+            internal SimpleSerial(SerialDevice uartController)
+            {
+                _serial = uartController;
+#else
             internal SimpleSerial(UartController uartController)
             {
                 _serial = uartController;
                 _serial.ClearReadBuffer();
                 _serial.ClearWriteBuffer();
+#endif
             }
 
             #endregion
@@ -46,7 +52,11 @@ namespace MBN.Modules
             #region Fields
 
             private String _remainder;
+#if (NANOFRAMEWORK_1_0)
+            private readonly SerialDevice _serial;
+#else
             private readonly UartController _serial;
+#endif
 
             #endregion
 
@@ -59,9 +69,9 @@ namespace MBN.Modules
             /// </summary>
             internal String Remainder => _remainder;
 
-            #endregion
+#endregion
 
-            #region Internal Methods
+#region Internal Methods
 
             /// <summary>
             ///     Writes the specified string to the serial port.
@@ -118,7 +128,9 @@ namespace MBN.Modules
             internal void Enable()
             {
                 _remainder = String.Empty;
+#if (!NANOFRAMEWORK_1_0)
                 _serial.Enable();
+#endif
             }
 
             /// <summary>
@@ -137,9 +149,9 @@ namespace MBN.Modules
                 return SplitString(_remainder + ReadExisting(), out _remainder, delimiter);
             }
 
-            #endregion
+#endregion
 
-            #region Private Methods
+#region Private Methods
 
             /// <summary>
             ///     Splits a stream into separate lines, given a delimiter.
@@ -244,7 +256,7 @@ namespace MBN.Modules
                 return output;
             }
 
-            #endregion
+#endregion
         }
     }
 }

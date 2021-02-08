@@ -98,16 +98,30 @@ namespace MBN.Modules
         /// <param name="parity"></param>
         /// <param name="stopBitCount"></param>
         /// <param name="handShake"></param>
+#if (NANOFRAMEWORK_1_0)
+        public USBUARTClick(Hardware.Socket socket, BaudRate baudRate, ushort dataBits = 8, SerialParity parity = SerialParity.None, SerialStopBitCount stopBitCount = SerialStopBitCount.One, SerialHandshake handShake = SerialHandshake.None)
+        {
+            _serial = SerialDevice.FromId(socket.ComPort);
+            // set parameters
+            _serial.BaudRate = (uint)baudRate;
+            _serial.DataBits = dataBits;
+            _serial.Parity = parity;
+            _serial.StopBits = stopBitCount;
+            _serial.Handshake = handShake;
+
+            _powerPin = new GpioController().OpenPin(socket.PwmPin);
+            _powerPin.SetPinMode(PinMode.InputPullUp);
+            _powerPin.ValueChanged += PowerPin_ValueChanged;
+
+            _sleepPin = new GpioController().OpenPin(socket.Cs);
+            _sleepPin.SetPinMode(PinMode.Input);
+            _sleepPin.ValueChanged += SleepPin_ValueChanged;
+#else
         public USBUARTClick(Hardware.Socket socket, BaudRate baudRate, Int32 dataBits = 8, UartParity parity = UartParity.None, UartStopBitCount stopBitCount = UartStopBitCount.One, UartHandshake handShake = UartHandshake.None)
         {
             _serial = UartController.FromName(socket.ComPort);
             _serial.SetActiveSettings(new UartSetting() { BaudRate = (Int32)baudRate, DataBits = dataBits, Parity = parity, StopBits = stopBitCount, Handshaking = handShake });
             _serial.Enable();
-
-            _serial.DataReceived += Serial_DataReceived;
-            _serial.ErrorReceived += Serial_ErrorReceived;
-
-            _simpleSerial = new SimpleSerial(_serial);
 
             _powerPin = GpioController.GetDefault().OpenPin(socket.PwmPin);
             _powerPin.SetDriveMode(GpioPinDriveMode.InputPullUp);
@@ -116,22 +130,33 @@ namespace MBN.Modules
             _sleepPin = GpioController.GetDefault().OpenPin(socket.Cs);
             _sleepPin.SetDriveMode(GpioPinDriveMode.Input);
             _sleepPin.ValueChanged += SleepPin_ValueChanged;
+
+            _serial.ErrorReceived += Serial_ErrorReceived;
+#endif
+
+            _serial.DataReceived += Serial_DataReceived;
+
+            _simpleSerial = new SimpleSerial(_serial);
         }
 
         #endregion
 
         #region Fields
 
+#if (NANOFRAMEWORK_1_0)
+        private readonly SerialDevice _serial;
+#else
         private readonly UartController _serial;
+#endif
         private readonly SimpleSerial _simpleSerial;
         private String[] _dataIn;
 
         private static GpioPin _sleepPin;
         private static GpioPin _powerPin;
 
-        #endregion
+#endregion
 
-        #region ENUMS
+#region ENUMS
 
         /// <summary>
         ///     Enumeration for BaudRate selection of the USBUARTClick
@@ -198,9 +223,9 @@ namespace MBN.Modules
             Baud921600 = 921600
         }
 
-        #endregion
+#endregion
 
-        #region Public Properties
+#region Public Properties
 
         /// <summary>
         /// Gets the status of the USB Cable connection to USB UART Click.
@@ -212,7 +237,11 @@ namespace MBN.Modules
         /// Debug.Print("USB is connected ? " + _usbUart.USBCableConnected);
         /// </code>
         /// </example>
+#if (NANOFRAMEWORK_1_0)
+        public Boolean USBCableConnected => _powerPin.Read() == PinValue.Low;
+#else
         public Boolean USBCableConnected => _powerPin.Read() == GpioPinValue.Low;
+#endif
 
         /// <summary>
         /// Gets the Sleep/Suspend status of the USB connection to the USBUART Click.
@@ -224,11 +253,14 @@ namespace MBN.Modules
         /// Debug.Print("USB sleeping ? " + _usbUart.USBSuspended);
         /// </code>
         /// </example>
+#if (NANOFRAMEWORK_1_0)
+        public Boolean USBSuspended => _sleepPin.Read() == PinValue.Low;
+#else
         public Boolean USBSuspended => _sleepPin.Read() == GpioPinValue.Low;
+#endif
+#endregion
 
-        #endregion
-
-        #region Public Methods
+#region Public Methods
 
         /// <summary>
         /// Send a <see cref="System.String"/> of data to the USB client connected to the USBUART click.
@@ -244,21 +276,32 @@ namespace MBN.Modules
         /// </example>
         public void SendData(String data) => _serial.Write(Encoding.UTF8.GetBytes(data));
 
-        #endregion
+#endregion
 
-        #region Events
+#region Events
+#if (NANOFRAMEWORK_1_0)
+        private void SleepPin_ValueChanged(object sender, PinValueChangedEventArgs e) => UsbSleep(e.ChangeType == PinEventTypes.Falling, DateTime.UtcNow);
 
+        private void PowerPin_ValueChanged(object sender, PinValueChangedEventArgs e) => IscableConnectionChanged(e.ChangeType == PinEventTypes.Falling, DateTime.UtcNow);
+#else
         private void SleepPin_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e) => UsbSleep(e.Edge == GpioPinEdge.FallingEdge, DateTime.UtcNow);
 
         private void PowerPin_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e) => IscableConnectionChanged(e.Edge == GpioPinEdge.FallingEdge, DateTime.UtcNow);
+#endif
 
+#if (!NANOFRAMEWORK_1_0)
         private void Serial_ErrorReceived(UartController sender, ErrorReceivedEventArgs e)
         {
             ErrorReceivedHandler handler = ErrorReceived;
             handler?.Invoke(this, e, DateTime.UtcNow);
         }
+#endif
 
+#if (NANOFRAMEWORK_1_0)
+        private void Serial_DataReceived(object sender, SerialDataReceivedEventArgs e)
+#else
         private void Serial_DataReceived(UartController sender, DataReceivedEventArgs e)
+#endif
         {
             _dataIn = _simpleSerial.Deserialize();
             foreach (String str in _dataIn)
@@ -331,6 +374,6 @@ namespace MBN.Modules
             handler?.Invoke(this, isSleeping, eventTime);
         }
 
-        #endregion
+#endregion
     }
 }
