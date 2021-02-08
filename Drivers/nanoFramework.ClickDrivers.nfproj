@@ -100,7 +100,7 @@
     <Compile Include="Proximity3Click\Proximity3Click.cs" />
     <Compile Include="ProximityClick\ProximityClick.cs" />
     <Compile Include="ProximityClick\Registers.cs" />
-    <!--<Compile Include="QspiMemory\QspiMemory.cs" />--> <!--QSpiMemoty needs more work!-->
+    <!--<Compile Include="QspiMemory\QspiMemory.cs" />--> <!--QSpiMemory needs more work!-->
     <Compile Include="RelayClick\RelayClick.cs" />
     <Compile Include="RFIDClick\RFIDClick.cs" />
     <Compile Include="RFIDClick\RFIDClickEvents.cs" />
@@ -110,10 +110,9 @@
     <Compile Include="RTDClick\RTDClick.cs" />
     <Compile Include="SerialListener\SerialListener.cs" /> <!--This should be part of GPS driver sub dir?-->
     <Compile Include="SevenSegClick\SevenSegClick.cs" />
-    <!--
     <Compile Include="SpeakUpClick\SpeakUpClick.cs" />
     <Compile Include="SpeakUpClick\SpeakUpClickEvents.cs" />
-    <Compile Include="StepperClick\StepperClick.cs" />-->
+    <Compile Include="StepperClick\StepperClick.cs" />
     <Compile Include="TempHum2Click\TempHum2Click.cs" />
     <Compile Include="TempHum4Click\TempHum4Click.cs" />
     <Compile Include="TempHum6Click\TempHum6.cs" />
@@ -129,6 +128,7 @@
     <Compile Include="ThermostatClick\ThermostatClick.cs" />
     <Compile Include="ThunderClick\ThunderClick.cs" />
     <Compile Include="ThunderClick\ThunderClickEvents.cs" />
+    <!--TinyFileSystemneeds more work!-->
     <!--<Compile Include="TinyFileSystem\BlockDriver.cs" />
     <Compile Include="TinyFileSystem\BufferedStream.cs" />
     <Compile Include="TinyFileSystem\FileSystemStructures.cs" />
@@ -141,6 +141,7 @@
     <Compile Include="TinyFileSystem\Utilities.cs" />-->
     <Compile Include="UniHallClick\UniHallClick.cs" />
     <Compile Include="UniqueIDClick\UniqueIDClick.cs" />
+    <!--UsbUartClick more work!-->
     <!--<Compile Include="UsbUartClick\SimpleSerial.cs" />
     <Compile Include="UsbUartClick\USBUARTClick.cs" />-->
     <Compile Include="UT-X-7SegClick\Ut7SegClick.cs" />

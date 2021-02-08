@@ -190,22 +190,36 @@ namespace MBN.Modules
                 if (value)
                 {
                     _sp.DataReceived += Sp_DataReceived;
+#if (!NANOFRAMEWORK_1_0)
                     _sp.Enable();
+#endif
                 }
                 else
                 {
-                    _sp.DataReceived += Sp_DataReceived;
+                    _sp.DataReceived -= Sp_DataReceived;
+#if (!NANOFRAMEWORK_1_0)
                     _sp.Disable();
+#endif
                 }
                 _listening = value;
             }
         }
 
 #if (NANOFRAMEWORK_1_0)
-        private void Sp_DataReceived(object sender, DataReceivedEventArgs e)
+        private void Sp_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            using (DataReader dataReader = new DataReader(_sp.InputStream))
+            {
+                dataReader.InputStreamOptions = InputStreamOptions.Partial;
+                var nb = dataReader.Load(_sp.BytesToRead);
+                var buf = new byte[nb];
+                dataReader.ReadBytes(buf);
+
+                SpeakUpEventHandler speakEvent = SpeakDetected;
+                speakEvent(this, new SpeakUpEventArgs(buf[0]));
+            }
 #else
         private void Sp_DataReceived(UartController sender, DataReceivedEventArgs e)
-#endif
         {
             var nb = _sp.BytesToRead;
             var buf = new Byte[nb];
@@ -214,6 +228,8 @@ namespace MBN.Modules
 
             SpeakUpEventHandler speakEvent = SpeakDetected;
             speakEvent(this, new SpeakUpEventArgs(buf[0]));
+#endif
+
         }
     }
 }
