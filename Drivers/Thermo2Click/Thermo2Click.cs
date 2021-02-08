@@ -101,16 +101,20 @@ namespace MBN.Modules
         /// <param name="gpio">The pin used for the One-Wire Bus.</param>
         public Thermo2Click(Hardware.Socket socket, GpioSelect gpio = GpioSelect.GP0)
         {
+#if (NANOFRAMEWORK_1_0)
+            Interface = new OneWireController();
+#else
             Interface = new OneWireController(gpio == GpioSelect.GP0 ? socket.PwmPin : socket.AnPin);
+#endif
             _deviceList = new ArrayList();
             _deviceList = GetDeviceList();
 
             if (_deviceList.Count == 0) throw new DeviceInitialisationException("No Thermo2 Clicks found on the OneWire Bus.");
         }
 
-        #endregion
+#endregion
 
-        #region Constants
+#region Constants
 
         private const Byte TempLsb = 0;
         private const Byte TempMsb = 1;
@@ -121,15 +125,15 @@ namespace MBN.Modules
 
         private const Byte DeviceFamilyCode = 0x3B;
 
-        #endregion
+#endregion
 
-        #region Fields
+#region Fields
 
         private readonly ArrayList _deviceList;
 
-        #endregion
+#endregion
 
-        #region ENUMS
+#region ENUMS
 
         internal enum RomCommands
         {
@@ -191,9 +195,9 @@ namespace MBN.Modules
             GP1 = 1
         }
 
-        #endregion
+#endregion
 
-        #region Public Properties
+#region Public Properties
 
         /// <summary>
         ///     Returns an ArrayList of the unique 64-Bit Addresses of all Thermo2 Clicks on the OneWire Bus.
@@ -251,11 +255,11 @@ namespace MBN.Modules
         /// </example>
         public TemperatureUnits TemperatureUnit { get; set; } = TemperatureUnits.Celsius;
 
-        #endregion
+#endregion
 
-        #region Pubic Methods
+#region Pubic Methods
 
-        #region Device Related Methods
+#region Device Related Methods
 
         /// <summary>
         /// Returns an ArrayList of all Thermo2 Clicks on the OneWire Bus.
@@ -355,7 +359,7 @@ namespace MBN.Modules
         public UInt64 GetSerialNumber(Byte[] oneWireAddress)
         {
             return
-                BitConverter.ToUInt64(
+                System.BitConverter.ToUInt64(
                     new[] { oneWireAddress[1], oneWireAddress[2], oneWireAddress[3], oneWireAddress[4], oneWireAddress[5], (Byte)0x00, (Byte) 0x00, (Byte) 0x00}, 0);
         }
 
@@ -382,13 +386,13 @@ namespace MBN.Modules
         /// </example>
         public Byte[] SerialNumberToOneWireAddress(Int64 serialNumber)
         {
-            var sn = Utility.CombineArrays(new[] { DeviceFamilyCode }, Utility.ExtractRangeFromArray(BitConverter.GetBytes(serialNumber), 0, 6));
+            var sn = Utility.CombineArrays(new[] { DeviceFamilyCode }, Utility.ExtractRangeFromArray(System.BitConverter.GetBytes(serialNumber), 0, 6));
             return Utility.CombineArrays(sn, new[] { CalculateCrc(sn, 7) });
         }
 
-        #endregion
+#endregion
 
-        #region Device Resolution Methods
+#region Device Resolution Methods
 
         /// <summary>
         ///     Returns the current resolution of the device, 9-12 Bit.
@@ -411,8 +415,11 @@ namespace MBN.Modules
         public Resolution GetResolution(Byte[] oneWireAddress)
         {
             GetDeviceList();
-
+#if (NANOFRAMEWORK_1_0)
+            if (!IsValidId(oneWireAddress) || Interface.TouchReset() == false)
+#else
             if (!IsValidId(oneWireAddress) || Interface.TouchReset() <= 0)
+#endif
             {
                 return Resolution.Resolution12Bit;
             }
@@ -554,9 +561,9 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
 
-        #region Temperature Measurement Related Methods
+#region Temperature Measurement Related Methods
 
         /// <summary>
         ///     Reads the temperature of a single Thermo2 Click configuration or the first device found on the OneWire Bus in a multiple sensor configuration.
@@ -584,7 +591,11 @@ namespace MBN.Modules
 
             if (IsParasitic((Byte[]) DeviceList[0])) throw new NotSupportedException("Reading temperature in Parasitic Mode is not supported.");
 
+#if (NANOFRAMEWORK_1_0)
+            if (Interface.TouchReset() == false) return Single.MinValue;
+#else
             if (Interface.TouchReset() <= 0) return Single.MinValue;
+#endif
 
             Interface.WriteByte((Byte) RomCommands.SkipRom); // Skip ROM, we only have one device
             Interface.WriteByte((Byte) FunctionCommands.StartTemperatureConversion); // Start temperature conversion
@@ -671,7 +682,11 @@ namespace MBN.Modules
 
             if (!IsValidId(oneWireAddress)) return Single.MinValue;
 
+#if (NANOFRAMEWORK_1_0)
+            if (Interface.TouchReset() == false) return Single.MinValue;
+#else
             if (Interface.TouchReset() <= 0) return Single.MinValue;
+#endif
 
             SelectDevice(oneWireAddress);
 
@@ -767,9 +782,9 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
 
-        #region Alarm Related Methods
+#region Alarm Related Methods
 
         /// <summary>
         ///     Gets an ArrayList of all Thermo2 Clicks on the OneWire Bus that have the AlarmFlag set.
@@ -793,6 +808,22 @@ namespace MBN.Modules
             var alarmList = new ArrayList();
 
             // find the first device (only devices alarming)
+#if (NANOFRAMEWORK_1_0)
+            bool result = Interface.FindFirstDevice(true, true);
+            while (result != true)
+            {
+                var sNum = new Byte[8];
+
+                // retrieve the serial number just found
+                sNum = Interface.SerialNumber;
+
+                // save serial number
+                alarmList.Add(sNum);
+
+                // find the next alarming device
+                result = Interface.FindNextDevice(false, true);
+            }
+#else
             Int32 result = Interface.FindFirstDevice(true, true);
             while (result != 0)
             {
@@ -807,6 +838,7 @@ namespace MBN.Modules
                 // find the next alarming device
                 result = Interface.FindNextDevice(false, true);
             }
+#endif
             return alarmList;
         }
 
@@ -841,7 +873,7 @@ namespace MBN.Modules
 
             foreach (Byte[] device in alarmArray)
             {
-                if (BitConverter.ToInt64(oneWireAddress, 0) == BitConverter.ToInt64(device, 0)) return true;
+                if (System.BitConverter.ToInt64(oneWireAddress, 0) == System.BitConverter.ToInt64(device, 0)) return true;
             }
 
             return false;
@@ -905,7 +937,11 @@ namespace MBN.Modules
         {
             GetDeviceList();
 
+#if (NANOFRAMEWORK_1_0)
+            if (!IsValidId(oneWireAddress) || Interface.TouchReset() == false) return Int32.MinValue;
+#else
             if (!IsValidId(oneWireAddress) || Interface.TouchReset() <= 0) return Int32.MinValue;
+#endif
 
             SelectDevice(oneWireAddress);
 
@@ -937,7 +973,11 @@ namespace MBN.Modules
         {
             GetDeviceList();
 
+#if (NANOFRAMEWORK_1_0)
+            if (!IsValidId(oneWireAddress) || Interface.TouchReset() == false) return Int32.MinValue;
+#else
             if (!IsValidId(oneWireAddress) || Interface.TouchReset() <= 0) return Int32.MinValue;
+#endif
 
             SelectDevice(oneWireAddress);
 
@@ -1103,11 +1143,11 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
 
-        #endregion
+#endregion
 
-        #region Private Methods
+#region Private Methods
 
         private static Byte CalculateCrc(Byte[] data, Int32 length)
         {
@@ -1168,7 +1208,11 @@ namespace MBN.Modules
 
         private Boolean SelectDevice(Byte[] oneWireAddress)
         {
+#if (NANOFRAMEWORK_1_0)
+            if (Interface.TouchReset() == false) return false;
+#else
             if (Interface.TouchReset() <= 0) return false;
+#endif
 
             Interface.WriteByte((Byte) RomCommands.MatchRom);
 
@@ -1221,9 +1265,15 @@ namespace MBN.Modules
             SelectDevice(oneWireAddress);
 
             Interface.WriteByte((Byte) FunctionCommands.WriteScratchPad);
+#if (NANOFRAMEWORK_1_0)
+            Interface.WriteByte((byte)scratchPad[HighTempAlarmBit]); // high alarm temp
+            Interface.WriteByte((byte)scratchPad[LowTempAlarmbit]); // low alarm temp
+            Interface.WriteByte((byte)scratchPad[ConfigurationBit]); // configuration
+#else
             Interface.WriteByte(scratchPad[HighTempAlarmBit]); // high alarm temp
             Interface.WriteByte(scratchPad[LowTempAlarmbit]); // low alarm temp
             Interface.WriteByte(scratchPad[ConfigurationBit]); // configuration
+#endif
 
 
             SelectDevice(oneWireAddress);
@@ -1268,7 +1318,7 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
     }
 
     internal class Utility

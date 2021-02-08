@@ -504,17 +504,22 @@ namespace MBN.Modules
         public Boolean Reset(ResetModes resetMode)
         {
             if (resetMode == ResetModes.Soft) throw new NotSupportedException("This module does not have a soft reset feature. Use a hard reset instead.");
-
+#if (NANOFRAMEWORK_1_0)
+            _resetPin.Write(PinValue.Low);
+            Thread.Sleep(1);
+            _resetPin.Write(PinValue.High);
+#else
             _resetPin.Write(GpioPinValue.Low);
             Thread.Sleep(1);
             _resetPin.Write(GpioPinValue.High);
+#endif
 
             return true;
         }
 
-        #endregion
+#endregion
 
-        #region Interface Implementations
+#region Interface Implementations
 
         /// <inheritdoc cref="ITemperature" />
         /// <summary>
@@ -589,7 +594,7 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
     }
 }
 

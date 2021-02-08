@@ -89,6 +89,57 @@ namespace MBN.Modules
         public TempHum4Click(Hardware.Socket socket, I2CAddress slaveAddress)
         {
             _socket = socket;
+
+#if (NANOFRAMEWORK_1_0)
+            _addressPin0 = new GpioController().OpenPin(socket.Rst);
+            _addressPin0.SetPinMode(PinMode.Output);
+            _addressPin0.Write(PinValue.Low);
+
+            _addressPin1 = new GpioController().OpenPin(socket.Cs);
+            _addressPin1.SetPinMode(PinMode.Output);
+            _addressPin1.Write(PinValue.Low);
+
+            switch (slaveAddress)
+            {
+                case I2CAddress.AddessZero:
+                    {
+                        _addressPin0.Write(PinValue.Low);
+                        _addressPin1.Write(PinValue.Low);
+                        break;
+                    }
+
+                case I2CAddress.AddressOne:
+                    {
+                        _addressPin0.Write(PinValue.High);
+                        _addressPin1.Write(PinValue.Low);
+                        break;
+                    }
+
+                case I2CAddress.AddressTwo:
+                    {
+                        _addressPin0.Write(PinValue.Low);
+                        _addressPin1.Write(PinValue.High);
+                        break;
+                    }
+
+                case I2CAddress.AddressThree:
+                    {
+                        _addressPin0.Write(PinValue.High);
+                        _addressPin1.Write(PinValue.High);
+                        break;
+                    }
+
+                default:
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(slaveAddress));
+                    }
+            }
+
+            _dataReadyPin = new GpioController().OpenPin(socket.Int);
+            _dataReadyPin.SetPinMode(PinMode.InputPullUp);
+
+            _sensor = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, (int)slaveAddress, I2cBusSpeed.StandardMode));
+#else
             _addressPin0 = GpioController.GetDefault().OpenPin(socket.Rst);
             _addressPin0.SetDriveMode(GpioPinDriveMode.Output);
             _addressPin0.Write(GpioPinValue.Low);
@@ -137,7 +188,7 @@ namespace MBN.Modules
             _dataReadyPin.SetDriveMode(GpioPinDriveMode.InputPullUp);
 
             _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((Int32) slaveAddress, 100000));
-
+#endif
             Reset();
 
             if (GetManufacturerId() != 0x5449 && GetDeviceId() != 0x1000)
@@ -152,9 +203,9 @@ namespace MBN.Modules
                 HeaterModes.Disabled);
         }
 
-        #endregion
+#endregion
 
-        #region Private Fields
+#region Private Fields
 
         private readonly I2cDevice _sensor;
         private readonly Hardware.Socket _socket;
@@ -162,9 +213,9 @@ namespace MBN.Modules
         private readonly GpioPin _addressPin1;
         private readonly GpioPin _dataReadyPin;
 
-        #endregion
+#endregion
 
-        #region Constants
+#region Constants
 
         private const Byte TempRegister = 0x00;
         private const Byte HumidityRegister = 0x01;
@@ -176,9 +227,9 @@ namespace MBN.Modules
         private const Byte Hdc1010Serial2 = 0xFC;
         private const Byte Hdc1010Serial3 = 0xFD;
 
-        #endregion
+#endregion
 
-        #region Public Enums
+#region Public Enums
 
         /// <summary>
         /// Available I2C Address of the TempHum 4 Click
@@ -278,9 +329,9 @@ namespace MBN.Modules
             Disabled = 0x00
         }
 
-        #endregion
+#endregion
 
-        #region Public Properties
+#region Public Properties
 
         public AcquisitionModes AcquisitionMode
         {
@@ -346,9 +397,9 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
 
-        #region Public Methods
+#region Public Methods
 
         /// <summary>
         /// Configures the TempHum4 Click for temperature, humidity acquisition.
@@ -434,7 +485,7 @@ namespace MBN.Modules
             snValue[1] = readBuffer2[0];
             snValue[0] = readBuffer3[1];
 
-            return BitConverter.ToUInt32(snValue, 0);
+            return System.BitConverter.ToUInt32(snValue, 0);
         }
 
         /// <summary>
@@ -498,9 +549,9 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
 
-        #region Private Methods
+#region Private Methods
 
         private Byte[] ReadRegister(Byte registerAddress, Byte numberOfBytesToRead)
         {
@@ -570,9 +621,9 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
 
-        #region Interface Implementations
+#region Interface Implementations
 
         /// <summary>
         ///     Reads the temperature from the TempHum4 Click.
@@ -600,8 +651,11 @@ namespace MBN.Modules
                     "You cannot read temperature independantly while Acquisition Mode is set for sequential access. Use the ReadSensor method instead.");
 
             WriteByte(TempRegister);
-
-            while(_dataReadyPin.Read() == GpioPinValue.High) { }
+#if (NANOFRAMEWORK_1_0)
+            while (_dataReadyPin.Read() == PinValue.High) { }
+#else
+            while (_dataReadyPin.Read() == GpioPinValue.High) { }
+#endif
 
             Byte[] readBuffer = ReadBytes(2);
 
@@ -636,8 +690,11 @@ namespace MBN.Modules
                     "You cannot read temperature independantly while Acquisition Mode is set for sequential access. Use the ReadSensor method instead.");
 
             WriteByte(HumidityRegister);
-
-            while(_dataReadyPin.Read() == GpioPinValue.High) { }
+#if (NANOFRAMEWORK_1_0)
+            while (_dataReadyPin.Read() == PinValue.High) { }
+#else
+            while (_dataReadyPin.Read() == GpioPinValue.High) { }
+#endif
 
             Byte[] readBuffer = ReadBytes(2);
 
@@ -671,7 +728,7 @@ namespace MBN.Modules
         /// </example>
         public TemperatureUnits TemperatureUnit { get; set; } = TemperatureUnits.Celsius;
 
-        #endregion
+#endregion
 
     }
 }

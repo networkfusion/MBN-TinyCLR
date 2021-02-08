@@ -203,12 +203,21 @@ namespace MBN.Modules
         /// </value>
         public PowerModes PowerMode
         {
+#if (NANOFRAMEWORK_1_0)
+            get => _chipEnable.Read() == PinValue.High ? PowerModes.On : PowerModes.Low;
+            set
+            {
+                if (value == PowerModes.Off) throw new NotSupportedException("This module does not support PowerModes.Off");
+                _chipEnable.Write(value == PowerModes.On ? PinValue.High : PinValue.Low);
+            }
+#else
             get => _chipEnable.Read() == GpioPinValue.High ? PowerModes.On : PowerModes.Low;
             set
             {
                 if (value == PowerModes.Off) throw new NotSupportedException("This module does not support PowerModes.Off");
                 _chipEnable.Write(value == PowerModes.On ? GpioPinValue.High : GpioPinValue.Low);
             }
+#endif
         }
 
         /// <summary>
@@ -292,9 +301,9 @@ namespace MBN.Modules
         /// </example>
         public TemperatureUnits TemperatureUnits { get; set; }
 
-        #endregion
+#endregion
 
-        #region Private Methods
+#region Private Methods
 
         private void WriteRegister(Byte registerAddress, Byte data)
         {
@@ -330,9 +339,9 @@ namespace MBN.Modules
             return (ReadRegister(BPS230_REG_CONFIG)[0] & 0x01) == 0x01;
         }
 
-        #endregion
+#endregion
 
-        #region Interface Implementations
+#region Interface Implementations
 
         /// <inheritdoc cref="IHumidity" />
         /// <summary>
@@ -454,6 +463,6 @@ namespace MBN.Modules
             }
         }
 
-        #endregion
+#endregion
     }
 }

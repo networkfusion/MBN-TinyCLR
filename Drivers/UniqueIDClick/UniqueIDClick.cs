@@ -79,7 +79,11 @@ namespace MBN.Modules
         /// <param name="gpio">The pin to use as the One-wire port. </param>
         public UniqueIDClick(Hardware.Socket socket, GpioSelect gpio)
         {
+#if (NANOFRAMEWORK_1_0)
+            _interface = new OneWireController();
+#else
             _interface = new OneWireController(gpio == GpioSelect.GP0 ? socket.PwmPin : socket.AnPin);
+#endif
 
             _deviceList = new ArrayList();
             _deviceList = GetDeviceList();
@@ -87,22 +91,22 @@ namespace MBN.Modules
             if (_deviceList.Count == 0) throw new DeviceInitialisationException("UniqueID Click not found on the OneWire Bus.");
         }
 
-        #endregion
+#endregion
 
-        #region Fields
+#region Fields
 
         private static ArrayList _deviceList;
         private static OneWireController _interface;
 
-        #endregion
+#endregion
 
-        #region Constants
+#region Constants
 
         private const Byte DeviceFamilyCode = 0x01;
 
-        #endregion
+#endregion
 
-        #region Public ENUMS
+#region Public ENUMS
 
         /// <summary>
         ///     Jumper position on JP1 for GPIO Pin selection for the One-Wire bus.
@@ -120,9 +124,9 @@ namespace MBN.Modules
             GP1
         }
 
-        #endregion
+#endregion
 
-        #region Private Methods
+#region Private Methods
 
         private static Byte CalculateCrc(Byte[] data, Int32 length)
         {
@@ -143,9 +147,9 @@ namespace MBN.Modules
             return crc;
         }
 
-        #endregion
+#endregion
 
-        #region Public Properties
+#region Public Properties
 
         /// <summary>
         ///     Exposes the native TinyCLR 1-Wire Bus.
@@ -187,9 +191,9 @@ namespace MBN.Modules
             return _deviceList.Count;
         }
 
-        #endregion
+#endregion
 
-        #region Pubic Methods
+#region Pubic Methods
 
         /// <summary>
         ///     Returns an ArrayList of all DS2401 sensors on the OneWire Bus.
@@ -249,7 +253,7 @@ namespace MBN.Modules
             while (enumerator.MoveNext())
             {
                 Byte[] de = (Byte[]) enumerator.Current;
-                if (de != null && BitConverter.ToInt64(de, 0) == BitConverter.ToInt64(id, 0)) return true;
+                if (de != null && System.BitConverter.ToInt64(de, 0) == System.BitConverter.ToInt64(id, 0)) return true;
             }
 
             return false;
@@ -308,41 +312,41 @@ namespace MBN.Modules
             return Utility.CombineArrays(sn, new[] {CalculateCrc(sn, 7)});
         }
 
-        #endregion
+#endregion
     }
 
-    internal class Utility
-    {
-        internal static Byte[] CombineArrays(Byte[] firstByteArray, Byte[] secondByteArray)
-        {
-            Byte[] combinedArray = new Byte[secondByteArray.Length + firstByteArray.Length];
-            Array.Copy(firstByteArray, 0, combinedArray, 0, firstByteArray.Length);
-            Array.Copy(secondByteArray, 0, combinedArray, firstByteArray.Length, secondByteArray.Length);
-            return combinedArray;
-        }
+    //internal class Utility
+    //{
+    //    internal static Byte[] CombineArrays(Byte[] firstByteArray, Byte[] secondByteArray)
+    //    {
+    //        Byte[] combinedArray = new Byte[secondByteArray.Length + firstByteArray.Length];
+    //        Array.Copy(firstByteArray, 0, combinedArray, 0, firstByteArray.Length);
+    //        Array.Copy(secondByteArray, 0, combinedArray, firstByteArray.Length, secondByteArray.Length);
+    //        return combinedArray;
+    //    }
 
-        internal static Byte[] CombineArrays(Byte[] firstByteArray, Int32 offset1, Int32 count1, Byte[] secondByteArray, Int32 offset2, Int32 count2)
-        {
-            Byte[] combinedArray = new Byte[count1 + count2];
-            for (Int32 i = 0; i < count1; i++)
-            {
-                combinedArray[i] = firstByteArray[offset1 + i];
-            }
+    //    internal static Byte[] CombineArrays(Byte[] firstByteArray, Int32 offset1, Int32 count1, Byte[] secondByteArray, Int32 offset2, Int32 count2)
+    //    {
+    //        Byte[] combinedArray = new Byte[count1 + count2];
+    //        for (Int32 i = 0; i < count1; i++)
+    //        {
+    //            combinedArray[i] = firstByteArray[offset1 + i];
+    //        }
 
-            for (Int32 i = 0; i < count2; i++)
-            {
-                combinedArray[count1 + i] = secondByteArray[offset2 + i];
-            }
+    //        for (Int32 i = 0; i < count2; i++)
+    //        {
+    //            combinedArray[count1 + i] = secondByteArray[offset2 + i];
+    //        }
 
-            return combinedArray;
-        }
+    //        return combinedArray;
+    //    }
 
-        internal static Byte[] ExtractRangeFromArray(Byte[] source, Int32 offset, Int32 length)
-        {
-            Byte[] result = new Byte[length];
-            Array.Copy(source, offset, result, 0, length);
-            return result;
-        }
-    }
+    //    internal static Byte[] ExtractRangeFromArray(Byte[] source, Int32 offset, Int32 length)
+    //    {
+    //        Byte[] result = new Byte[length];
+    //        Array.Copy(source, offset, result, 0, length);
+    //        return result;
+    //    }
+    //}
 
 }
