@@ -12,7 +12,7 @@
  */
 
 #if (NANOFRAMEWORK_1_0)
-using Windows.Devices.OneWire;
+using nanoFramework.Devices.OneWire;
 #else
 using GHIElectronics.TinyCLR.Devices.OneWire;
 #endif

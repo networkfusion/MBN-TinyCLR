@@ -15,7 +15,7 @@
 
 #if (NANOFRAMEWORK_1_0)
 using System.Device.Gpio;
-using Windows.Devices.Onewire;
+using nanoFramework.Devices.OneWire;
 #else
 using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Onewire;

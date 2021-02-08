@@ -248,14 +248,14 @@ namespace MBN.Modules
 
         #region Events
 
-        private void SleepPin_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e) => UsbSleep(e.Edge == GpioPinEdge.FallingEdge, DateTime.Now);
+        private void SleepPin_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e) => UsbSleep(e.Edge == GpioPinEdge.FallingEdge, DateTime.UtcNow);
 
-        private void PowerPin_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e) => IscableConnectionChanged(e.Edge == GpioPinEdge.FallingEdge, DateTime.Now);
+        private void PowerPin_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e) => IscableConnectionChanged(e.Edge == GpioPinEdge.FallingEdge, DateTime.UtcNow);
 
         private void Serial_ErrorReceived(UartController sender, ErrorReceivedEventArgs e)
         {
             ErrorReceivedHandler handler = ErrorReceived;
-            handler?.Invoke(this, e, DateTime.Now);
+            handler?.Invoke(this, e, DateTime.UtcNow);
         }
 
         private void Serial_DataReceived(UartController sender, DataReceivedEventArgs e)
@@ -263,7 +263,7 @@ namespace MBN.Modules
             _dataIn = _simpleSerial.Deserialize();
             foreach (String str in _dataIn)
             {
-                DataReceived?.Invoke(this, str, DateTime.Now);
+                DataReceived?.Invoke(this, str, DateTime.UtcNow);
             }
         }
 

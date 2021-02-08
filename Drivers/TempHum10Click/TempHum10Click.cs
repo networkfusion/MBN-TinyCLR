@@ -76,11 +76,19 @@ namespace MBN.Modules
         public TempHum10Click(Hardware.Socket socket)
         {
             _socket = socket;
-            _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(0x7F, 100000));
+#if (NANOFRAMEWORK_1_0)
+            _sensor = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, 0x7F, I2cBusSpeed.StandardMode));
+
+            _chipEnable = new GpioController().OpenPin(socket.Cs);
+            _chipEnable.SetPinMode(PinMode.Output);
+            _chipEnable.Write(PinValue.Low);
+#else
+			_sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings(0x7F, 100000));
 
             _chipEnable = GpioController.GetDefault().OpenPin(socket.Cs);
             _chipEnable.SetDriveMode(GpioPinDriveMode.Output);
             _chipEnable.Write(GpioPinValue.Low);
+#endif
 
             PowerMode = PowerModes.On;
 

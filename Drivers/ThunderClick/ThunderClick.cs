@@ -264,7 +264,11 @@ namespace MBN.Modules
             _powerMode = PowerModes.On;
         }
 
+#if (NANOFRAMEWORK_1_0)
+        private void IRQ_ValueChanged(object sender, PinValueChangedEventArgs e) => Check();
+#else
         private void IRQ_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e) => Check();
+#endif
 
         /// <summary>
         /// Starts the interrupt pin scanning

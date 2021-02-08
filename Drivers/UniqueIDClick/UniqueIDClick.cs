@@ -10,8 +10,8 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
  * either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
-
-using Windows.Devices.OneWire;
+#if (NANOFRAMEWORK_1_0)
+using nanoFramework.Devices.OneWire;
 #else
 using GHIElectronics.TinyCLR.Devices.OneWire;
 #endif
@@ -278,7 +278,7 @@ namespace MBN.Modules
         /// </example>
         public Int64 GetSerialNumber(Byte[] oneWireAddress)
         {
-            return BitConverter.ToInt32(new[] {oneWireAddress[1], oneWireAddress[2], oneWireAddress[3], oneWireAddress[4], oneWireAddress[5]}, 0);
+            return System.BitConverter.ToInt32(new[] {oneWireAddress[1], oneWireAddress[2], oneWireAddress[3], oneWireAddress[4], oneWireAddress[5]}, 0);
         }
 
         /// <summary>
@@ -304,7 +304,7 @@ namespace MBN.Modules
         /// </example>
         public Byte[] SerialNumberToOneWireAddress(Int64 serialNumber)
         {
-            var sn = Utility.CombineArrays(new[] {DeviceFamilyCode}, Utility.ExtractRangeFromArray(BitConverter.GetBytes(serialNumber), 0, 6));
+            var sn = Utility.CombineArrays(new[] {DeviceFamilyCode}, Utility.ExtractRangeFromArray(System.BitConverter.GetBytes(serialNumber), 0, 6));
             return Utility.CombineArrays(sn, new[] {CalculateCrc(sn, 7)});
         }
 

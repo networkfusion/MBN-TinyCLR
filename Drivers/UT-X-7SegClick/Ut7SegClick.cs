@@ -80,7 +80,11 @@ namespace MBN.Modules
         {
             set
             {
+#if (NANOFRAMEWORK_1_0)
+                _en.Write(value ? PinValue.High : PinValue.Low);
+#else
                 _en.Write(value ? GpioPinValue.High : GpioPinValue.Low);
+#endif
             }
         }
 

@@ -82,9 +82,21 @@ namespace MBN.Modules
         public ThermostatClick(Hardware.Socket socket, I2CAddress address)
         {
             _socket = socket;
+#if (NANOFRAMEWORK_1_0)
+            _sensor = I2cDevice.Create(new I2cConnectionSettings(socket.I2cBus, (int)address, I2cBusSpeed.StandardMode));
 
-            _sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((UInt16) address, 100000));
+            _resetPin = new GpioController().OpenPin(socket.Rst);
+            _resetPin.SetPinMode(PinMode.Output);
+            _resetPin.Write(PinValue.Low);
+            Thread.Sleep(1);
+            _resetPin.Write(PinValue.High);
 
+            GpioPin enablePin = new GpioController().OpenPin(socket.Cs);
+            enablePin.SetPinMode(PinMode.Output);
+            enablePin.Write(PinValue.High);
+#else
+			_sensor = I2cController.FromName(socket.I2cBus).GetDevice(new I2cConnectionSettings((UInt16) address, 100000));
+            
             _resetPin = GpioController.GetDefault().OpenPin(socket.Rst);
             _resetPin.SetDriveMode(GpioPinDriveMode.Output);
             _resetPin.Write(GpioPinValue.Low);
@@ -94,6 +106,7 @@ namespace MBN.Modules
             GpioPin enablePin = GpioController.GetDefault().OpenPin(socket.Cs);
             enablePin.SetDriveMode(GpioPinDriveMode.Output);
             enablePin.Write(GpioPinValue.High);
+#endif
         }
 
         #endregion

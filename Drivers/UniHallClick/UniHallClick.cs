@@ -49,7 +49,11 @@ namespace MBN.Modules
             _int.ValueChanged += Int_ValueChanged;
         }
 
+#if (NANOFRAMEWORK_1_0)
+        private void Int_ValueChanged(object sender, PinValueChangedEventArgs e)
+#else
         private void Int_ValueChanged(GpioPin sender, GpioPinValueChangedEventArgs e)
+#endif
         {
             MagnetDetectedEventHandler magnetEvent = MagnetDetected;
             magnetEvent(this, new MagnetDetectedEventArgs(_int.Read()));
@@ -70,7 +74,11 @@ namespace MBN.Modules
             /// Initializes a new instance of the <see cref="MagnetDetectedEventArgs"/> class.
             /// </summary>
             /// <param name="value">Reading of the INT pin</param>
+#if (NANOFRAMEWORK_1_0)
+            public MagnetDetectedEventArgs(PinValue value) => MagnetPresent = value == 0;
+#else
             public MagnetDetectedEventArgs(GpioPinValue value) => MagnetPresent = value == 0;
+#endif
 
             /// <summary>
             /// State of the magnet

@@ -142,10 +142,10 @@
     <Compile Include="UniHallClick\UniHallClick.cs" />
     <Compile Include="UniqueIDClick\UniqueIDClick.cs" />
     <Compile Include="UsbUartClick\SimpleSerial.cs" />
-    <Compile Include="UsbUartClick\USBUARTClick.cs" />
+    <Compile Include="UsbUartClick\USBUARTClick.cs" />-->
     <Compile Include="UT-X-7SegClick\Ut7SegClick.cs" />
     <Compile Include="WeatherClick\WeatherClick.cs" />
-    -->
+    
     <Compile Include="..\MBNCore\MBNCore.cs" /> <!--This should be a seperate proj?-->
     <Compile Include="..\MBNCore\nfHardwareSTM32F769I.cs" /> <!-- Make this an interface?-->
     <Compile Include="Properties\AssemblyInfo.cs" />
