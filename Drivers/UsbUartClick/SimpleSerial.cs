@@ -79,7 +79,15 @@ namespace MBN.Modules
             /// <param name="txt" />
             internal void Write(String txt)
             {
+#if (NANOFRAMEWORK_1_0)
+                DataWriter outputDataWriter = new DataWriter(_serial.OutputStream);
+                var bytesToWrite = Encoding.UTF8.GetBytes(txt);
+                outputDataWriter.WriteBytes(bytesToWrite);
+                outputDataWriter.Store();
+#else
                 _serial.Write(Encoding.UTF8.GetBytes(txt), 0, txt.Length);
+                _serial.Flush();
+#endif
             }
 
             /// <summary>
@@ -99,10 +107,24 @@ namespace MBN.Modules
             /// </returns>
             internal Byte[] ReadExistingBinary()
             {
+#if (NANOFRAMEWORK_1_0)
+                using (DataReader dataReader = new DataReader(_serial.InputStream))
+                {
+                    dataReader.InputStreamOptions = InputStreamOptions.Partial;
+
+                    var arraySize = _serial.BytesToRead;
+                    byte[] received = new byte[arraySize];
+                    dataReader.Load(arraySize);
+                    dataReader.ReadBytes(received);
+                    return received;
+                }
+#else
                 Int32 arraySize = _serial.BytesToRead;
                 Byte[] received = new Byte[arraySize];
                 _serial.Read(received, 0, arraySize);
                 return received;
+#endif
+
             }
 
             /// <summary>

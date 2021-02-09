@@ -170,8 +170,8 @@ This list is up-to-date as of 2021-02-08
 |UniHallClick       |:heavy_check_mark:|:clock130:||[:floppy_disk:](Drivers/UniHallClick)
 |Unique ID Click    |:heavy_check_mark:|:clock130:||[:floppy_disk:](Drivers/UniqueIDClick)
 |USBSPIClick        |:x:|||
-|USBUARTClick       |:x:|||[:floppy_disk:](Drivers/USBUARTClick)
-|UT7SegClick        |:x:||Works for the Small/Medium/Large version of the module|[:floppy_disk:](Drivers/UT-X-7SegClick)
+|USBUARTClick       |:heavy_check_mark:|:clock130:||[:floppy_disk:](Drivers/USBUARTClick)
+|UT7SegClick        |:heavy_check_mark:|:clock130:|Works for the Small/Medium/Large version of the module|[:floppy_disk:](Drivers/UT-X-7SegClick)
 |UVClick            |:x:|||
 |WeatherClick       |:heavy_check_mark:|:clock130:|I2C Version only.|[:floppy_disk:](Drivers/WeatherClick)
 |Wifi               |:x:|||

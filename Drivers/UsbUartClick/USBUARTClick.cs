@@ -274,7 +274,18 @@ namespace MBN.Modules
         /// _usbUart.SendData("Received your message - " <![CDATA[&]]> message)
         /// </code>
         /// </example>
-        public void SendData(String data) => _serial.Write(Encoding.UTF8.GetBytes(data));
+        public void SendData(string data)
+        {
+#if (NANOFRAMEWORK_1_0)
+            DataWriter outputDataWriter = new DataWriter(_serial.OutputStream);
+            var bytesToWrite = Encoding.UTF8.GetBytes(data);
+            outputDataWriter.WriteBytes(bytesToWrite);
+            outputDataWriter.Store();        
+#else
+            _serial.Write(Encoding.UTF8.GetBytes(data));
+            _serial.Flush();
+#endif
+        }
 
 #endregion
 
@@ -331,10 +342,12 @@ namespace MBN.Modules
         /// <param name="eventTime">The time that the event occurred.</param>
         public delegate void ErrorReceivedHandler(Object sender, ErrorReceivedEventArgs e, DateTime eventTime);
 
+#if (!NANOFRAMEWORK_1_0)
         /// <summary>
         /// Raised when the USBUART Click receives an Error in data transmission.
         /// </summary>
         public event ErrorReceivedHandler ErrorReceived;
+#endif
 
         /// <summary>
         /// Represents the delegate that is used for the <see cref="CableConnectionChanged"/> event.
