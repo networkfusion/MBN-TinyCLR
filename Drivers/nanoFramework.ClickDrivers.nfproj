@@ -84,14 +84,18 @@
     <Compile Include="NRF-CClick\Commands.cs" />
     <Compile Include="NRF-CClick\NRFcClick.cs" />
     <Compile Include="NRF-CClick\Registers.cs" />
-    <!--Oled-CClick needs more work!-->
-    <!--<Compile Include="Oled-CClick\FontManager.cs" />
+    <!--Oled-CClick needs more work!--> 
+    <!--Missing Font resources for FontManager --> 
+    <!--nF does not seem to expose color properties (yet) for MikroColor-->
+    <!--
+    <Compile Include="Oled-CClick\FontManager.cs" /> 
     <Compile Include="Oled-CClick\Geometry.cs" />
     <Compile Include="Oled-CClick\KnownColors.cs" />
     <Compile Include="Oled-CClick\MikroBitmap.cs" />
-    <Compile Include="Oled-CClick\MikroColor.cs" />
+    <Compile Include="Oled-CClick\MikroColor.cs" /> 
     <Compile Include="Oled-CClick\MikroFont.cs" />
-    <Compile Include="Oled-CClick\OLEDCClick.cs" />-->
+    <Compile Include="Oled-CClick\OLEDCClick.cs" />
+    -->
     <Compile Include="Pressure4Click\Pressure4Click.cs" />
     <Compile Include="Pressure9Click\Pressure9Click.cs" />
     <Compile Include="Pressure11Click\Pressure11Click.cs" />

@@ -15,12 +15,13 @@ using MBN.Modules;
 
 #if (NANOFRAMEWORK_1_0)
 using nanoFramework.Presentation.Media;
-using nanoFramework.Presentation;
+using nanoFramework.UI;
 #else
 using System.Drawing;
+using Microsoft.SPOT.Presentation.Media;
 #endif
 
-using Microsoft.SPOT.Presentation.Media; //TODO: this is used in MikroColor.cs, it shouldnt emulate a system class!
+
 
 using System;
 
@@ -235,9 +236,10 @@ namespace Microsoft.SPOT
 namespace Microsoft.SPOT
 {
 #if (NANOFRAMEWORK_1_0)
-	using nanoFramework.UI;
-#endif
+	using nanoFramework.Presentation.Media;
+#else
 	using Presentation.Media;
+#endif
 
     /// <summary>
     /// A class containing extension methods for the MikroBitmap object.
