@@ -118,7 +118,7 @@ This list is up-to-date as of 2021-02-08
 |ProximityClick     |:heavy_check_mark:|:clock130:||[:floppy_disk:](Drivers/ProximityClick)
 |PWMClick           |:x:|||
 |PWMDriverClick     |:x:|||
-|QspiMemory         |:x:|||[:floppy_disk:](Drivers/QspiMemory)
+|QspiMemory         |:x:||nanoFramework does not yet support managed external storage|[:floppy_disk:](Drivers/QspiMemory)
 |RadioStationClick  |:x:|||
 |ReedClick          |:x:|||
 |Relay2Click        |:x:|||
@@ -164,7 +164,7 @@ This list is up-to-date as of 2021-02-08
 |ThumbstickClick    |:x:|||
 |ThunderClick       |:heavy_check_mark:|:clock130:||[:floppy_disk:](Drivers/ThunderClick)
 |TiltClick          |:x:|||
-|TinyFileSystem     |:x:|||[:floppy_disk:](Drivers/TinyFileSystem)
+|TinyFileSystem     |:heavy_check_mark:|:clock130:||[:floppy_disk:](Drivers/TinyFileSystem)
 |TouchKeyClick      |:x:|||
 |tRFClick           |:x:|||
 |UniHallClick       |:heavy_check_mark:|:clock130:||[:floppy_disk:](Drivers/UniHallClick)
