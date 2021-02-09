@@ -647,6 +647,7 @@ namespace MBN.Modules
     }
 
 #region BitConverter
+//TODO: this overrides the System.BitConverter class for other drivers!
     internal static class BitConverter  // Borrowed from "jimox"
     {
         public static String ToString(Byte[] value, Char sep = ':', Int32 index = 0) => ToString(value, sep, index, value.Length - index);

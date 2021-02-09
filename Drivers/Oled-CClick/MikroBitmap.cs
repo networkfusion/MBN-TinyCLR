@@ -280,10 +280,17 @@ namespace Microsoft.SPOT
 				{
 					for (Int32 x = 0; x <= bitmap.Width - 1; x++)
 					{
+#if (NANOFRAMEWORK_1_0)
+						Color pixel = bitmap.GetPixel(x, y);
+						UInt16 pixelOut = (UInt16)((ColorUtility.GetBValue(pixel) >> 3) | ((ColorUtility.GetGValue(pixel) & 0xFC) << 3) | ((ColorUtility.GetRValue(pixel) & 0xF8) << 8));
+						bOut[++byteCounter] = (Byte)(pixelOut >> 8);
+						bOut[++byteCounter] = (Byte)(pixelOut & 0xff);
+#else
 						Color pixel = bitmap.GetPixel(x, y);
                         UInt16 pixelOut = (UInt16) ((pixel.B >> 3) | ((pixel.G & 0xFC) << 3) | ((pixel.R & 0xF8) << 8));
 						bOut[++byteCounter] = (Byte)(pixelOut >> 8);
 						bOut[++byteCounter] = (Byte)(pixelOut & 0xff);
+#endif
 					}
 				}
 				return bOut;

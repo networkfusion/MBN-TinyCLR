@@ -87,7 +87,6 @@
     <Compile Include="NRF-CClick\Registers.cs" />
     <!--Oled-CClick needs more work!-->
     <!--Missing Font resources for FontManager -->
-    <!--nF does not seem to expose color properties (yet) for MikroColor-->
     <!--
     <Compile Include="Oled-CClick\FontManager.cs" /> 
     <Compile Include="Oled-CClick\Geometry.cs" />
