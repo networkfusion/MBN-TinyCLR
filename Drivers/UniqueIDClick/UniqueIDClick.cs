@@ -315,38 +315,42 @@ namespace MBN.Modules
 #endregion
     }
 
-    //internal class Utility
-    //{
-    //    internal static Byte[] CombineArrays(Byte[] firstByteArray, Byte[] secondByteArray)
-    //    {
-    //        Byte[] combinedArray = new Byte[secondByteArray.Length + firstByteArray.Length];
-    //        Array.Copy(firstByteArray, 0, combinedArray, 0, firstByteArray.Length);
-    //        Array.Copy(secondByteArray, 0, combinedArray, firstByteArray.Length, secondByteArray.Length);
-    //        return combinedArray;
-    //    }
+#if (NANOFRAMEWORK_1_0)
+    //This class is already in Thermo2Click, so we will just use that (should really split it out to generic location.)
+#else
+    internal class Utility
+    {
+       internal static Byte[] CombineArrays(Byte[] firstByteArray, Byte[] secondByteArray)
+       {
+           Byte[] combinedArray = new Byte[secondByteArray.Length + firstByteArray.Length];
+           Array.Copy(firstByteArray, 0, combinedArray, 0, firstByteArray.Length);
+           Array.Copy(secondByteArray, 0, combinedArray, firstByteArray.Length, secondByteArray.Length);
+           return combinedArray;
+       }
 
-    //    internal static Byte[] CombineArrays(Byte[] firstByteArray, Int32 offset1, Int32 count1, Byte[] secondByteArray, Int32 offset2, Int32 count2)
-    //    {
-    //        Byte[] combinedArray = new Byte[count1 + count2];
-    //        for (Int32 i = 0; i < count1; i++)
-    //        {
-    //            combinedArray[i] = firstByteArray[offset1 + i];
-    //        }
+       internal static Byte[] CombineArrays(Byte[] firstByteArray, Int32 offset1, Int32 count1, Byte[] secondByteArray, Int32 offset2, Int32 count2)
+       {
+           Byte[] combinedArray = new Byte[count1 + count2];
+           for (Int32 i = 0; i < count1; i++)
+           {
+               combinedArray[i] = firstByteArray[offset1 + i];
+           }
 
-    //        for (Int32 i = 0; i < count2; i++)
-    //        {
-    //            combinedArray[count1 + i] = secondByteArray[offset2 + i];
-    //        }
+           for (Int32 i = 0; i < count2; i++)
+           {
+               combinedArray[count1 + i] = secondByteArray[offset2 + i];
+           }
 
-    //        return combinedArray;
-    //    }
+           return combinedArray;
+       }
 
-    //    internal static Byte[] ExtractRangeFromArray(Byte[] source, Int32 offset, Int32 length)
-    //    {
-    //        Byte[] result = new Byte[length];
-    //        Array.Copy(source, offset, result, 0, length);
-    //        return result;
-    //    }
-    //}
+       internal static Byte[] ExtractRangeFromArray(Byte[] source, Int32 offset, Int32 length)
+       {
+           Byte[] result = new Byte[length];
+           Array.Copy(source, offset, result, 0, length);
+           return result;
+       }
+    }
+#endif
 
 }
