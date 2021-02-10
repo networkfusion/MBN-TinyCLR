@@ -38,6 +38,10 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         if: env.CREATE_PR == 'true'
         with:
+          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          commit-message: 'chore: update dependencies'
+          committer: GitHub <noreply@github.com>
+          author: nfbot <nfbot@users.noreply.github.com>
           title: '${{ env.PR_TITLE }}'
           body: |
             ${{ env.PR_MESSAGE }}
@@ -45,6 +49,5 @@ jobs:
             [version update]
             
             ### :warning: This is an automated update. :warning:
-          committer: 'nfbot <dependencybot@nanoframework.net>'
           branch: ${{ env.BRANCH_NAME }}
           path: main
