@@ -34,7 +34,6 @@ jobs:
       - name: Update dependencies
         run: ./github-actions/update-nf-dependencies.ps1
         working-directory: tools
-        shell: bash
       - name: Check Environment variables
         run: |
           echo "Create PR: ${{ env.CREATE_PR }}"
