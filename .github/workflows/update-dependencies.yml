@@ -34,6 +34,12 @@ jobs:
       - name: Update dependencies
         run: ./github-actions/update-nf-dependencies.ps1
         working-directory: tools
+      - name: Check Environment variables
+        run: |
+          echo "Create PR: ${{ env.CREATE_PR }}"
+          echo "Title: ${{ env.PR_TITLE }}"
+          echo "Message: ${{ env.PR_MESSAGE }}"
+          echo "Branch Name: ${{ env.BRANCH_NAME }}"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         if: env.CREATE_PR == 'true'
