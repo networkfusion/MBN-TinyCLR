@@ -3,7 +3,7 @@
 
 # This workflow will periodically check .NET nanoFramework dependencies and updates them in the repository it's running.
 
-name: Update nuget dependencies
+name: Daily update dependencies
 
 on:
   schedule:
@@ -18,16 +18,16 @@ defaults:
 
 jobs:
   update-dotnet-preview:
-    name: Update .NET nanoFramework nuget dependencies
+    name: Update .NET nanoFramework dependencies
     timeout-minutes: 15
     runs-on: windows-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.1
         with:
-          path: develop-nanoframework
+          path: main
       - name: Checkout tools repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.1
         with:
           repository: nanoframework/nf-tools
           path: tools
@@ -35,7 +35,7 @@ jobs:
         run: ./github-actions/update-nf-dependencies.ps1
         working-directory: tools
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v2.8.1
         if: env.CREATE_PR == 'true'
         with:
           title: '${{ env.PR_TITLE }}'
@@ -45,6 +45,6 @@ jobs:
             [version update]
             
             ### :warning: This is an automated update. :warning:
-          committer: 'nfbot <nanoframework@outlook.com>'
+          committer: 'nfbot <dependencybot@nanoframework.net>'
           branch: ${{ env.BRANCH_NAME }}
-          path: develop-nanoframework
+          path: main
