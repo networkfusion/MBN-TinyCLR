@@ -29,7 +29,7 @@ jobs:
       - name: Checkout tools repo
         uses: actions/checkout@v2
         with:
-          repository: nanoframework/nf-tools
+          repository: networkfusion/nf-tools
           path: tools
       - name: Update dependencies
         run: ./github-actions/update-nf-dependencies.ps1
