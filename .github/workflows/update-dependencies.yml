@@ -7,8 +7,8 @@ name: Daily update dependencies
 
 on:
   schedule:
-  # At midnight daily.
-  - cron:  '00 00 * * *'
+  # Every 30 minutes (to start).
+  - cron:  '*/30 * * * *'
   repository_dispatch:
     types: update-dependencies
 
@@ -32,11 +32,9 @@ jobs:
           repository: networkfusion/nf-tools
           path: tools
       - name: Update dependencies
-        id: step_one
         run: ./github-actions/update-nf-dependencies.ps1
         working-directory: tools
       - name: Check Environment variables
-        id: step_two
         run: |
           echo "Create PR: ${{ env.CREATE_PR }}"
           echo "Title: ${{ env.PR_TITLE }}"
@@ -44,7 +42,6 @@ jobs:
           echo "Branch Name: ${{ env.BRANCH_NAME }}"
         shell: bash
       - name: Create Pull Request
-        id: step_three
         uses: peter-evans/create-pull-request@v3
         if: env.CREATE_PR == 'true'
         with:
