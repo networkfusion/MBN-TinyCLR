@@ -7,8 +7,8 @@ name: Daily update dependencies
 
 on:
   schedule:
-  # Daily at midnight.
-  - cron:  '0 0 * * *'
+  # At 00:00 UTC every day.
+  - cron:  '00 00 * * *'
   repository_dispatch:
     types: update-dependencies
 
@@ -23,32 +23,21 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.1
         with:
           path: main
       - name: Checkout tools repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.1
         with:
           repository: nanoframework/nf-tools
           path: tools
       - name: Update dependencies
         run: ./github-actions/update-nf-dependencies.ps1
         working-directory: tools
-      - name: Check Environment variables
-        run: |
-          echo "Create PR: ${{ env.CREATE_PR }}"
-          echo "Title: ${{ env.PR_TITLE }}"
-          echo "Message: ${{ env.PR_MESSAGE }}"
-          echo "Branch Name: ${{ env.BRANCH_NAME }}"
-        shell: bash
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         if: env.CREATE_PR == 'true'
         with:
-          # token: ${{ secrets.ACTIONS_BOT_TOKEN }}
-          commit-message: 'chore: update dependencies'
-          committer: GitHub <noreply@github.com>
-          author: nfbot <nfbot@users.noreply.github.com>
           title: '${{ env.PR_TITLE }}'
           body: |
             ${{ env.PR_MESSAGE }}
@@ -56,6 +45,7 @@ jobs:
             [version update]
             
             ### :warning: This is an automated update. :warning:
+          committer: 'nfbot <dependencybot@nanoframework.net>'
           branch: ${{ env.BRANCH_NAME }}
           path: main
           labels: |
