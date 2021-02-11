@@ -7,8 +7,8 @@ name: Daily update dependencies
 
 on:
   schedule:
-  # Every 30 minutes (to start).
-  - cron:  '*/30 * * * *'
+  # Every 60 minutes (for the moment).
+  - cron:  '0 1-24 * * *'
   repository_dispatch:
     types: update-dependencies
 
@@ -48,7 +48,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         if: env.CREATE_PR == 'true'
         with:
-          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          # token: ${{ secrets.ACTIONS_BOT_TOKEN }}
           commit-message: 'chore: update dependencies'
           committer: GitHub <noreply@github.com>
           author: nfbot <nfbot@users.noreply.github.com>
