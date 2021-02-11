@@ -7,8 +7,8 @@ name: Daily update dependencies
 
 on:
   schedule:
-  # Every 30 minutes (to start).
-  - cron:  '*/30 * * * *'
+  # Daily at midnight.
+  - cron:  '0 0 * * *'
   repository_dispatch:
     types: update-dependencies
 
@@ -29,7 +29,7 @@ jobs:
       - name: Checkout tools repo
         uses: actions/checkout@v2
         with:
-          repository: networkfusion/nf-tools
+          repository: nanoframework/nf-tools
           path: tools
       - name: Update dependencies
         run: ./github-actions/update-nf-dependencies.ps1
@@ -58,3 +58,5 @@ jobs:
             ### :warning: This is an automated update. :warning:
           branch: ${{ env.BRANCH_NAME }}
           path: main
+          labels: |
+            Type: dependencies
