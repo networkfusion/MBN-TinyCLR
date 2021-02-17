@@ -32,7 +32,7 @@ jobs:
           repository: nanoframework/nf-tools
           path: tools
       - name: Update dependencies
-        run: ./github-actions/update-nf-dependencies.ps1
+        run: ./github-actions/update-nf-dependencies.ps1 prerelease
         working-directory: tools
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
@@ -40,11 +40,11 @@ jobs:
         with:
           title: '${{ env.PR_TITLE }}'
           body: |
+            :warning: This is an automated update. :warning:
+
             ${{ env.PR_MESSAGE }}
-            
-            [version update]
-            
-            ### :warning: This is an automated update. :warning:
+                        
+            :warning: This is an automated update. :warning:
           committer: 'nfbot <dependencybot@nanoframework.net>'
           branch: ${{ env.BRANCH_NAME }}
           path: main
