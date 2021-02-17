@@ -1,0 +1,56 @@
+# Copyright (c) .NET Foundation and Contributors
+# See LICENSE file in the project root for full license information.
+
+# This workflow will build the solution to make sure it is buildable.
+
+name: Build Drivers
+
+on: [push, pull_request]
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  build-drivers:
+    name: Build MBN Click Drivers
+    timeout-minutes: 15
+    runs-on: windows-latest
+    env:
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+      solution: 'Drivers/nanoFramework.ClickDrivers.sln'
+      buildPlatform: 'Any CPU'
+      buildConfiguration: 'Release'
+      classLibName: 'nanoFramework.MikroClick.Drivers'
+      nugetPackageName: 'nanoFramework.MikroClick.Drivers'
+      repoName: 'MBN-TinyCLR' #repoName: 'lib-nanoFramework-MikroClick-Drivers'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
+        with:
+          path: main
+      - name: Checkout tools repo
+        uses: actions/checkout@v2.3.1
+        with:
+          repository: nanoframework/nf-tools
+          path: tools
+      - name: Install VS Extension for nanoFramework
+        run: ./AzureDevOps/TaskInstallMSBuildComponents/TaskFiles/install-nf-build-components.ps1
+        working-directory: tools
+      - uses: microsoft/setup-msbuild@v1.0.2
+          - name: Build
+            run: msbuild '${{ env.solution }}' /p:Configuration='${{ env.buildConfiguration }}'
+      # - name: Add msbuild to PATH
+      #   uses: microsoft/setup-msbuild@v1.0.2
+      #   with:
+      #     vswhere-path: 'C:\path\to\your\tools\'
+      # - name: Build
+      #   uses: actions/checkout@v2.3.1
+      #   with:
+      #     repository: nanoframework/nf-tools
+      #     path: tools
+      # - name: Publish Artifact
+      #   uses: actions/checkout@v2.3.1
+      #   with:
+      #     repository: nanoframework/nf-tools
+      #     path: tools
