@@ -6,9 +6,9 @@
 name: Build Drivers
 
 on:
-    branches:
-      - master
-      - develop #prerelease nugets
+  branches:
+    - master
+    - develop #prerelease nugets
 
 defaults:
   run:
