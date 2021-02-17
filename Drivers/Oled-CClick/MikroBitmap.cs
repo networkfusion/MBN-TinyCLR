@@ -21,11 +21,13 @@ using System.Drawing;
 using Microsoft.SPOT.Presentation.Media;
 #endif
 
-
-
 using System;
 
+#if (NANOFRAMEWORK_1_0)
+namespace nanoFramework.Presentation
+#else
 namespace Microsoft.SPOT
+#endif
 {
     /// <summary>
     /// An abstract class with support for bitmaps of the BGR 565 Color format.
@@ -233,10 +235,15 @@ namespace Microsoft.SPOT
 	}
 }
 
-namespace Microsoft.SPOT
-{
 #if (NANOFRAMEWORK_1_0)
-	using nanoFramework.Presentation.Media;
+namespace nanoFramework.Presentation
+#else
+namespace Microsoft.SPOT
+#endif
+{
+    using nanoFramework.Presentation;
+#if (NANOFRAMEWORK_1_0)
+    using nanoFramework.Presentation.Media;
 #else
 	using Presentation.Media;
 #endif

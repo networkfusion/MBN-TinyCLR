@@ -15,15 +15,17 @@
 using System.Device.Gpio;
 using Windows.Devices.Spi;
 using nanoFramework.UI;
+using nanoFramework.Presentation;
 #else
 using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Spi;
 using System.Drawing;
+using Microsoft.SPOT;
 #endif
 
 using System;
 using System.Threading;
-using Microsoft.SPOT; //TODO: required by MikroBitmap! it is a rubish namespace!
+
 
 namespace MBN.Modules
 {

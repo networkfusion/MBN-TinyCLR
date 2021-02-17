@@ -86,8 +86,7 @@
     <Compile Include="NRF-CClick\NRFcClick.cs" />
     <Compile Include="NRF-CClick\Registers.cs" />
     <!--Oled-CClick needs more work!-->
-    <!--Missing Font resources for FontManager -->
-    <!--
+     <!--
     <Compile Include="Oled-CClick\FontManager.cs" /> 
     <Compile Include="Oled-CClick\Geometry.cs" />
     <Compile Include="Oled-CClick\KnownColors.cs" />
