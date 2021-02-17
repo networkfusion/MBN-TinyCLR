@@ -21,7 +21,7 @@ jobs:
     runs-on: windows-latest
     env:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-      solution: '**/nanoFramework.ClickDrivers.sln'
+      solution: 'Drivers/nanoFramework.ClickDrivers.sln'
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Release'
       classLibName: 'nanoFramework.MikroClick.Drivers'
