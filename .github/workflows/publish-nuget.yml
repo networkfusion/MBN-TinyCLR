@@ -7,8 +7,8 @@ name: Build Drivers
 
 on:
   branches:
-  - master
-  - develop
+  -master
+  -develop
 
 defaults:
   run:
