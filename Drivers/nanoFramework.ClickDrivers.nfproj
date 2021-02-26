@@ -86,7 +86,7 @@
     <Compile Include="NRF-CClick\NRFcClick.cs" />
     <Compile Include="NRF-CClick\Registers.cs" />
     <!--Oled-CClick needs more work!-->
-     <!--
+    <!--
     <Compile Include="Oled-CClick\FontManager.cs" /> 
     <Compile Include="Oled-CClick\Geometry.cs" />
     <Compile Include="Oled-CClick\KnownColors.cs" />
@@ -199,6 +199,16 @@
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
+    <Reference Include="nanoFramework.TestFramework, Version=1.0.49.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>packages\nanoFramework.TestFramework.1.0.49\lib\nanoFramework.TestFramework.dll</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
+    <Reference Include="nanoFramework.UnitTestLauncher, Version=0.0.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>packages\nanoFramework.TestFramework.1.0.49\lib\nanoFramework.UnitTestLauncher.exe</HintPath>
+      <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
     <Reference Include="System.Device.Gpio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
       <HintPath>packages\nanoFramework.System.Device.Gpio.1.0.0-preview.26\lib\System.Device.Gpio.dll</HintPath>
       <Private>True</Private>
@@ -245,6 +255,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="nano.runsettings" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets')" />
