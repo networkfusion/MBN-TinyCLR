@@ -38,13 +38,11 @@ jobs:
         run: ./AzureDevOps/TaskInstallMSBuildComponents/TaskFiles/install-nf-build-components.ps1
         working-directory: tools
 
-      - name: Setup MSBuild Path
+      - name: Setup MSBuild Path and build
         uses: microsoft/setup-msbuild@v1.0.2
-
-      - name: Build App
         run: |
           cmd.exe /c ls
-          msbuild ./nanoFramework.ClickDrivers.sln /p:Configuration=${{ env.buildConfiguration }}
+          msbuild ./main/nanoFramework.ClickDrivers.sln /p:Configuration=${{ env.buildConfiguration }}
 
 
       # - uses: microsoft/setup-msbuild@v1
