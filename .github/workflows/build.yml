@@ -42,7 +42,9 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
 
       - name: Build App
-        run: msbuild ./nanoFramework.ClickDrivers.sln /p:Configuration=${{ env.buildConfiguration }}
+        run: |
+          cmd.exe /c ls
+          msbuild ./nanoFramework.ClickDrivers.sln /p:Configuration=${{ env.buildConfiguration }}
 
 
       # - uses: microsoft/setup-msbuild@v1
