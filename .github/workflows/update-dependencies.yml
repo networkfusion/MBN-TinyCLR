@@ -34,7 +34,7 @@ jobs:
           repository: networkfusion/nf-tools
           path: tools
       - name: Update dependencies
-        run: ${{ github.workspace }}/github-actions/update-nf-dependencies.ps1 prerelease
+        run: ./github-actions/update-nf-dependencies.ps1 prerelease
         working-directory: tools
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
