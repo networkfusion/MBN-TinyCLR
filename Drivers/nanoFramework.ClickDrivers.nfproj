@@ -135,6 +135,7 @@
     <Compile Include="ThunderClick\ThunderClick.cs" />
     <Compile Include="ThunderClick\ThunderClickEvents.cs" />
     <!--TinyFileSystemneeds more work!-->
+    <!--
     <Compile Include="TinyFileSystem\BlockDriver.cs" />
     <Compile Include="TinyFileSystem\BufferedStream.cs" />
     <Compile Include="TinyFileSystem\FileSystemStructures.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="TinyFileSystem\TinyFileSystemException.cs" />
     <Compile Include="TinyFileSystem\UInt16Array.cs" />
     <Compile Include="TinyFileSystem\Utilities.cs" />
+    -->
     <Compile Include="UniHallClick\UniHallClick.cs" />
     <Compile Include="UniqueIDClick\UniqueIDClick.cs" />
     <!--UsbUartClick more work!-->
