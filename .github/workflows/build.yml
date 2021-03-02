@@ -17,13 +17,13 @@ jobs:
     timeout-minutes: 15
     runs-on: windows-latest
     env:
-      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-      solution: '.\nanoFramework.ClickDrivers.sln'
+      #DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+      #solution: '.\nanoFramework.ClickDrivers.sln'
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Release'
-      classLibName: 'nanoFramework.MikroClick.Drivers'
-      nugetPackageName: 'nanoFramework.MikroClick.Drivers'
-      repoName: 'MBN-TinyCLR' #repoName: 'lib-nanoFramework-MikroClick-Drivers'
+      #classLibName: 'nanoFramework.MikroClick.Drivers'
+      #nugetPackageName: 'nanoFramework.MikroClick.Drivers'
+      #repoName: 'MBN-TinyCLR' #repoName: 'lib-nanoFramework-MikroClick-Drivers'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -42,7 +42,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
 
       - name: Build App
-        run: msbuild '${{ env.solution }}' /p:Configuration=${{ env.buildConfiguration }}
+        run: msbuild ./nanoFramework.ClickDrivers.sln /p:Configuration=${{ env.buildConfiguration }}
 
 
       # - uses: microsoft/setup-msbuild@v1
