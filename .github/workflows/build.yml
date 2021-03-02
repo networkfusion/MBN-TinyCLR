@@ -18,7 +18,7 @@ jobs:
     runs-on: windows-latest
     env:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-      solution: '.\Drivers\nanoFramework.ClickDrivers.nfproj'
+      solution: '.\nanoFramework.ClickDrivers.sln'
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Release'
       classLibName: 'nanoFramework.MikroClick.Drivers'
@@ -37,9 +37,17 @@ jobs:
       - name: Install VS Extension for nanoFramework
         run: ./AzureDevOps/TaskInstallMSBuildComponents/TaskFiles/install-nf-build-components.ps1
         working-directory: tools
-      - uses: microsoft/setup-msbuild@v1
-      - name: Build
-        run: msbuild '${{ env.solution }}' /p:Configuration='${{ env.buildConfiguration }}'
+
+      - name: Setup MSBuild Path
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      - name: Build App
+        run: msbuild '${{ env.solution }}' /p:Configuration=${{ env.buildConfiguration }}
+
+
+      # - uses: microsoft/setup-msbuild@v1
+      # - name: Build
+      #   run: msbuild '${{ env.solution }}' /p:Configuration='${{ env.buildConfiguration }}'
       # - name: Add msbuild to PATH
       #   uses: microsoft/setup-msbuild@v1.0.2
       #   with:
