@@ -54,7 +54,7 @@ jobs:
       # - name: Build
       #   run: msbuild '${{ env.solution }}' /p:Configuration='${{ env.buildConfiguration }}'
       # - name: Add msbuild to PATH
-      #   uses: microsoft/setup-msbuild@v1.0.2
+      #   uses: microsoft/setup-msbuild@v1
       #   with:
       #     vswhere-path: 'C:\path\to\your\tools\'
       # - name: Build
