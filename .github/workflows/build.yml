@@ -18,7 +18,7 @@ jobs:
     runs-on: windows-latest
     env:
       #DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-      #solution: '.\nanoFramework.ClickDrivers.sln'
+      solution: '.\nanoFramework.ClickDrivers.sln'
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Release'
       #classLibName: 'nanoFramework.MikroClick.Drivers'
@@ -41,14 +41,12 @@ jobs:
       - name: Setup MSBuild Path
         uses: microsoft/setup-msbuild@v1.0.2
 
-      - name: Update dependencies
-        run: ./github-actions/update-nf-dependencies.ps1 prerelease
+      - name: Restore nugets
+        run: ./github-actions/restore-nf-nugets.ps1 prerelease
         working-directory: tools
 
       - name: Build App
-        run: |
-          cmd.exe /c ls
-          msbuild ./nanoFramework.ClickDrivers.sln /p:Configuration=${{ env.buildConfiguration }}
+        run: msbuild ${{ env.solution }} /p:Configuration=${{ env.buildConfiguration }}
         working-directory: main
 
 
