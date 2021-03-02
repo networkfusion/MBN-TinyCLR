@@ -34,15 +34,15 @@ jobs:
         with:
           repository: networkfusion/nf-tools
           path: tools
-      - name: Install VS Extension for nanoFramework
-        run: ./AzureDevOps/TaskInstallMSBuildComponents/TaskFiles/install-nf-build-components.ps1
+      - name: Install build components for nanoFramework
+        run: ./github-actions/install-nf-build-components.ps1
         working-directory: tools
 
       - name: Setup MSBuild Path
         uses: microsoft/setup-msbuild@v1.0.2
 
       - name: Restore nugets
-        run: ./github-actions/restore-nf-nugets.ps1 prerelease
+        run: ./github-actions/restore-nf-dependencies.ps1 prerelease
         working-directory: tools
 
       - name: Build App
