@@ -41,10 +41,15 @@ jobs:
       - name: Setup MSBuild Path
         uses: microsoft/setup-msbuild@v1.0.2
 
+      - name: Update dependencies
+        run: ./github-actions/update-nf-dependencies.ps1 prerelease
+        working-directory: tools
+
       - name: Build App
         run: |
           cmd.exe /c ls
-          msbuild ./main/nanoFramework.ClickDrivers.sln /p:Configuration=${{ env.buildConfiguration }}
+          msbuild ./nanoFramework.ClickDrivers.sln /p:Configuration=${{ env.buildConfiguration }}
+        working-directory: main
 
 
       # - uses: microsoft/setup-msbuild@v1
