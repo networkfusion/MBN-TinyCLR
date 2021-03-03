@@ -19,7 +19,7 @@ jobs:
     runs-on: windows-latest
     env:
       #DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-      solution: '.\nanoFramework.ClickDrivers.sln'
+      solution: 'nanoFramework.ClickDrivers.sln'
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Release'
       classLibName: 'nanoFramework.MikroClick.Drivers'
@@ -49,6 +49,10 @@ jobs:
       - name: Build App
         run: msbuild ${{ env.solution }} /p:Configuration=${{ env.buildConfiguration }}
         working-directory: main
+
+      # - name: Run unit tests
+      #   run: ./nanoFramework.nanoCLR.exe -load ...nanoFramework.UnitTestLauncher.pe --load ..mscorlib.pe --load ...nanoFramework.TestFramework.pe --load ...NFUnitTest.pe
+      #   working-directory: main
 
       # # Publish
       # - name: publish on version change
