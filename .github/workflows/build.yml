@@ -54,11 +54,15 @@ jobs:
         
 
       - name: Build App
-        run: msbuild ${{ env.solution }} /p:Configuration=${{ env.buildConfiguration }} /t:Pack
+        run: msbuild ${{ env.solution }} /p:Configuration=${{ env.buildConfiguration }}
         working-directory: main
 
       # - name: Run unit tests
       #   run: ./nanoFramework.nanoCLR.exe -load ...nanoFramework.UnitTestLauncher.pe --load ..mscorlib.pe --load ...nanoFramework.TestFramework.pe --load ...NFUnitTest.pe
+      #   working-directory: main
+
+      # - name: pack nugets
+      #   run: nuget custom 'pack $(nugetPackageName).nuspec -Version $(MY_NUGET_VERSION) -Symbols -SymbolPackageFormat snupkg -properties nativeVersion="$(ASSEMBLY_NATIVE_VERSION)";commit="$(Build.SourceVersion)";checksum="$(NativeAssemblyChecksum)"'
       #   working-directory: main
 
       - name: Upload Artifact
