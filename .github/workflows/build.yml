@@ -42,12 +42,12 @@ jobs:
       - name: Setup MSBuild Path
         uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Install NuGet client
-      uses: warrenbuckley/Setup-Nuget@v1
-    - name: Restore nugets for solution
-      run: |
-        nuget restore ${{ env.solution }}
-      working-directory: main
+      - name: Install NuGet client
+        uses: warrenbuckley/Setup-Nuget@v1
+      - name: Restore nugets for solution
+        run: |
+          nuget restore ${{ env.solution }}
+        working-directory: main
 
       # - name: Restore nugets
       #   run: ./github-actions/restore-nf-dependencies.ps1 prerelease
