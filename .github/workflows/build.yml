@@ -61,15 +61,16 @@ jobs:
       #   run: ./nanoFramework.nanoCLR.exe -load ...nanoFramework.UnitTestLauncher.pe --load ..mscorlib.pe --load ...nanoFramework.TestFramework.pe --load ...NFUnitTest.pe
       #   working-directory: main
 
-      # - name: pack nugets
-      #   run: nuget custom 'pack $(nugetPackageName).nuspec -Version $(MY_NUGET_VERSION) -Symbols -SymbolPackageFormat snupkg -properties nativeVersion="$(ASSEMBLY_NATIVE_VERSION)";commit="$(Build.SourceVersion)";checksum="$(NativeAssemblyChecksum)"'
-      #   working-directory: main
+      - name: Pack nugets
+        run: nuget pack ${{ env.nugetPackageName }}.nuspec -properties Configuration=${{ env.buildConfiguration }}
+      #   run: nuget 'pack ${{ env.nugetPackageName }}.nuspec -Version ${{ MY_NUGET_VERSION }} -Symbols -SymbolPackageFormat snupkg -properties nativeVersion="${{ ASSEMBLY_NATIVE_VERSION }}";commit="${{ GITHUB_RUN_ID }}";checksum="${{ NativeAssemblyChecksum }}"'
+        working-directory: main
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: click-drivers
-          path: ${{ github.workspace }}/**/[Rr]elease/*
+          path: ${{ github.workspace }}/**/*.[nuspec, dll, pe]
 
       # # # Publish
       # - name: PushGithub
