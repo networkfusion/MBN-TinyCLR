@@ -54,14 +54,30 @@ jobs:
         
 
       - name: Build App
-        run: msbuild ${{ env.solution }} /p:Configuration=${{ env.buildConfiguration }}
+        run: msbuild ${{ env.solution }} /p:Configuration=${{ env.buildConfiguration }} /t:Pack
         working-directory: main
 
       # - name: Run unit tests
       #   run: ./nanoFramework.nanoCLR.exe -load ...nanoFramework.UnitTestLauncher.pe --load ..mscorlib.pe --load ...nanoFramework.TestFramework.pe --load ...NFUnitTest.pe
       #   working-directory: main
 
-      # # Publish
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: click-drivers
+          path: ${{ github.workspace }}\**\*
+
+      # # # Publish
+      # - name: PushGithub
+      #   run: nuget push "**/*.nupkg" -NoSymbols -SkipDuplicate
+      #   env:
+      #     NUGET_AUTH_TOKEN: ${{ github.token }}
+      #     #source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+
+
+
+
+
       # - name: publish on version change
       #   id: publish_nuget
       #   uses: rohith/publish-nuget@v2
