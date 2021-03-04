@@ -66,10 +66,10 @@ jobs:
       #   working-directory: main
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v2
         with:
           name: click-drivers
-          path: ${{ github.workspace }}\**\*
+          path: ${{ github.workspace }}/**/[Rr]elease/*
 
       # # # Publish
       # - name: PushGithub
