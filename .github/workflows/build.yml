@@ -43,11 +43,13 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
 
       - name: Install NuGet client
-      - uses: nuget/setup-nuget@v1
+        uses: nuget/setup-nuget@v1
         with:
-          #nuget-api-key: ${{ secrets.NuGetAPIKey }}
           nuget-version: '5.x'
-      - run: nuget restore ${{ env.solution }}
+          #nuget-api-key: ${{ secrets.NuGetAPIKey }}
+
+      - name: Restore nugets
+        run: nuget restore ${{ env.solution }}
         working-directory: main
         
 
