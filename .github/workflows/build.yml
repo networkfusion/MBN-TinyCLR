@@ -23,7 +23,7 @@ jobs:
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Release'
       classLibName: 'nanoFramework.MikroClick.Drivers'
-      nugetPackageName: 'nanoFramework.MikroClick.Drivers'
+      nugetPackageName: 'nanoFramework.ClickDrivers'
       #repoName: 'MBN-TinyCLR' #repoName: 'lib-nanoFramework-MikroClick-Drivers'
     steps:
       - name: Checkout
