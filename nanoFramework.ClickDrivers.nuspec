@@ -3,7 +3,8 @@
   <metadata>
     <id>nanoFramework.ClickDrivers</id>
     <title>MikroElektronika Click Drivers for nanoFramework</title>
-    <version>1.0</version><!--<version>$version$</version>-->
+    <version>1.0</version>
+    <!--<version>$version$</version>-->
     <authors>MBN, NetworkFusion</authors>
     <owners>MBN,NetworkFusion,nanoFramework project contributors,dotnetfoundation</owners>
     <license type="file">LICENSE.md</license>
@@ -17,7 +18,8 @@
     </description>
     <releaseNotes>
     </releaseNotes>
-    <repository type="git" url="https://github.com/networkfusion/MBN-TinyCLR" /> <!-- commit="$commit$" />-->
+    <repository type="git" url="https://github.com/networkfusion/MBN-TinyCLR" />
+    <!-- commit="$commit$" />-->
     <!--<repository type="git" url="https://github.com/nanoframework/nanoFramework.ClickDrivers" commit="$commit$" />-->
     <copyright>Copyright (c) MBN and .NET Foundation and Contributors</copyright>
     <tags>MikroElektronika MikroElektronika MikroE net netmf nf nanoframework</tags>
@@ -41,7 +43,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Drivers\nanoFramework.ClickDrivers\..\bin\Release\nanoFramework.ClickDrivers.*" target="lib" /><!--Improve later?-->
+    <file src="Drivers\nanoFramework.ClickDrivers\..\bin\Release\nanoFramework.ClickDrivers.*" target="lib" />
+    <!--Improve later?-->
     <!--<file src="assets\readme.txt" target="" />
     <file src="assets\nf-logo.png" target="" />-->
     <file src="LICENSE.md" target="" />
