@@ -70,7 +70,11 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: click-drivers
-          path: ${{ github.workspace }}/**/*.[nuspec, dll, pe]
+          path: |
+            ${{ github.workspace }}\**\*.nupkg
+            ${{ github.workspace }}\**\*.dll
+            ${{ github.workspace }}\**\*.pe
+          #[Rr]elease/*
 
       # # # Publish
       # - name: PushGithub
