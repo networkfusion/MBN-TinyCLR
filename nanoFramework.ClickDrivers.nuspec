@@ -41,7 +41,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Drivers\bin\Release\nanoFramework.ClickDrivers.*" target="lib" /><!--Improve later?-->
+    <file src="Drivers\bin\Release\nanoFramework.ClickDrivers.*" target="lib" />
     <!--<file src="assets\readme.txt" target="" />
     <file src="assets\nf-logo.png" target="" />-->
     <file src="LICENSE.md" target="" />
