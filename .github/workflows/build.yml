@@ -80,9 +80,8 @@ jobs:
 
       # # # Publish
       - name: Push nuget to Github
-        run: nuget push "**/*.nupkg" -Source ${{ env.source-url }} -NoSymbols -SkipDuplicate
+        run: nuget push "**/*.nupkg" -Source ${{ env.source-url }} -NoSymbols -SkipDuplicate --api-key ${{ github.token }}
         env:
-          NUGET_AUTH_TOKEN: ${{ github.token }}
           source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
 
 
@@ -118,7 +117,7 @@ jobs:
       #     # NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
       #     # NuGet server uri hosting the packages, defaults to https://api.nuget.org
-      #     # NUGET_SOURCE: https://api.nuget.org
+      #     # NUGET_SOURCE: https://api.nuget.org #https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
 
       #     # Flag to toggle pushing symbols along with nuget package to the server, disabled by default
       #     # INCLUDE_SYMBOLS: false
