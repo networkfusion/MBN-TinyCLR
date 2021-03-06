@@ -42,6 +42,7 @@ jobs:
       - name: Setup MSBuild Path
         uses: microsoft/setup-msbuild@v1.0.2
 
+      # https://github.com/NuGet/setup-nuget
       - name: Install NuGet client
         uses: nuget/setup-nuget@v1
         with:
@@ -66,6 +67,7 @@ jobs:
       #   run: nuget 'pack ${{ env.nugetPackageName }}.nuspec -Version ${{ MY_NUGET_VERSION }} -Symbols -SymbolPackageFormat snupkg -properties nativeVersion="${{ ASSEMBLY_NATIVE_VERSION }}";commit="${{ GITHUB_RUN_ID }}";checksum="${{ NativeAssemblyChecksum }}"'
         working-directory: main
 
+      # https://github.com/actions/upload-artifact
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
