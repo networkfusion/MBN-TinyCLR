@@ -3,7 +3,7 @@
 
 # This workflow will build the solution and (TODO: release if required).
 
-name: Build Drivers
+name: Build nanoFramework nugets
 
 on: [push, pull_request]
 
@@ -14,7 +14,7 @@ defaults:
 #TODO: take into account GH and NUGET release.
 jobs:
   build-drivers:
-    name: Build MBN Click Drivers
+    name: Build nanoFramework/MBN Click Drivers
     timeout-minutes: 15
     runs-on: windows-latest
     env:
