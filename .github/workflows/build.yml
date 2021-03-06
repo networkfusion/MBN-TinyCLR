@@ -83,7 +83,7 @@ jobs:
         run: nuget push "**/*.nupkg" -Source ${{ env.source-url }} -NoSymbols -SkipDuplicate -ApiKey ${{ env.auth-key }}
         env:
           source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
-          auth-key: ${{ secrets.nuget-publish }}
+          auth-key: ${{ secrets.publishnugets }}
 
 
 
