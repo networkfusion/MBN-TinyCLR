@@ -31,7 +31,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="nano.runsettings.temp" />
+    <None Include="nano.runsettings" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
