@@ -74,16 +74,16 @@ jobs:
           name: click-drivers
           path: |
             ${{ github.workspace }}\**\*.nupkg
-            ${{ github.workspace }}\**\*.dll
-            ${{ github.workspace }}\**\*.pe
+          # ${{ github.workspace }}\**\*.dll
+          # ${{ github.workspace }}\**\*.pe
           #[Rr]elease/*
 
       # # # Publish
-      # - name: PushGithub
-      #   run: nuget push "**/*.nupkg" -NoSymbols -SkipDuplicate
-      #   env:
-      #     NUGET_AUTH_TOKEN: ${{ github.token }}
-      #     #source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+      - name: Push nuget to Github
+        run: nuget push "**/*.nupkg" -NoSymbols -SkipDuplicate
+        env:
+          NUGET_AUTH_TOKEN: ${{ github.token }}
+          #source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
 
 
 
