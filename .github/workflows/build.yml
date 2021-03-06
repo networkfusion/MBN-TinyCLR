@@ -80,7 +80,7 @@ jobs:
 
       # # # Publish
       - name: Push nuget to Github
-        run: nuget push "**/*.nupkg" -Source ${{ env.source-url }} -NoSymbols -SkipDuplicate --api-key ${{ github.token }}
+        run: nuget push "**/*.nupkg" -Source ${{ env.source-url }} -NoSymbols -SkipDuplicate -ApiKey ${{ github.token }}
         env:
           source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
 
