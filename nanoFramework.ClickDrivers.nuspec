@@ -17,7 +17,7 @@
     </description>
     <releaseNotes>
     </releaseNotes>
-    <repository type="git" url="https://github.com/networkfusion/MBN-TinyCLR" /> <!-- commit="$commit$" />-->
+    <repository type="git" url="https://github.com/networkfusion/MBN-TinyCLR" commit="$commit$" />
     <!--<repository type="git" url="https://github.com/nanoframework/nanoFramework.ClickDrivers" commit="$commit$" />-->
     <copyright>Copyright (c) MBN and .NET Foundation and Contributors</copyright>
     <tags>MikroElektronika MikroElektronika MikroE net netmf nf nanoframework</tags>
