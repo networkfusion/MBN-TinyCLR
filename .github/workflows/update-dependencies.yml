@@ -31,7 +31,7 @@ jobs:
       - name: Checkout tools repo
         uses: actions/checkout@v2
         with:
-          repository: networkfusion/nf-tools
+          repository: nanoframework/nf-tools
           path: tools
       - name: Install NuGet client
         uses: nuget/setup-nuget@v1

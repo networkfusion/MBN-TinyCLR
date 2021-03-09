@@ -33,7 +33,7 @@ jobs:
       - name: Checkout tools repo
         uses: actions/checkout@v2
         with:
-          repository: networkfusion/nf-tools
+          repository: nanoframework/nf-tools
           path: tools
       - name: Install build components for nanoFramework
         run: ./github-actions/install-nf-build-components.ps1
