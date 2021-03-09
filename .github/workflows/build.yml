@@ -18,7 +18,6 @@ jobs:
     timeout-minutes: 15
     runs-on: windows-latest
     env:
-      #DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       solution: 'nanoFramework.ClickDrivers.sln'
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Release'
