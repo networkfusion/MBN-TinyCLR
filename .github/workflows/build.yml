@@ -64,7 +64,7 @@ jobs:
       #   working-directory: main
 
       - name: Set nuget package version using nerdbank
-        uses: dotnet/nbgv@v3.4
+        uses: dotnet/nbgv@v0.4.0
         with:
           path: main
           setAllVars: true
