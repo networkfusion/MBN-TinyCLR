@@ -12,7 +12,7 @@
  */
 
 #if (NANOFRAMEWORK_1_0)
-using Windows.Devices.Spi;
+using System.Device.Spi;
 #else
 using GHIElectronics.TinyCLR.Devices.Spi;
 using GHIElectronics.TinyCLR.Devices.Gpio;
@@ -41,7 +41,7 @@ namespace MBN.Modules
         public T4_20mAClick(Hardware.Socket socket)
         {
 #if (NANOFRAMEWORK_1_0)
-            _trs = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            _trs = SpiDevice.Create(new SpiConnectionSettings(socket.SpiBus, socket.Cs)
             {
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000
@@ -120,7 +120,7 @@ namespace MBN.Modules
         public R4_20mAClick(Hardware.Socket socket, UInt16 calibration4mA, UInt16 calibration20mA)
         {
 #if (NANOFRAMEWORK_1_0)
-            _rec = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            _rec = SpiDevice.Create(new SpiConnectionSettings(socket.SpiBus, socket.Cs)
             {
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000

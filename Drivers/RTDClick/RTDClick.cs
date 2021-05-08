@@ -7,7 +7,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 #if (NANOFRAMEWORK_1_0)
-using Windows.Devices.Spi;
+using System.Device.Spi;
 using System.Device.Gpio;
 #else
 using GHIElectronics.TinyCLR.Devices.Spi;
@@ -131,11 +131,11 @@ namespace MBN.Modules
             // Clock : Active High, Data clocked in on rising edge
 
             // create SPI device for Max31865
-            _spiDevice = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            _spiDevice = SpiDevice.Create(new SpiConnectionSettings(socket.SpiBus, socket.Cs)
             {
                 DataBitLength = 8,
                 ClockFrequency = 4 * 1000 * 1000, //- max 5MHz
-                BitOrder = DataBitOrder.MSB,
+                DataFlow = DataFlow.MsbFirst,
                 Mode = SpiMode.Mode1, //supports 1 and 3
                 SharingMode = SpiSharingMode.Shared
             });

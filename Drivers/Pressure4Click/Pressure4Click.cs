@@ -16,7 +16,7 @@
 #if (NANOFRAMEWORK_1_0)
 using System.Device.Gpio;
 using System.Device.I2c;
-using Windows.Devices.Spi;
+using System.Device.Spi;
 #else
 using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.I2c;
@@ -111,7 +111,7 @@ namespace MBN.Modules
             _interface = Interface.SPI;
 
 #if (NANOFRAMEWORK_1_0)
-            _sensorSPI = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            _sensorSPI = SpiDevice.Create(new SpiConnectionSettings(socket.SpiBus, socket.Cs)
             {
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 8 * 1000 * 1000
@@ -845,7 +845,11 @@ namespace MBN.Modules
             {
                 lock (_socket.LockSpi)
                 {
+#if (NANOFRAMEWORK_1_0)
+                    _sensorSPI.TransferFullDuplex(new[] { registerAddress }, result); //TODO: this might need reverting!
+#else
                     _sensorSPI.TransferSequential(new[] { registerAddress }, result);
+#endif
                 }
             }
             else

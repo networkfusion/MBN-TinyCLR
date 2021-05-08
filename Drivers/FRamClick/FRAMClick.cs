@@ -10,7 +10,7 @@
  * either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 #if (NANOFRAMEWORK_1_0)
-using Windows.Devices.Spi;
+using System.Device.Spi;
 #else
 using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Spi;
@@ -98,7 +98,7 @@ namespace MBN.Modules
             _socket = socket;
             // Initialize SPI
 #if (NANOFRAMEWORK_1_0)
-            _fram = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            _fram = SpiDevice.Create(new SpiConnectionSettings(socket.SpiBus, socket.Cs)
             {
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 2000000

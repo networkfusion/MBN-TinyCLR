@@ -13,7 +13,7 @@
 
 #if (NANOFRAMEWORK_1_0)
 using System.Device.Gpio;
-using Windows.Devices.Spi;
+using System.Device.Spi;
 #else
 using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Spi;
@@ -74,7 +74,7 @@ namespace MBN.Modules
         {
             _socket = socket;
 #if (NANOFRAMEWORK_1_0)
-            _flash = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            _flash = SpiDevice.Create(new SpiConnectionSettings(socket.SpiBus, socket.Cs)
             {
                 Mode = SpiMode.Mode0,
                 ClockFrequency = 10000000

@@ -121,7 +121,7 @@ namespace MBN
             /// <summary>
             /// SPI module
             /// </summary>
-            public String SpiBus;
+            public Int32 SpiBus;
 
             /// <summary>
             /// I²C Bus
@@ -360,7 +360,7 @@ namespace MBN
             public static class SpiBus
             {
                 // /// <summary>SPI bus on PI3 (MOSI), PI2 (MISO), and PI1 (SCK).</summary>
-                public const String Spi2 = "SPI2";
+                public const Int32 Spi2 = 2;
                 // /// <summary>SPI bus on PB5 (MOSI), PB4 (MISO), and PB3 (SCK).</summary>
                 // public const String Spi3 = STM32H7.SpiBus.Spi3;
                 /// <summary>SPI bus on PF9 (MOSI), PF8 (MISO), and PF7 (SCK).</summary>
