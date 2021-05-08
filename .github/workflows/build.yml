@@ -63,14 +63,14 @@ jobs:
       #   run: ./nanoFramework.nanoCLR.exe -load ...nanoFramework.UnitTestLauncher.pe --load ..mscorlib.pe --load ...nanoFramework.TestFramework.pe --load ...NFUnitTest.pe
       #   working-directory: main
 
-      - name: Set nuget package version
-        uses: dotnet/nbgv@master #v3.4
+      - name: Set nuget package version using nerdbank
+        uses: dotnet/nbgv@v3.4
         with:
           path: main
           setAllVars: true
 
-      - name: Echo nuget package version
-        run: echo "NBGV_SemVer2 $NBGV_SemVer2"
+      # - name: Echo nuget package version
+      #   run: echo "NBGV_SemVer2 $NBGV_SemVer2"
 
 
 
