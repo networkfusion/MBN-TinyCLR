@@ -62,15 +62,16 @@ jobs:
       #   working-directory: main
 
       - name: Set nuget version
-        run: |
-          dotnet tool install -g nbgv
-          nbgv cloud -a -c
+        uses: dotnet/nbgv@v3.4
+          with:
+            setAllVars: true
+        - run: echo "NBGV_SemVer2 $NBGV_SemVer2"
 
 
 
       - name: Pack nugets
-        run: nuget 'pack ${{ env.nugetPackageName }}.nuspec -Version ${{ env.NBGV_NuGetPackageVersion }} -Symbols -SymbolPackageFormat snupkg -properties Configuration=${{ env.buildConfiguration }}'
-      #  run: nuget pack ${{ env.nugetPackageName }}.nuspec -properties Configuration=${{ env.buildConfiguration }}
+      #  run: nuget 'pack ${{ env.nugetPackageName }}.nuspec -Version ${{ env.NBGV_NuGetPackageVersion }} -Symbols -SymbolPackageFormat snupkg -properties Configuration=${{ env.buildConfiguration }}'
+        run: nuget pack ${{ env.nugetPackageName }}.nuspec -properties Configuration=${{ env.buildConfiguration }}
       #  run: nuget 'pack ${{ env.nugetPackageName }}.nuspec -Version ${{ MY_NUGET_VERSION }} -Symbols -SymbolPackageFormat snupkg -properties nativeVersion="${{ ASSEMBLY_NATIVE_VERSION }}";commit="${{ github.run_id }}";checksum="${{ NativeAssemblyChecksum }}"'
         working-directory: main
 
