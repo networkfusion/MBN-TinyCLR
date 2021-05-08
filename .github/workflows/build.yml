@@ -66,6 +66,7 @@ jobs:
       - name: Set nuget package version
         uses: dotnet/nbgv@master #v3.4
         with:
+          path: main
           setAllVars: true
 
       - name: Echo nuget package version
