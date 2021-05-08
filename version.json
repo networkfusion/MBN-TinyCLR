@@ -14,7 +14,13 @@
   ],
   "cloudBuild": {
     "setAllVariables": true,
-    "buildNumber": null
+    "buildNumber": {
+      "enabled": false,
+      "includeCommitId": {
+        "when": "nonPublicReleaseOnly",
+        "where": "buildMetadata"
+      }
+    }
   },
   "release": {
     "branchName": "release-v{version}",
