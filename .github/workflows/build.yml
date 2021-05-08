@@ -61,9 +61,17 @@ jobs:
       #   run: ./nanoFramework.nanoCLR.exe -load ...nanoFramework.UnitTestLauncher.pe --load ..mscorlib.pe --load ...nanoFramework.TestFramework.pe --load ...NFUnitTest.pe
       #   working-directory: main
 
+      - name: Set nuget version
+        run: |
+          dotnet tool install -g nbgv
+          nbgv cloud -a -c
+
+
+
       - name: Pack nugets
-        run: nuget pack ${{ env.nugetPackageName }}.nuspec -properties Configuration=${{ env.buildConfiguration }}
-      #   run: nuget 'pack ${{ env.nugetPackageName }}.nuspec -Version ${{ MY_NUGET_VERSION }} -Symbols -SymbolPackageFormat snupkg -properties nativeVersion="${{ ASSEMBLY_NATIVE_VERSION }}";commit="${{ GITHUB_RUN_ID }}";checksum="${{ NativeAssemblyChecksum }}"'
+        run: nuget 'pack ${{ env.nugetPackageName }}.nuspec -Version ${{ env.NBGV_NuGetPackageVersion }} -Symbols -SymbolPackageFormat snupkg -properties Configuration=${{ env.buildConfiguration }};commit="${{ github.run_id }}"'
+      #  run: nuget pack ${{ env.nugetPackageName }}.nuspec -properties Configuration=${{ env.buildConfiguration }}
+      #  run: nuget 'pack ${{ env.nugetPackageName }}.nuspec -Version ${{ MY_NUGET_VERSION }} -Symbols -SymbolPackageFormat snupkg -properties nativeVersion="${{ ASSEMBLY_NATIVE_VERSION }}";commit="${{ github.run_id }}";checksum="${{ NativeAssemblyChecksum }}"'
         working-directory: main
 
       # https://github.com/actions/upload-artifact
@@ -81,5 +89,6 @@ jobs:
       - name: Push nuget to Github
         run: |
           nuget sources Add -Name github -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -UserName ${{ github.repository_owner }} -Password ${{ secrets.NUGET_PUBLISH }}
-          nuget push "**/${{ env.nugetPackageName }}*.nupkg" -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -NoSymbols -SkipDuplicate -ApiKey ${{ secrets.NUGET_PUBLISH }}
+          nuget push "**/${{ env.nugetPackageName }}*.nupkg" -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -SkipDuplicate -ApiKey ${{ secrets.NUGET_PUBLISH }}
+        #  nuget push "**/${{ env.nugetPackageName }}*.nupkg" -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -NoSymbols -SkipDuplicate -ApiKey ${{ secrets.NUGET_PUBLISH }}
 
