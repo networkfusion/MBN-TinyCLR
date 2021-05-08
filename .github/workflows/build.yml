@@ -63,9 +63,9 @@ jobs:
 
       - name: Set nuget version
         uses: dotnet/nbgv@v3.4
-          with:
-            setAllVars: true
-      - run: echo "NBGV_SemVer2 $NBGV_SemVer2"
+        with:
+          setAllVars: true
+        - run: echo "NBGV_SemVer2 $NBGV_SemVer2"
 
 
 
