@@ -28,10 +28,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
+          fetch-depth: 0
           path: main
       - name: Checkout tools repo
         uses: actions/checkout@v2
         with:
+          fetch-depth: 0
           repository: nanoframework/nf-tools
           path: tools
       - name: Install build components for nanoFramework
@@ -61,11 +63,13 @@ jobs:
       #   run: ./nanoFramework.nanoCLR.exe -load ...nanoFramework.UnitTestLauncher.pe --load ..mscorlib.pe --load ...nanoFramework.TestFramework.pe --load ...NFUnitTest.pe
       #   working-directory: main
 
-      - name: Set nuget version
-        uses: dotnet/nbgv@v3.4
+      - name: Set nuget package version
+        uses: dotnet/nbgv@master #v3.4
         with:
           setAllVars: true
-        - run: echo "NBGV_SemVer2 $NBGV_SemVer2"
+
+      - name: Echo nuget package version
+        run: echo "NBGV_SemVer2 $NBGV_SemVer2"
 
 
 
