@@ -1,9 +1,9 @@
-# Copyright (c) .NET Foundation and Contributors
+# Copyright (c) NetworkFusion, .NET Foundation and Contributors
 # See LICENSE file in the project root for full license information.
 
-# This workflow will build the solution and (TODO: release if required).
+# This workflow will build the solution and release a nuget.
 
-name: Build nanoFramework nugets
+name: Build nanoFramework lib and release nuget #TODO, handle releases!
 
 on: [push, pull_request]
 
@@ -11,7 +11,6 @@ defaults:
   run:
     shell: pwsh
 
-#TODO: take into account GH and NUGET release.
 jobs:
   build-drivers:
     name: Build nanoFramework/MBN Click Drivers
@@ -69,15 +68,9 @@ jobs:
           path: main
           setAllVars: true
 
-      # - name: Echo nuget package version
-      #   run: echo "NBGV_SemVer2 $NBGV_SemVer2"
-
-
 
       - name: Pack nugets
         run: nuget pack ${{ env.nugetPackageName }}.nuspec -Version ${{ env.NBGV_NuGetPackageVersion }} -Symbols -SymbolPackageFormat snupkg -properties Configuration=${{ env.buildConfiguration }}
-      #  run: nuget 'pack ${{ env.nugetPackageName }}.nuspec -Version ${{ env.NBGV_NuGetPackageVersion }} -Symbols -SymbolPackageFormat snupkg -properties Configuration=${{ env.buildConfiguration }}'
-      #  run: nuget 'pack ${{ env.nugetPackageName }}.nuspec -Version ${{ MY_NUGET_VERSION }} -Symbols -SymbolPackageFormat snupkg -properties nativeVersion="${{ ASSEMBLY_NATIVE_VERSION }}";commit="${{ github.run_id }}";checksum="${{ NativeAssemblyChecksum }}"'
         working-directory: main
 
       # https://github.com/actions/upload-artifact
@@ -89,12 +82,9 @@ jobs:
             ${{ github.workspace }}\**\*.nupkg
           # ${{ github.workspace }}\**\*.dll
           # ${{ github.workspace }}\**\*.pe
-          #[Rr]elease/*
 
       # # # Publish
       - name: Push nuget to Github
         run: |
           nuget sources Add -Name github -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -UserName ${{ github.repository_owner }} -Password ${{ secrets.NUGET_PUBLISH }}
           nuget push "**/${{ env.nugetPackageName }}*.nupkg" -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -SkipDuplicate -ApiKey ${{ secrets.NUGET_PUBLISH }}
-        #  nuget push "**/${{ env.nugetPackageName }}*.nupkg" -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -NoSymbols -SkipDuplicate -ApiKey ${{ secrets.NUGET_PUBLISH }}
-
