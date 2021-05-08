@@ -75,7 +75,7 @@ jobs:
 
 
       - name: Pack nugets
-        run: nuget pack ${{ env.nugetPackageName }}.nuspec -properties Configuration=${{ env.buildConfiguration }}
+        run: nuget pack ${{ env.nugetPackageName }}.nuspec -Version ${{ env.NBGV_NuGetPackageVersion }} -properties Configuration=${{ env.buildConfiguration }}
       #  run: nuget 'pack ${{ env.nugetPackageName }}.nuspec -Version ${{ env.NBGV_NuGetPackageVersion }} -Symbols -SymbolPackageFormat snupkg -properties Configuration=${{ env.buildConfiguration }}'
       #  run: nuget 'pack ${{ env.nugetPackageName }}.nuspec -Version ${{ MY_NUGET_VERSION }} -Symbols -SymbolPackageFormat snupkg -properties nativeVersion="${{ ASSEMBLY_NATIVE_VERSION }}";commit="${{ github.run_id }}";checksum="${{ NativeAssemblyChecksum }}"'
         working-directory: main
