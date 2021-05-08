@@ -46,7 +46,7 @@ jobs:
       - name: Install NuGet client
         uses: nuget/setup-nuget@v1
         with:
-          nuget-version: '5.8.0'
+          #nuget-version: '5.8.0'
           #nuget-api-key: ${{ secrets.NuGetAPIKey }}
 
       - name: Restore nugets
@@ -69,7 +69,7 @@ jobs:
           setAllVars: true
 
 
-      - name: Pack nugets
+      - name: Pack nugets #Should use https://github.com/dotnet/Nerdbank.GitVersioning/blob/master/doc/public_vs_stable.md for better management of naming!
         run: nuget pack ${{ env.nugetPackageName }}.nuspec -Version ${{ env.NBGV_NuGetPackageVersion }} -Symbols -SymbolPackageFormat snupkg -properties Configuration=${{ env.buildConfiguration }}
         working-directory: main
 
