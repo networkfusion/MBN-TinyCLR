@@ -71,7 +71,7 @@ jobs:
 
 
       - name: Pack nugets #Should use https://github.com/dotnet/Nerdbank.GitVersioning/blob/master/doc/public_vs_stable.md for better management of naming!
-        run: nuget pack ${{ env.nugetPackageName }}.nuspec -Version ${{ env.NBGV_NuGetPackageVersion }} -Symbols -SymbolPackageFormat snupkg -properties Configuration=${{ env.buildConfiguration }}
+        run: nuget pack ${{ env.nugetPackageName }}.nuspec -Version ${{ env.NBGV_NuGetPackageVersion }} -Symbols -SymbolPackageFormat snupkg -prerelease -properties Configuration=${{ env.buildConfiguration }}
         working-directory: main
 
       # https://github.com/actions/upload-artifact
