@@ -46,7 +46,7 @@ jobs:
       - name: Install NuGet client
         uses: nuget/setup-nuget@v1
         with:
-          #nuget-version: '5.8.0'
+          nuget-version: '5.8.0'
           #nuget-api-key: ${{ secrets.NuGetAPIKey }}
 
       - name: Restore nugets
