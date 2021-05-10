@@ -214,7 +214,9 @@ namespace MBN.Modules
             lock (_socket.LockSpi)
             {
 #if (NANOFRAMEWORK_1_0)
-                _sensor.TransferFullDuplex(new[] { register }, result);  //TODO: this might need reverting!
+                _sensor.WriteByte(register);
+                _sensor.Read(result);
+                //_sensor.TransferSequential(new[] { register }, result); //TODO: this might need reverting if the lib ever supports it!
 #else
                 _sensor.TransferSequential(new[] { register }, result);
 #endif
