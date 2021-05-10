@@ -19,7 +19,6 @@
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
     <Compile Include="MBNCore.cs" />
-    <Compile Include="MBNHardware.cs" /><!-- Probably not needed-->
     <Compile Include="nfHardwareSTM32F769I.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
