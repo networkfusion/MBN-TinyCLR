@@ -81,6 +81,7 @@ jobs:
           name: click-drivers
           path: |
             ${{ github.workspace }}\**\*.nupkg
+            ${{ github.workspace }}\**\*.snupkg
           # ${{ github.workspace }}\**\*.dll
           # ${{ github.workspace }}\**\*.pe
 
