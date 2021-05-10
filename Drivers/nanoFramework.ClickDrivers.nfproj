@@ -154,7 +154,6 @@
     <Compile Include="UsbUartClick\USBUARTClick.cs" />
     <Compile Include="UT-X-7SegClick\Ut7SegClick.cs" />
     <Compile Include="WeatherClick\WeatherClick.cs" />
-    <!-- Make this an interface?-->
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
