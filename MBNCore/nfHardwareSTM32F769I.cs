@@ -15,7 +15,6 @@
 #warning Click module support on nanoFramwork is not yet fully tested.
 
 using System.Device.Gpio;
-
 using System;
 
 namespace MBN
