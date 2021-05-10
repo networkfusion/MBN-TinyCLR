@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <FileAlignment>512</FileAlignment>
     <RootNamespace>MBN.Modules</RootNamespace>
-    <AssemblyName>MBN.Modules</AssemblyName>
+    <AssemblyName>nanoFramework.ClickDrivers</AssemblyName>
     <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
   </PropertyGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
@@ -86,7 +86,7 @@
     <Compile Include="NRF-CClick\NRFcClick.cs" />
     <Compile Include="NRF-CClick\Registers.cs" />
     <!--Oled-CClick needs more work!-->
-     <!--
+    <!--
     <Compile Include="Oled-CClick\FontManager.cs" /> 
     <Compile Include="Oled-CClick\Geometry.cs" />
     <Compile Include="Oled-CClick\KnownColors.cs" />
@@ -135,6 +135,7 @@
     <Compile Include="ThunderClick\ThunderClick.cs" />
     <Compile Include="ThunderClick\ThunderClickEvents.cs" />
     <!--TinyFileSystemneeds more work!-->
+    <!--
     <Compile Include="TinyFileSystem\BlockDriver.cs" />
     <Compile Include="TinyFileSystem\BufferedStream.cs" />
     <Compile Include="TinyFileSystem\FileSystemStructures.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="TinyFileSystem\TinyFileSystemException.cs" />
     <Compile Include="TinyFileSystem\UInt16Array.cs" />
     <Compile Include="TinyFileSystem\Utilities.cs" />
+    -->
     <Compile Include="UniHallClick\UniHallClick.cs" />
     <Compile Include="UniqueIDClick\UniqueIDClick.cs" />
     <!--UsbUartClick more work!-->
@@ -159,93 +161,89 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="mscorlib, Version=1.10.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.CoreLibrary.1.10.1-preview.9\lib\mscorlib.dll</HintPath>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib, Version=1.10.3.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.CoreLibrary.1.10.3-preview.20\lib\mscorlib.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="nanoFramework.Devices.OneWire, Version=1.3.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.Devices.OneWire.1.3.1-preview.22\lib\nanoFramework.Devices.OneWire.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.Devices.OneWire.1.3.1-preview.29\lib\nanoFramework.Devices.OneWire.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="nanoFramework.Graphics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.Graphics.1.0.0-preview.38\lib\nanoFramework.Graphics.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.Graphics.1.0.0-preview.54\lib\nanoFramework.Graphics.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="nanoFramework.ResourceManager, Version=1.1.2.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.ResourceManager.1.1.2-preview.22\lib\nanoFramework.ResourceManager.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.ResourceManager.1.1.2-preview.29\lib\nanoFramework.ResourceManager.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="nanoFramework.Runtime.Events, Version=1.9.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.Runtime.Events.1.9.0-preview.9\lib\nanoFramework.Runtime.Events.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.Runtime.Events.1.9.0-preview.16\lib\nanoFramework.Runtime.Events.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="nanoFramework.Runtime.Native, Version=1.5.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.Runtime.Native.1.5.1-preview.25\lib\nanoFramework.Runtime.Native.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.Runtime.Native.1.5.1-preview.32\lib\nanoFramework.Runtime.Native.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="nanoFramework.System.Collections, Version=1.2.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.System.Collections.1.2.0-preview.24\lib\nanoFramework.System.Collections.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.System.Collections.1.2.0-preview.45\lib\nanoFramework.System.Collections.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="nanoFramework.System.Text, Version=1.1.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.System.Text.1.1.1-preview.24\lib\nanoFramework.System.Text.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.System.Text.1.1.1-preview.46\lib\nanoFramework.System.Text.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="System.Device.Gpio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.System.Device.Gpio.1.0.0-preview.26\lib\System.Device.Gpio.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.System.Device.Gpio.1.0.0-preview.31\lib\System.Device.Gpio.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="System.Device.I2c, Version=1.0.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.System.Device.I2c.1.0.1-preview.18\lib\System.Device.I2c.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.System.Device.I2c.1.0.1-preview.30\lib\System.Device.I2c.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
-    <Reference Include="System.IO.FileSystem, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.System.IO.FileSystem.1.0.0-preview.17\lib\System.IO.FileSystem.dll</HintPath>
+    <Reference Include="System.Device.Spi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
+      <HintPath>..\packages\nanoFramework.System.Device.Spi.1.0.0-preview.24\lib\System.Device.Spi.dll</HintPath>
       <Private>True</Private>
+      <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="System.Math, Version=1.3.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.System.Math.1.3.1-preview.24\lib\System.Math.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.System.Math.1.3.1-preview.31\lib\System.Math.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="Windows.Devices.Adc, Version=1.5.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.Windows.Devices.Adc.1.5.1-preview.24\lib\Windows.Devices.Adc.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.Windows.Devices.Adc.1.5.1-preview.31\lib\Windows.Devices.Adc.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="Windows.Devices.Pwm, Version=1.6.0.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.Windows.Devices.Pwm.1.6.0-preview.24\lib\Windows.Devices.Pwm.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.Windows.Devices.Pwm.1.6.0-preview.31\lib\Windows.Devices.Pwm.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="Windows.Devices.SerialCommunication, Version=1.3.4.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.Windows.Devices.SerialCommunication.1.3.4-preview.42\lib\Windows.Devices.SerialCommunication.dll</HintPath>
-      <Private>True</Private>
-      <SpecificVersion>True</SpecificVersion>
-    </Reference>
-    <Reference Include="Windows.Devices.Spi, Version=1.4.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.Windows.Devices.Spi.1.4.1-preview.26\lib\Windows.Devices.Spi.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.Windows.Devices.SerialCommunication.1.3.4-preview.67\lib\Windows.Devices.SerialCommunication.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
     <Reference Include="Windows.Storage.Streams, Version=1.10.1.0, Culture=neutral, PublicKeyToken=c07d481e9758c731">
-      <HintPath>packages\nanoFramework.Windows.Storage.Streams.1.10.1-preview.21\lib\Windows.Storage.Streams.dll</HintPath>
+      <HintPath>..\packages\nanoFramework.Windows.Storage.Streams.1.10.1-preview.37\lib\Windows.Storage.Streams.dll</HintPath>
       <Private>True</Private>
       <SpecificVersion>True</SpecificVersion>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets')" />
   <ProjectExtensions>

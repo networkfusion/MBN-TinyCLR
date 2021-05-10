@@ -11,7 +11,7 @@
  */
 
 #if (NANOFRAMEWORK_1_0)
-using Windows.Devices.Spi;
+using System.Device.Spi;
 #else
 using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Spi;
@@ -77,7 +77,7 @@ namespace MBN.Modules
             _socket = socket;
             // Initialize SPI
 #if (NANOFRAMEWORK_1_0)
-            _sensor = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            _sensor = SpiDevice.Create(new SpiConnectionSettings(socket.SpiBus, socket.Cs)
             {
                 Mode = SpiMode.Mode3,
                 ClockFrequency = 10000000
@@ -213,7 +213,13 @@ namespace MBN.Modules
 
             lock (_socket.LockSpi)
             {
+#if (NANOFRAMEWORK_1_0)
+                _sensor.WriteByte(register);
+                _sensor.Read(result);
+                //_sensor.TransferSequential(new[] { register }, result); //TODO: this might need reverting if the lib ever supports it!
+#else
                 _sensor.TransferSequential(new[] { register }, result);
+#endif
             }
 
             return result;

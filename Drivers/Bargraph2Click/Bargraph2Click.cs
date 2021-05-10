@@ -13,7 +13,7 @@
 
 #if (NANOFRAMEWORK_1_0)
 using Windows.Devices.Pwm;
-using Windows.Devices.Spi;
+using System.Device.Spi;
 #else
 using GHIElectronics.TinyCLR.Devices.Gpio;
 using GHIElectronics.TinyCLR.Devices.Pwm;
@@ -47,7 +47,7 @@ namespace MBN.Modules
             _socket = socket;
             // Initialize SPI
 #if (NANOFRAMEWORK_1_0)
-            _bargraph = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            _bargraph = SpiDevice.Create(new SpiConnectionSettings(socket.SpiBus, socket.Cs)
             {
                 Mode = SpiMode.Mode3,
                 ClockFrequency = 2000000

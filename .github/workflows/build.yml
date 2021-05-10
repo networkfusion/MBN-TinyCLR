@@ -1,0 +1,91 @@
+# Copyright (c) NetworkFusion, .NET Foundation and Contributors
+# See LICENSE file in the project root for full license information.
+
+# This workflow will build the solution and release a nuget.
+
+name: Build nanoFramework lib and release nuget #TODO, handle releases!
+
+on: [push, pull_request]
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  build-drivers:
+    name: Build nanoFramework/MBN Click Drivers
+    timeout-minutes: 15
+    runs-on: windows-latest
+    env:
+      solution: 'nanoFramework.ClickDrivers.sln'
+      buildPlatform: 'Any CPU'
+      buildConfiguration: 'Release'
+      classLibName: 'nanoFramework.MikroClick.Drivers'
+      nugetPackageName: 'nanoFramework.ClickDrivers'
+      #repoName: 'MBN-TinyCLR' #repoName: 'lib-nanoFramework-MikroClick-Drivers'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          path: main
+      - name: Checkout tools repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          repository: nanoframework/nf-tools
+          path: tools
+      - name: Install build components for nanoFramework
+        run: ./github-actions/install-nf-build-components.ps1
+        working-directory: tools
+
+      - name: Setup MSBuild Path
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      # https://github.com/NuGet/setup-nuget
+      - name: Install NuGet client
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-version: '5.8.0'
+          #nuget-api-key: ${{ secrets.NuGetAPIKey }}
+
+      - name: Restore nugets
+        run: nuget restore ${{ env.solution }} -ConfigFile NuGet.Config
+        working-directory: main
+        
+
+      - name: Build App
+        run: msbuild ${{ env.solution }} /p:Configuration=${{ env.buildConfiguration }}
+        working-directory: main
+
+      # - name: Run unit tests
+      #   run: ./nanoFramework.nanoCLR.exe -load ...nanoFramework.UnitTestLauncher.pe --load ..mscorlib.pe --load ...nanoFramework.TestFramework.pe --load ...NFUnitTest.pe
+      #   working-directory: main
+
+      - name: Set nuget package version using nerdbank
+        uses: dotnet/nbgv@v0.4.0
+        with:
+          path: main
+          setAllVars: true
+
+
+      - name: Pack nugets #Should use https://github.com/dotnet/Nerdbank.GitVersioning/blob/master/doc/public_vs_stable.md for better management of naming!
+        run: nuget pack ${{ env.nugetPackageName }}.nuspec -Version ${{ env.NBGV_NuGetPackageVersion }} -Symbols -SymbolPackageFormat snupkg -properties Configuration=${{ env.buildConfiguration }}
+        working-directory: main
+
+      # https://github.com/actions/upload-artifact
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: click-drivers
+          path: |
+            ${{ github.workspace }}\**\*.nupkg
+            ${{ github.workspace }}\**\*.snupkg
+          # ${{ github.workspace }}\**\*.dll
+          # ${{ github.workspace }}\**\*.pe
+
+      # # # Publish
+      - name: Push nuget to Github
+        run: |
+          nuget sources Add -Name github -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -UserName ${{ github.repository_owner }} -Password ${{ secrets.NUGET_PUBLISH }}
+          nuget push "**/${{ env.nugetPackageName }}*.nupkg" -Source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json -SkipDuplicate -ApiKey ${{ secrets.NUGET_PUBLISH }}

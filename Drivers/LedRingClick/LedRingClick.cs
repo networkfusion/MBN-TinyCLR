@@ -12,7 +12,7 @@
  */
 
 #if (NANOFRAMEWORK_1_0)
-using Windows.Devices.Spi;
+using System.Device.Spi;
 using System.Device.Gpio;
 #else
 using GHIElectronics.TinyCLR.Devices.Spi;
@@ -38,7 +38,7 @@ namespace MBN.Modules
             GpioPin _rst = new GpioController().OpenPin(socket.Rst, PinMode.Output);
             _rst.Write(PinValue.High);
 
-            _ledRing = SpiDevice.FromId(socket.SpiBus, new SpiConnectionSettings(socket.Cs)
+            _ledRing = SpiDevice.Create(new SpiConnectionSettings(socket.SpiBus, socket.Cs)
             {
                 Mode = SpiMode.Mode3,
                 ClockFrequency = 1000000
