@@ -9,8 +9,8 @@ on:
   #push:
   #pull_request:
   schedule:
-  # At 00:00 UTC every day.
-  - cron:  '0 0 * * *'
+  # At 00:00 UTC once per week.
+  - cron:  '0 0 * * 0'
   repository_dispatch:
     types: update-dependencies
 
